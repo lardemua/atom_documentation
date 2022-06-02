@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Quick Start - ATOM Calibration Framework</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Quick Start";
+        var mkdocs_page_input_path = "quick_start.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ATOM Calibration Framework
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Quick Start</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#create-a-calibration-package">Create a calibration package</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configure-a-calibration-package">Configure a calibration package</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#set-initial-estimate">Set initial estimate</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#collect-data">Collect Data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dataset-playback">Dataset playback</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#calibrate-sensors">Calibrate sensors</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../detailed_description/">Detailed Description</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../examples/">Calibration Examples</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluations/">Evaluations</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../publications/">Publications</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ATOM Calibration Framework</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Quick Start</li>
+    <li class="wy-breadcrumbs-aside">
+        <a href="https://github.com/miguelriemoliveira/atom-documentation/edit/master/docs/quick_start.md"
+          class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="quick-start">Quick Start</h2>
+<p>Unlike most other calibration approaches, <strong>ATOM</strong> offers tools to address the complete calibration pipeline. These are
+instructions for quick starting your robotic system calibration. If you need more details read through
+the <a href="../detailed_description/">detailed description</a> below.</p>
+<h3 id="create-a-calibration-package">Create a calibration package</h3>
+<pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name &lt;your_robot_calibration&gt;
+</code></pre>
+<h3 id="configure-a-calibration-package">Configure a calibration package</h3>
+<p>Edit the file:</p>
+<p>&lt;your_robot_calibration>/calibration/config.yml_ with your system information.</p>
+<p>and then run:</p>
+<pre><code class="language-bash">rosrun &lt;your_robot_calibration&gt; configure 
+</code></pre>
+<h3 id="set-initial-estimate">Set initial estimate</h3>
+<p>ATOM provides interactive tools based on rviz that allow the user to set the pose of the sensors to be calibrated, while receiving visual feedback.</p>
+<div class="admonition optional">
+<p class="admonition-title">Optional</p>
+<p>If you consider that your initial sensor poses are already accurate, you may skip this procedure.</p>
+</div>
+<p>To use launch:</p>
+<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; set_initial_estimate.launch 
+</code></pre>
+<h3 id="collect-data">Collect Data</h3>
+<p>Collecting data produces an ATOM dataset, which is then used for calibrating the system.</p>
+<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; collect_data.launch output_folder:=~/datasets/&lt;my_dataset&gt; 
+</code></pre>
+<h3 id="dataset-playback">Dataset playback</h3>
+<p>Dataset playback offers the possibility to visualize and correct the labels automatically produced during the collection stage.</p>
+<div class="admonition optional">
+<p class="admonition-title">Optional</p>
+<p>If you trust that the automatic labels are correct, you may skip this procedure.</p>
+</div>
+<p>First launch the visualizer:</p>
+<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; dataset_playback.launch
+</code></pre>
+<p>and then:</p>
+<pre><code class="language-bash">rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/&lt;your_robot_calibration&gt;/&lt;your_dataset&gt;/dataset.json -uic -si  -ow
+</code></pre>
+<h3 id="calibrate-sensors">Calibrate sensors</h3>
+<p>Finally run an optimization that will calibrate your sensors:</p>
+<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; dataset_playback.launch 
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../detailed_description/" class="btn btn-neutral float-right" title="Detailed Description">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/miguelriemoliveira/atom-documentation" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../detailed_description/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
