@@ -1,0 +1,14 @@
+site_name: ATOM Calibration Framework
+theme:
+  name: readthedocs
+repo_url: https://github.com/miguelriemoliveira/atom-documentation
+markdown_extensions:
+  - attr_list
+  - toc
+nav:
+  - "Home": "index.md"
+  - "Quick Start": "quick_start.md"
+  - "Instructions": "detailed_description.md"
+  - "Calibration Examples": "examples.md"
+  - "Evaluations": "evaluations.md"
+  - "Publications": "publications.md"
