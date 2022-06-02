@@ -14,6 +14,9 @@ and then launch a continuous compilation as you are working on the files:
 
     watch -n 1 mkdocs build
 
+finally, start a browser and go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+
+
 # Installation
 
 Install mkdocs from [here](https://www.mkdocs.org/getting-started/#installation).
