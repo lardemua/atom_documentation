@@ -55,15 +55,27 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Calibration Procedures</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#creating-a-calibration-package">Creating a calibration package</a>
+    <li class="toctree-l2"><a class="reference internal" href="#create-a-calibration-package">Create a calibration package</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#configuring-a-calibration-package">Configuring a calibration package</a>
+    <li class="toctree-l2"><a class="reference internal" href="#configure-a-calibration-package">Configure a calibration package</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#set-initial-estimate">Set initial estimate</a>
+    <li class="toctree-l2"><a class="reference internal" href="#set-an-initial-estimate">Set an initial estimate</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#collect-data">Collect data</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#rgb-camera-labeling">RGB camera labeling</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#calibrate-sensors">Calibrate sensors</a>
+    <li class="toctree-l3"><a class="reference internal" href="#3d-lidar-labeling">3D Lidar labeling</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#visualizing-sensor-fustrums">Visualizing sensor fustrums</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#depth-camera-labeling">Depth camera labeling</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2d-lidar-labeling">2D Lidar labeling</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#calibrate">Calibrate</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#advanced-usage-running-calibration-script-in-separate-terminal">Advanced usage - running calibration script in separate terminal</a>
     </li>
@@ -109,7 +121,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="system-calibration-detailed-description">System calibration - Detailed Description</h2>
+                <h2 id="calibration-procedures">Calibration procedures</h2>
 <p>To calibrate your robot you must define your robotic system, (e.g. &lt;your_robot>). You should also have a <strong>system
 description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file(s). This is normally stored in a ros package named <strong>&lt;your_robot>_description</strong>.</p>
 <div class="admonition note">
@@ -129,7 +141,7 @@ Here is an example of a <a href="https://github.com/lardemua/atlascar2/blob/mast
 which records compressed images.</p>
 <p>We consider this to be part of the normal configuration of your robotic system in ROS, so ATOM assumes this is already done. 
 In any case if you need inspiration you can take a look at the <a href="../examples/">calibration examples</a> and how we configured our systems.</p>
-<h3 id="creating-a-calibration-package">Creating a calibration package</h3>
+<h3 id="create-a-calibration-package">Create a calibration package</h3>
 <p>Assuming you have your robotic system setup, you can start creating the calibration package.
 You should create a calibration ros package specific for your robotic system. <strong>ATOM</strong> provides a script for this:</p>
 <pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name &lt;your_robot_calibration&gt;
@@ -138,7 +150,7 @@ You should create a calibration ros package specific for your robotic system. <s
 e.g.:</p>
 <pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name ~/my/path/&lt;your_robot_calibration&gt;
 </code></pre>
-<h3 id="configuring-a-calibration-package">Configuring a calibration package</h3>
+<h3 id="configure-a-calibration-package">Configure a calibration package</h3>
 <p>Once your calibration package is created you will have to configure the calibration procedure by editing the
 <em><your_robot_calibration>/calibration/config.yml</em> file with your system information.</p>
 <p>Here are examples of calibration <strong>config.yml</strong> files for
@@ -152,10 +164,7 @@ Also, the file contains several comments to provide clues on how to configure it
 <p>This will go through a series of varifications, and create a set of files for launching the system, configuring rviz,
 etc.</p>
 <p>It is also possible to configure your calibration package with a different configuration file, in the case you have
-multiple configurations with multiple config.yml files. There are also other options. 
-To run a custom configuration you should use:</p>
-<pre><code class="language-bash">rosrun atom_calibration configure_calibration_package  --name &lt;your_robot_calibration&gt; &lt;other options&gt;
-</code></pre>
+multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:</p>
 <pre><code class="language-bash">usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
 
 -h, --help            show this help message and exit
@@ -166,7 +175,7 @@ To run a custom configuration you should use:</p>
                       Specify if you want to configure the calibration package with a specific configutation file.
                       If this flag is not given, the standard config.yml ill be used.
 </code></pre>
-<h3 id="set-initial-estimate">Set initial estimate</h3>
+<h3 id="set-an-initial-estimate">Set an initial estimate</h3>
 <p>Iterative optimization methods are often sensitive to the initial parameter configuration. There are several optimization parameters. 
 However, the ones we refer to in this case are those that represent the poses of each sensor. <strong>ATOM</strong> provides an interactive framework based on rviz which allows the
 user to set the pose of the sensors while having immediate visual feedback.</p>
@@ -200,6 +209,7 @@ Setting initial estimate of sensor poses in the IRIS UR10e.
 <p>To collect data, use:</p>
 <pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt;
 </code></pre>
+<p>The script launches an rviz window already configured. The user observes the data playback and <strong>decides when a collection should be saved</strong> by clicking a green sphere in that appears in the scene.</p>
 <p>It is also possible to add additional parameters to configure several aspects of the script. See below all the options.</p>
 <div class="admonition tip">
 <p class="admonition-title">Additional parameters for collect_data.launch</p>
@@ -213,7 +223,7 @@ Setting initial estimate of sensor poses in the IRIS UR10e.
 <tbody>
 <tr>
 <td align="center">overwrite</td>
-<td align="center">overwrites previous dataset, if existent</td>
+<td align="center">overwrites previous dataset without asking for confirmation</td>
 </tr>
 <tr>
 <td align="center">bag_rate</td>
@@ -237,66 +247,110 @@ Setting initial estimate of sensor poses in the IRIS UR10e.
 <pre><code>roslaunch &lt;your_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt; overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]'
 </code></pre>
 </div>
-<p>The data collection script starts data labeling processes adequate for each sensor in your robotic system.</p>
-<p>Next, some examples of collecting data in several robotic systems.</p>
+<p>When you launch the data collection script, it automatically starts data labeling processes adequate for each sensor in your robotic system.
+As such, the data is being continuously labeled as the bagfile is played.</p>
+<p>Depending on the modalidity of the sensors in the system the labelling may be automatic or fully automatic.
+Below we detail how each of the labelers operate.</p>
+<h4 id="rgb-camera-labeling">RGB camera labeling</h4>
+<p>RGB cameras have a fully automatic pattern detection. It uses off the shelf <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a">chessboard</a> or <a href="https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html">charuco</a> calibration pattern detectors.
+ATOM provides an rviz configuration which subscribes annotated images received from the pattern detectors. You can check if the detection is working 
+by observing the overlays of top of the images.</p>
 <p align="center">
-  <img width="100%" src="/img/collect_data_atlascar2.gif">
+  <img width="100%" src="/img/ur10e_eye_to_base_collect_data.gif">
 </p>
 <p align = "center">
-Automatic labelling and creating an ATOM dataset of the AtlasCar2.
+Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
 </p>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.</p>
+</div>
+<h4 id="3d-lidar-labeling">3D Lidar labeling</h4>
+<p>3D Lidar labelling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  </p>
+<p align="center">
+  <img width="100%" src="/img/MMTBot3DLidarLabeling.gif">
+</p>
+<p align = "center">
+Setting the seed point in 3D Lidar data for semi-automatic labeling (MMTBot).
+</p>
+
+<p>After setting this seed position, the system continues to track the patterns pose over the next frames, even if it moves,
+as you can see below:</p>
 <p align="center">
   <img width="100%" src="/img/agrob_data_collection.gif">
 </p>
 <p align = "center">
-Automatic labelling and creating an ATOM dataset of the AgrobV2.
+Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).
 </p>
 
+<div class="admonition warning">
+<p class="admonition-title">Tracking limitations</p>
+<p>The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. </p>
+</div>
+<h4 id="visualizing-sensor-fustrums">Visualizing sensor fustrums</h4>
+<p align="center">
+  <img width="100%" src="/img/MMTBot_fustrum.gif">
+</p>
+<p align = "center">
+Visualizing fustrum of RGB sensors in the MMTBot.
+</p>
+
+<h4 id="depth-camera-labeling">Depth camera labeling</h4>
+<p>&lt;to be written></p>
+<h4 id="2d-lidar-labeling">2D Lidar labeling</h4>
+<p>The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The user sets the seed point where the lidar points are observing the pattern, and then the pattern is tracked.</p>
+<p align="center">
+  <img width="100%" src="/img/collect_data_atlascar2.gif">
+</p>
+<p align = "center">
+Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
+</p>
+
+<div class="admonition warning">
+<p class="admonition-title">May be deprecated</p>
+<p>The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.</p>
+</div>
+<h3 id="calibrate">Calibrate</h3>
+<p>Finally, a system calibration is called through:</p>
+<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; calibrate.launch dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json 
+</code></pre>
+<p>You can use a couple of launch file arguments to configure the calibration procedure, as seen below:</p>
+<div class="admonition tip">
+<p class="admonition-title">Additional parameters for calibrate.launch</p>
 <table>
 <thead>
 <tr>
-<th><a href="https://github.com/lardemua/atlascar2">Atlascar2</a></th>
-<th><a href="https://github.com/aaguiar96/agrob">AgrobV2</a></th>
-<th><a href="https://github.com/iris-ua/iris_ur10e_calibration">UR10e eye to_base</a></th>
+<th align="center">Argument</th>
+<th align="center">Function</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><img align="center" src="docs/collect_data_atlascar2.gif" width="450"/></td>
-<td><img align="center" src="docs/agrob_data_collection.gif" width="450"/></td>
-<td><img align="center" src="docs/ur10e_eye_to_base_collect_data.gif" width="450"/></td>
+<td align="center">use_incomplete_collections</td>
+<td align="center">Remove collections which do not have a detection for all sensors</td>
+</tr>
+<tr>
+<td align="center">ssf</td>
+<td align="center">A string to be evaluated into a lambda function that receives  a sensor <br> name as input and returns True or False to indicate if the sensor <br>should be used in the optimization</td>
+</tr>
+<tr>
+<td align="center">csf</td>
+<td align="center">A string to be evaluated into a lambda function that receives a <br>collection name as input and returns True or False to indicate <br>if that collection should be used in the optimization.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="calibrate-sensors">Calibrate sensors</h3>
-<p>Finally, a system calibration is called through:</p>
-<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; calibrate.launch dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json
+<p>One example using all the parameters above:</p>
+<pre><code>roslaunch &lt;your_robot_calibration&gt; calibrate.launch dataset_file:=$ATOM_DATASETS/&lt;my_dataset&gt;/dataset.json  use_incomplete_collections:=true ssf:='lambda name: name in ["camera1, "lidar2"]' csf:='lambda name: int(name) &lt; 7'
 </code></pre>
-<p>You can use a couple of launch file arguments to configure the calibration procedure, namely</p>
-<ul>
-<li><strong>single_pattern</strong> [false] -</li>
-<li><strong>use_incomplete_collections</strong> [false] - Remove any collection which does not have a detection for all sensors.</li>
-<li><strong>ssf</strong> [false] - <strong>S</strong>ensor <strong>S</strong>election <strong>F</strong>unction: A string to be evaluated into a lambda function that receives
-  a sensor name as input and returns True or False to indicate if the sensor should be loaded (and used in the
-  optimization). An example:
-    <code>roslaunch &lt;your_robot_calibration&gt; calibrate.launch 
-      dataset_file:=$ATOM_DATASETS/&lt;my_dataset&gt;/dataset.json  
-      ssf:='lambda name: name in ["camera1, "lidar2"]'</code></li>
-<li><strong>csf</strong> [false] - <strong>C</strong>ollection <strong>S</strong>election <strong>F</strong>unction: A string to be evaluated into a lambda function that
-  receives a collection name as input and returns True or False to indicate if that collection should be loaded (and
-  used in the optimization). An example:
-   <code>roslaunch &lt;your_robot_calibration&gt; calibrate.launch 
-      dataset_file:=$ATOM_DATASETS/&lt;my_dataset&gt;/dataset.json  
-      csf:='lambda name: int(name) &lt; 7'</code></li>
-</ul>
+</div>
 <h5 id="advanced-usage-running-calibration-script-in-separate-terminal">Advanced usage - running calibration script in separate terminal</h5>
 <p>Alternatively, for debugging the calibrate script it is better not to have it executed with a bunch of other scripts
 which is what happens when you call the launch file. You can run everything with the launch excluding without the
-calibrate script</p>
+calibrate script using the <strong>run_calibration:=false</strong> option, e.g.:</p>
 <pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; calibrate.launch dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json run_calibration:=false 
 </code></pre>
-<p>and then launch the script in standalone mode</p>
+<p>and then launch the calibrate script in standalone mode:</p>
 <pre><code class="language-bash">rosrun atom_calibration calibrate -json dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json 
 </code></pre>
 <p>There are several additional command line arguments to use with the <strong>calibrate</strong> script, run calibrate --help to get the complete list:</p>
@@ -348,7 +402,7 @@ optional arguments:
 </code></pre>
 <p>It is also possible to call some of these through the launch file. Check the launch file to see how.</p>
 <h5 id="advanced-usage-two-stage-calibration-for-robotic-systems-with-an-anchored-sensor">Advanced usage - two stage calibration for robotic systems with an anchored sensor</h5>
-<p>When one sensor is set to be acnhored in the calibration/config.yml file, i.e. this <a href="https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99">file</a> for the AtlaCar2, we recommend a two stage procedure to achieve a more accurate calibration:</p>
+<p>When one sensor is set to be anchored in the calibration/config.yml file, i.e. this <a href="https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99">file</a> for the AtlaCar2, we recommend a two stage procedure to achieve a more accurate calibration:</p>
 <p>First, run a calibration using parameter <strong>--only_anchored_sensor</strong> (<strong>-oas</strong>) which will exclude from the optimization all sensors which are not the anchored one. This optimization will position the patterns correctly w.r.t. the anchored sensor. For example:</p>
 <pre><code>rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/dataset_corrected.json -uic -nig 0.0 0.0 -ipg -si -rv -v -oas
 </code></pre>
