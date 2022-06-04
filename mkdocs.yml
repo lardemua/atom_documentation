@@ -1,14 +1,24 @@
 site_name: ATOM Calibration Framework
 theme:
   name: readthedocs
-repo_url: https://github.com/miguelriemoliveira/atom-documentation
+  icon:
+    admonition: <material/alert-circle
+    repo: fontawesome/brands/git-alt
+repo_url: https://github.com/lardemua/atom_documentation
+repo_name: lardemua/atom_documentation
+# edit_uri: "tree/main/docs/"
+edit_uri: ""
 markdown_extensions:
   - attr_list
   - toc
+  - md_in_html
+  - admonition
+  - tables
 nav:
   - "Home": "index.md"
   - "Quick Start": "quick_start.md"
-  - "Instructions": "detailed_description.md"
+  - "Concepts": "concepts.md"
+  - "Calibration Procedures": "procedures.md"
   - "Calibration Examples": "examples.md"
   - "Evaluations": "evaluations.md"
   - "Publications": "publications.md"

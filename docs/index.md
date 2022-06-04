@@ -1,100 +1,65 @@
-<!-- <img align="left" width="375" height="215" src="https://github.com/lardemua/atom/blob/noetic-devel/docs/atom_logo.png?raw=true/375/215"> ATOM Calibration
- -->
-
-![AtomLogo](/img/atom_logo.png){: style="width:25em"}
-
+<p align="center">
+  <img width="70%" src="img/atom_logo.png">
+</p>
 
 ## ATOM 
 
-A Calibration Framework using **A**tomic **T**ransformations **O**ptimization **M**ethod.
-
-**ATOM** is a set of calibration tools for multi-sensor, multi-modal, robotic systems, based on the optimization of
-atomic transformations as provided by a ros based robot description.
-Moreover, **ATOM** provides several scripts to facilitate all the steps of a calibration procedure.
-
-If this work is helpful for you please cite [our papers](publications.md).
 
 
-<!-- ## Table of Contents -->
+[ATOM](https://github.com/lardemua/atom) is a calibration framework using **A**tomic **T**ransformations **O**ptimization **M**ethod. 
 
- <!-- * [How to Use - Quick Start](#how-to-use---quick-start)
-  * [Examples](#examples)
-    + [Atlascar2](#atlascar2)
-    + [IrisUA - ur10e](#irisua---ur10e)
-    + [AgrobV2](#agrobv2)
-    + [LARCC](#larcc)
-    + [MMTBot](#mmtbot)
-  * [System calibration - Detailed Description](#system-calibration---detailed-description)
-    + [Setup you environment](#setup-you-environment)
-    + [Creating a calibration package](#creating-a-calibration-package)
-    + [Configuring a calibration package](#configuring-a-calibration-package)
-    + [Set initial estimate](#set-initial-estimate)
-    + [Collect data](#collect-data)
-    + [Calibrate sensors](#calibrate-sensors)
-        * [Advanced usage - running calibration script in separate terminal](#advanced-usage---running-calibration-script-in-separate-terminal)
-        * [Advanced usage - two stage calibration for robotic systems with an anchored sensor](#advanced-usage---two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
-  * [Evaluating your calibration](#evaluating-your-calibration)
-      - [Annotation](#annotation)
-      - [Camera-to-Camera evaluation](#camera-to-camera-evaluation)
-      - [LiDAR-to-Depth-Camera evaluation](#lidar-to-depth-camera-evaluation)
-      - [Camera-to-Depth-Camera evaluation](#camera-to-depth-camera-evaluation)
-      - [LiDAR-to-LiDAR evaluation](#lidar-to-lidar-evaluation)
-      - [LiDAR-to-Camera evaluation](#lidar-to-camera-evaluation)
-      - [Point cloud image projection](#point-cloud-image-projection)
-  * [Installation](#installation)
-  * [Contributors](#contributors)
-  * [Maintainers](#maintainers)
+<p align="center">
+<a href="https://github.com/lardemua/atom">https://github.com/lardemua/atom</a>
+</p>
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small> -->
+It contains a set of calibration tools for multi-sensor, multi-modal, robotic systems, based on the optimization of atomic transformations, as provided by a [ROS](https://www.ros.org/) based robot description. Moreover, it provides several scripts to facilitate all the steps of a calibration procedure.
+
+<!-- ![type:video](https://www.youtube.com/watch?v=4B3X_NsX89M&list=PLQN09mzV5mbI4h5IQt3Eu9kugSk-08mnY&index=8) -->
+
+If this work is helpful for you please cite [these publications](publications.md).
 
 
-## How to Use - Quick Start
+### Multimedia
 
-[Quick Start](quick_start.md)
-
-## Examples
-
-ATOM provides extensive visualization possibilities while running the calibration optimization procedure. To visualize in ROS Rviz use the -rv flag.
-
-<!-- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1NOEBKDMIpk/0.jpg)](https://www.youtube.com/watch?v=1NOEBKDMIpk) -->
+Take a look at the ATOM [youtube playlist](https://www.youtube.com/watch?v=BYs1-H9vh0s&list=PLQN09mzV5mbI4h5IQt3Eu9kugSk-08mnY).
 
 
-So far, we have used **ATOM** to successfully calibrate several robotic platforms. Here are some examples:
+<p align="center">
+<iframe width="672" height="378" src="https://www.youtube.com/embed/4B3X_NsX89M?start=154" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</p>
 
-### Atlascar2
- 
+### Installation
 
-### IrisUA - ur10e 
+Clone the atom repository to a directory inside your catkin workspace:
 
-### AgrobV2 
+    git clone https://github.com/lardemua/atom
 
-
-### LARCC
-
-**L**aboratory of **A**utomation and **R**obotics **C**ollaborative **C**ell (LARCC) is included in a research project focusing of collaborative robotic industrial cells. The goal is to monitor in detail the volume of the cell in order to ensure safe collaboration between human operators and robots. For this, several sensors of different modalities are positioned everywhere in the cell, which makes the calibration of this robotic system a challenging task.
-
-
-| <img align="center" src="docs/larcc_fovs.png" width="600"/>
-|:--:| 
-| Sensor fields of view in LARCC.|
-
-| <img align="center" src="docs/larcc_calibration.png" width="800"/>
-|:--:| 
-| Calibration of LARCC.|
-
-
-
-### MMTBot
-
-
-
-
-
-## Installation
+then install requirements.
 
     sudo pip3 install -r requirements.txt
 
-## Contributors
+
+### Configure environment variables
+
+We often use two enviroment variables to allow for easy cross machine access to bagfiles and datasets. If you want to use these you can also add these lines to your _.bashrc_ or _.zhsrc_, adjusting the paths according to your case:
+
+```bash
+export ROS_BAGS="$HOME/<bagfiles"
+export ATOM_DATASETS="$HOME/datasets"
+```
+
+and then you can refer to these environment variables when providing paths to atom scripts, e.g.:
+
+```bash
+roslaunch <your_robot_calibration> calibrate.launch dataset_file:=$ATOM_DATASETS/<my_dataset>/dataset.json
+```
+
+and you can also refer to them inside
+the [calibration configuration file](https://github.com/lardemua/atlascar2/blob/0c065508f325fb57e0439c1ba2e00f9468cd73e7/atlascar2_calibration/calibration/config.yml#L14)
+
+
+
+### Contributors
 
 * Miguel Riem Oliveira - University of Aveiro
 * Afonso Castro - University of Aveiro
@@ -103,10 +68,8 @@ So far, we have used **ATOM** to successfully calibrate several robotic platform
 * André Aguiar - INESC TEC
 * Daniela Rato - University of Aveiro
 
-## Maintainers
+### Current Maintainers
 
 * Miguel Riem Oliveira - University of Aveiro
 * Daniela Rato - University of Aveiro
 * Manuel Gomes - University of Aveiro
-
-

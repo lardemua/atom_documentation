@@ -1,47 +1,40 @@
 ## System calibration - Detailed Description
 
-To calibrate your robot you must define your robotic system, (e.g. <your_robot>). You should also have a **system
-description** in the form of an urdf or a xacro file(s). This is normally stored in a ros package named **<your_robot>_
-description**.
+To calibrate your robot you must define your robotic system, (e.g. <your_robot\>). You should also have a **system
+description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<your_robot\>_description**.
+
+
+!!! Note
+    We recommend using xacro files instead of urdfs. 
 
 Finally, **ATOM** requires a bagfile with a recording of the data from the sensors you wish to calibrate.
-Transformations in the bagfile (i.e. topics /tf and /tf_static) will be ignored, so that they do not collide with the
-ones being published by the _robot_state_publisher_. Thus, if your robotic system contains moving parts, the bagfile
-should also record the _sensor_msgs/JointState_ message.
 
-It is also possible to record compressed images, since **ATOM** can decompress them while playing back the bagfile. Here
-is
-a [launch file example](https://github.com/lardemua/atlascar2/blob/master/atlascar2_bringup/launch/record_sensor_data.launch)
+Transformations in the bagfile (i.e. topics /tf and /tf_static) will be ignored, so that they do not collide with the
+ones being published by the [robot_state_publisher](http://wiki.ros.org/robot_state_publisher). Thus, if your robotic system contains moving parts, the bagfile should also record the [sensor_msgs/JointState](http://docs.ros.org/en/lunar/api/sensor_msgs/html/msg/JointState.html) message.
+
+!!! Note
+    It is also possible to use the transformations in the bagfile instead of using the xacro description and the robot state publisher to produce them. 
+    See section on [configuring a calibration package](#configuring-a-calibration-package).
+
+
+To reduce the bag size, it may contain compressed images instead of raw images, since **ATOM** can decompress them while playing back the bagfile. 
+Here is an example of a [launch file](https://github.com/lardemua/atlascar2/blob/master/atlascar2_bringup/launch/record_sensor_data.launch)
 which records compressed images.
 
-### Setup you environment
+We consider this to be part of the normal configuration of your robotic system in ROS, so ATOM assumes this is already done. 
+In any case if you need inspiration you can take a look at the [calibration examples](examples.md) and how we configured our systems.
 
-We often use two enviroment variables to allow for easy cross machine access to bagfiles and datasets. If you want to
-use these (it is optional) you can also add these lines to your _.bashrc_:
-
-```bash
-export ROS_BAGS="$HOME/bagfiles"
-export ATOM_DATASETS="$HOME/datasets"
-```
-
-and then you can refer to these environment variables when providing paths to atom scripts, e.g.:
-
-```bash
-roslaunch <your_robot_calibration> calibrate.launch dataset_file:=$ATOM_DATASETS/<my_dataset>/dataset.json
-```
-
-and you can also refer to them inside
-the [calibration configuration file](https://github.com/lardemua/atlascar2/blob/0c065508f325fb57e0439c1ba2e00f9468cd73e7/atlascar2_calibration/calibration/config.yml#L14)
 
 ### Creating a calibration package
 
-To start you should create a calibration ros package specific for your robot. **ATOM** provides a script for this:
+Assuming you have your robotic system setup, you can start creating the calibration package.
+You should create a calibration ros package specific for your robotic system. **ATOM** provides a script for this:
 
 ```bash
 rosrun atom_calibration create_calibration_pkg --name <your_robot_calibration>
 ```
 
-This will create the ros package <your_robot_calibration> in the current folder, but you can also specify the folder,
+This will create the ros package <your_robot_calibration> in the current folder, but you can also specify another folder,
 e.g.:
 
 ```bash
@@ -56,9 +49,10 @@ _<your_robot_calibration>/calibration/config.yml_ file with your system informat
 Here are examples of calibration **config.yml** files for
 an [autonomous vehicle](https://github.com/lardemua/atlascar2/blob/master/atlascar2_calibration/calibration/config.yml)
 and for
-a [simulated hand eye system](https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_calibration/calibration/config.yml)
+a [simulated hand eye system](https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_calibration/calibration/config.yml).
+Also, the file contains several comments to provide clues on how to configure it.
 
-After filling the config.yml file, you can run the package configuration:
+After filling the config.yml file, you should run the package configuration:
 
 ```bash
 rosrun <your_robot_calibration> configure 
@@ -68,20 +62,15 @@ This will go through a series of varifications, and create a set of files for la
 etc.
 
 It is also possible to configure your calibration package with a different configuration file, in the case you have
-multiple configurations with multiple config.yml files. To do this, you can use:
-
-```bash
-rosrun <your_robot_calibration> configure -c new_config_file.yml
-```
-
-If you want to use other arguments of the calibration package configuration you may run:
+multiple configurations with multiple config.yml files. There are also other options. 
+To run a custom configuration you should use:
 
 ```bash
 rosrun atom_calibration configure_calibration_package  --name <your_robot_calibration> <other options>
 ```
 
 ```bash
-usage: configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
+usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
 
 -h, --help            show this help message and exit
 -n NAME, --name NAME  package name
@@ -94,8 +83,8 @@ usage: configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
 
 ### Set initial estimate
 
-Iterative optimization methods are often sensitive to the initial parameter configuration. Here, the optimization
-parameters represent the poses of each sensor. **ATOM** provides an interactive framework based on rviz which allows the
+Iterative optimization methods are often sensitive to the initial parameter configuration. There are several optimization parameters. 
+However, the ones we refer to in this case are those that represent the poses of each sensor. **ATOM** provides an interactive framework based on rviz which allows the
 user to set the pose of the sensors while having immediate visual feedback.
 
 To set an initial estimate run:
@@ -104,50 +93,82 @@ To set an initial estimate run:
 roslaunch <your_robot_calibration> set_initial_estimate.launch 
 ```
 
-Here are a couple of examples:
+Here are a couple of examples of setting the initial estimate:
 
-[Atlascar2](https://github.com/lardemua/atlascar2)  | [AgrobV2](https://github.com/aaguiar96/agrob) | [UR10e eye in hand](https://github.com/iris-ua/iris_ur10e_calibration)
-------------- | ------------- | -------------
-<img align="center" src="docs/set_initial_estimate_atlascar2.gif" width="450"/> | <img align="center" src="docs/agrob_initial_estimate.gif" width="450"/> | <img align="center" src="docs/ur10e_eye_in_hand_set_initial_estimate.gif" width="450"/>
+<p align="center">
+  <img width="100%" src="/img/agrob_initial_estimate.gif">
+</p>
+<p align = "center">
+Setting initial estimate of sensor poses in the AgrobV2.
+</p>
+
+<p align="center">
+  <img width="100%" src="/img/set_initial_estimate_atlascar2.gif">
+</p>
+<p align = "center">
+Setting initial estimate of sensor poses in the AtlasCar2.
+</p>
+
+<p align="center">
+  <img width="100%" src="/img/ur10e_eye_in_hand_set_initial_estimate.gif">
+</p>
+<p align = "center">
+Setting initial estimate of sensor poses in the IRIS UR10e.
+</p>
 
 
 ### Collect data 
 
-To run a system calibration, one requires sensor data collected at different time instants. We refer to these as **data collections** or simply **collections**. To collect data, the user should launch:
+To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as [collections](concepts.md#collections), and a set of collections as an [ATOM dataset](concepts.md#atom-datasets). 
+
+
+To collect data, use:
 
 ```bash
-roslaunch <your_robot_calibration> collect_data.launch  output_folder:=<your_dataset_folder>
+roslaunch <your_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder>
 ```
 
-Depending on the size and number of topics in the bag file, it may be necessary (it often is) to reduce the playback
-rate of the bag file.
+It is also possible to add additional parameters to configure several aspects of the script. See below all the options.
 
-```bash
-roslaunch <your_robot_calibration> collect_data.launch  output_folder:=<your_dataset_folder> bag_rate:=<playback_rate>
-```
+!!! Tip "Additional parameters for collect_data.launch"
 
-You can use a couple of launch file arguments to configure the calibration procedure, namely
+    | Argument  | Function | 
+    |:---:|:---:|
+    |  overwrite | overwrites previous dataset, if existent   |
+    | bag_rate | Defines the playback rate of the bagfile | 
+    | bag_start | Start time for playback | 
+    | bag_file | Name of bagfile to playback | 
+    | ssl | A string to be evaluated that indicates if a sensor should be labelled. |
 
-* **overwrite** [false] - if the dataset folder is the same as one previously recorded, it overwrites the previous
-  dataset
-* **ssl** [false] - **S**kip **S**ensor **L**abelling: A string to be evaluated into a lambda function that receives a
-  sensor name as input and returns True or False to indicate if that sensor should be labelled. An example:
-   ```
-    roslaunch <your_robot_calibration> collect_data.launch 
-      output_folder:=$ATOM_DATASETS/<my_dataset>/
-      ssl:='lambda name: name in ["lidar_1", "lidar_2", "lidar_3"]'
+    One example using all the parameters above:
+
+        roslaunch <your_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder> overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]' 
+
+The data collection script starts data labeling processes adequate for each sensor in your robotic system.
 
 
-Here are some examples of the system collecting data:
+Next, some examples of collecting data in several robotic systems.
+
+<p align="center">
+  <img width="100%" src="/img/collect_data_atlascar2.gif">
+</p>
+<p align = "center">
+Automatic labelling and creating an ATOM dataset of the AtlasCar2.
+</p>
+
+<p align="center">
+  <img width="100%" src="/img/agrob_data_collection.gif">
+</p>
+<p align = "center">
+Automatic labelling and creating an ATOM dataset of the AgrobV2.
+</p>
+
+
 
 [Atlascar2](https://github.com/lardemua/atlascar2)  | [AgrobV2](https://github.com/aaguiar96/agrob) | [UR10e eye to_base](https://github.com/iris-ua/iris_ur10e_calibration)
 ------------- | ------------- | -------------
 <img align="center" src="docs/collect_data_atlascar2.gif" width="450"/>  | <img align="center" src="docs/agrob_data_collection.gif" width="450"/> | <img align="center" src="docs/ur10e_eye_to_base_collect_data.gif" width="450"/>
 
-A dataset is a folder which contains a set of collections. There, a _dataset.json_ file stores all the information
-required for the calibration. There are also in the folder images and point clouds associated with each collection.
-
-<img align="center" src="docs/viewing_data_collected_json.gif" width="600"/> 
 
 ### Calibrate sensors
 
@@ -257,4 +278,5 @@ First, run a calibration using parameter **--only_anchored_sensor** (**-oas**) w
 The output is stored in the **atom_calibration.json**, which is used and the input for the second stage, where all sensors are used. In this second stage the poses of the patterns are frozen using the parameter **--anchor_patterns** (**-ap**). To avoid overwritting atom_calibration.json, you should also define the output json file (**-oj**). For example:
 
     rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/atom_calibration.json -uic -nig 0.0 0.0 -ipg -si -rv -v -ap -oj atom_anchored_calibration.json
+
 
