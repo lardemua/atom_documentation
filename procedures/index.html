@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Detailed Description - ATOM Calibration Framework</title>
+    <title>Calibration Procedures - ATOM Calibration Framework</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Detailed Description";
-        var mkdocs_page_input_path = "detailed_description.md";
+        var mkdocs_page_name = "Calibration Procedures";
+        var mkdocs_page_input_path = "procedures.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -48,8 +48,12 @@
                 <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../concepts/">Concepts</a>
+                </li>
+              </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Detailed Description</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Calibration Procedures</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#creating-a-calibration-package">Creating a calibration package</a>
     </li>
@@ -95,10 +99,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Detailed Description</li>
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Calibration Procedures</li>
     <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/miguelriemoliveira/atom-documentation/edit/master/docs/detailed_description.md"
-          class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -119,16 +121,20 @@ description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</
 ones being published by the <a href="http://wiki.ros.org/robot_state_publisher">robot_state_publisher</a>. Thus, if your robotic system contains moving parts, the bagfile should also record the <a href="http://docs.ros.org/en/lunar/api/sensor_msgs/html/msg/JointState.html">sensor_msgs/JointState</a> message.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It is also possible to use the transformations in the bagfile instead of using the xacro description and the robot state publisher to produce them. </p>
+<p>It is also possible to use the transformations in the bagfile instead of using the xacro description and the robot state publisher to produce them. 
+See section on <a href="#configuring-a-calibration-package">configuring a calibration package</a>.</p>
 </div>
-<p>To reduce the bag size it may contain compressed images, since <strong>ATOM</strong> can decompress them while playing back the bagfile. Here is an example of a 
-<a href="https://github.com/lardemua/atlascar2/blob/master/atlascar2_bringup/launch/record_sensor_data.launch">launch file</a>
+<p>To reduce the bag size, it may contain compressed images instead of raw images, since <strong>ATOM</strong> can decompress them while playing back the bagfile. 
+Here is an example of a <a href="https://github.com/lardemua/atlascar2/blob/master/atlascar2_bringup/launch/record_sensor_data.launch">launch file</a>
 which records compressed images.</p>
+<p>We consider this to be part of the normal configuration of your robotic system in ROS, so ATOM assumes this is already done. 
+In any case if you need inspiration you can take a look at the <a href="../examples/">calibration examples</a> and how we configured our systems.</p>
 <h3 id="creating-a-calibration-package">Creating a calibration package</h3>
-<p>To start you should create a calibration ros package specific for your robot. <strong>ATOM</strong> provides a script for this:</p>
+<p>Assuming you have your robotic system setup, you can start creating the calibration package.
+You should create a calibration ros package specific for your robotic system. <strong>ATOM</strong> provides a script for this:</p>
 <pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name &lt;your_robot_calibration&gt;
 </code></pre>
-<p>This will create the ros package <your_robot_calibration> in the current folder, but you can also specify the folder,
+<p>This will create the ros package <your_robot_calibration> in the current folder, but you can also specify another folder,
 e.g.:</p>
 <pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name ~/my/path/&lt;your_robot_calibration&gt;
 </code></pre>
@@ -138,20 +144,19 @@ e.g.:</p>
 <p>Here are examples of calibration <strong>config.yml</strong> files for
 an <a href="https://github.com/lardemua/atlascar2/blob/master/atlascar2_calibration/calibration/config.yml">autonomous vehicle</a>
 and for
-a <a href="https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_calibration/calibration/config.yml">simulated hand eye system</a></p>
-<p>After filling the config.yml file, you can run the package configuration:</p>
+a <a href="https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_calibration/calibration/config.yml">simulated hand eye system</a>.
+Also, the file contains several comments to provide clues on how to configure it.</p>
+<p>After filling the config.yml file, you should run the package configuration:</p>
 <pre><code class="language-bash">rosrun &lt;your_robot_calibration&gt; configure 
 </code></pre>
 <p>This will go through a series of varifications, and create a set of files for launching the system, configuring rviz,
 etc.</p>
 <p>It is also possible to configure your calibration package with a different configuration file, in the case you have
-multiple configurations with multiple config.yml files. To do this, you can use:</p>
-<pre><code class="language-bash">rosrun &lt;your_robot_calibration&gt; configure -c new_config_file.yml
-</code></pre>
-<p>If you want to use other arguments of the calibration package configuration you may run:</p>
+multiple configurations with multiple config.yml files. There are also other options. 
+To run a custom configuration you should use:</p>
 <pre><code class="language-bash">rosrun atom_calibration configure_calibration_package  --name &lt;your_robot_calibration&gt; &lt;other options&gt;
 </code></pre>
-<pre><code class="language-bash">usage: configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
+<pre><code class="language-bash">usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
 
 -h, --help            show this help message and exit
 -n NAME, --name NAME  package name
@@ -162,56 +167,92 @@ multiple configurations with multiple config.yml files. To do this, you can use:
                       If this flag is not given, the standard config.yml ill be used.
 </code></pre>
 <h3 id="set-initial-estimate">Set initial estimate</h3>
-<p>Iterative optimization methods are often sensitive to the initial parameter configuration. Here, the optimization
-parameters represent the poses of each sensor. <strong>ATOM</strong> provides an interactive framework based on rviz which allows the
+<p>Iterative optimization methods are often sensitive to the initial parameter configuration. There are several optimization parameters. 
+However, the ones we refer to in this case are those that represent the poses of each sensor. <strong>ATOM</strong> provides an interactive framework based on rviz which allows the
 user to set the pose of the sensors while having immediate visual feedback.</p>
 <p>To set an initial estimate run:</p>
 <pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; set_initial_estimate.launch 
 </code></pre>
-<p>Here are a couple of examples:</p>
+<p>Here are a couple of examples of setting the initial estimate:</p>
+<p align="center">
+  <img width="100%" src="/img/agrob_initial_estimate.gif">
+</p>
+<p align = "center">
+Setting initial estimate of sensor poses in the AgrobV2.
+</p>
+
+<p align="center">
+  <img width="100%" src="/img/set_initial_estimate_atlascar2.gif">
+</p>
+<p align = "center">
+Setting initial estimate of sensor poses in the AtlasCar2.
+</p>
+
+<p align="center">
+  <img width="100%" src="/img/ur10e_eye_in_hand_set_initial_estimate.gif">
+</p>
+<p align = "center">
+Setting initial estimate of sensor poses in the IRIS UR10e.
+</p>
+
+<h3 id="collect-data">Collect data</h3>
+<p>To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as <a href="../concepts/#collections">collections</a>, and a set of collections as an <a href="../concepts/#atom-datasets">ATOM dataset</a>. </p>
+<p>To collect data, use:</p>
+<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt;
+</code></pre>
+<p>It is also possible to add additional parameters to configure several aspects of the script. See below all the options.</p>
+<div class="admonition tip">
+<p class="admonition-title">Additional parameters for collect_data.launch</p>
 <table>
 <thead>
 <tr>
-<th><a href="https://github.com/lardemua/atlascar2">Atlascar2</a></th>
-<th><a href="https://github.com/aaguiar96/agrob">AgrobV2</a></th>
-<th><a href="https://github.com/iris-ua/iris_ur10e_calibration">UR10e eye in hand</a></th>
+<th align="center">Argument</th>
+<th align="center">Function</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><img align="center" src="docs/set_initial_estimate_atlascar2.gif" width="450"/></td>
-<td><img align="center" src="docs/agrob_initial_estimate.gif" width="450"/></td>
-<td><img align="center" src="docs/ur10e_eye_in_hand_set_initial_estimate.gif" width="450"/></td>
+<td align="center">overwrite</td>
+<td align="center">overwrites previous dataset, if existent</td>
+</tr>
+<tr>
+<td align="center">bag_rate</td>
+<td align="center">Defines the playback rate of the bagfile</td>
+</tr>
+<tr>
+<td align="center">bag_start</td>
+<td align="center">Start time for playback</td>
+</tr>
+<tr>
+<td align="center">bag_file</td>
+<td align="center">Name of bagfile to playback</td>
+</tr>
+<tr>
+<td align="center">ssl</td>
+<td align="center">A string to be evaluated that indicates if a sensor should be labelled.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="collect-data">Collect data</h3>
-<p>the extraction of snapshots of data (a.k.a., collections) which constitute an ATOM dataset:</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>When calibrating a stereo system one collects several images from both cameras in order to calibrate. </p>
-<p>Collections are a similar concept applied to multi-modal systems. 
-A collection is a recording of the data from all the sensors in the system at a particular time instant. </p>
+<p>One example using all the parameters above:</p>
+<pre><code>roslaunch &lt;your_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt; overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]'
+</code></pre>
 </div>
-<p>To run a system calibration, one requires sensor data collected at different time instants. We refer to these as <strong>data collections</strong> or simply <strong>collections</strong>. To collect data, the user should launch:</p>
-<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; collect_data.launch  output_folder:=&lt;your_dataset_folder&gt;
-</code></pre>
-<p>Depending on the size and number of topics in the bag file, it may be necessary (it often is) to reduce the playback
-rate of the bag file.</p>
-<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; collect_data.launch  output_folder:=&lt;your_dataset_folder&gt; bag_rate:=&lt;playback_rate&gt;
-</code></pre>
-<p>You can use a couple of launch file arguments to configure the calibration procedure, namely</p>
-<ul>
-<li><strong>overwrite</strong> [false] - if the dataset folder is the same as one previously recorded, it overwrites the previous
-  dataset</li>
-<li><strong>ssl</strong> [false] - <strong>S</strong>kip <strong>S</strong>ensor <strong>L</strong>abelling: A string to be evaluated into a lambda function that receives a
-  sensor name as input and returns True or False to indicate if that sensor should be labelled. An example:
-   ```
-    roslaunch <your_robot_calibration> collect_data.launch 
-      output_folder:=$ATOM_DATASETS/<my_dataset>/
-      ssl:='lambda name: name in ["lidar_1", "lidar_2", "lidar_3"]'</li>
-</ul>
-<p>Here are some examples of the system collecting data:</p>
+<p>The data collection script starts data labeling processes adequate for each sensor in your robotic system.</p>
+<p>Next, some examples of collecting data in several robotic systems.</p>
+<p align="center">
+  <img width="100%" src="/img/collect_data_atlascar2.gif">
+</p>
+<p align = "center">
+Automatic labelling and creating an ATOM dataset of the AtlasCar2.
+</p>
+
+<p align="center">
+  <img width="100%" src="/img/agrob_data_collection.gif">
+</p>
+<p align = "center">
+Automatic labelling and creating an ATOM dataset of the AgrobV2.
+</p>
+
 <table>
 <thead>
 <tr>
@@ -228,9 +269,6 @@ rate of the bag file.</p>
 </tr>
 </tbody>
 </table>
-<p>A dataset is a folder which contains a set of collections. There, a <em>dataset.json</em> file stores all the information
-required for the calibration. There are also in the folder images and point clouds associated with each collection.</p>
-<p><img align="center" src="docs/viewing_data_collected_json.gif" width="600"/> </p>
 <h3 id="calibrate-sensors">Calibrate sensors</h3>
 <p>Finally, a system calibration is called through:</p>
 <pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; calibrate.launch dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json
@@ -321,7 +359,7 @@ optional arguments:
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../quick_start/" class="btn btn-neutral float-left" title="Quick Start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../concepts/" class="btn btn-neutral float-left" title="Concepts"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../examples/" class="btn btn-neutral float-right" title="Calibration Examples">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -344,12 +382,8 @@ optional arguments:
   <div class="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     
-        <span>
-          <a href="https://github.com/miguelriemoliveira/atom-documentation" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
-        </span>
     
-    
-      <span><a href="../quick_start/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../concepts/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../examples/" style="color: #fcfcfc">Next &raquo;</a></span>
