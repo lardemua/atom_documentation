@@ -62,12 +62,7 @@ This will go through a series of varifications, and create a set of files for la
 etc.
 
 It is also possible to configure your calibration package with a different configuration file, in the case you have
-multiple configurations with multiple config.yml files. There are also other options. 
-To run a custom configuration you should use:
-
-```bash
-rosrun atom_calibration configure_calibration_package  --name <your_robot_calibration> <other options>
-```
+multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:
 
 ```bash
 usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
@@ -128,13 +123,15 @@ To collect data, use:
 roslaunch <your_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder>
 ```
 
+The script launches an rviz window already configured. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere in that appears in the scene.
+
 It is also possible to add additional parameters to configure several aspects of the script. See below all the options.
 
 !!! Tip "Additional parameters for collect_data.launch"
 
     | Argument  | Function | 
     |:---:|:---:|
-    |  overwrite | overwrites previous dataset, if existent   |
+    |  overwrite | overwrites previous dataset without asking for confirmation   |
     | bag_rate | Defines the playback rate of the bagfile | 
     | bag_start | Start time for playback | 
     | bag_file | Name of bagfile to playback | 
@@ -144,30 +141,73 @@ It is also possible to add additional parameters to configure several aspects of
 
         roslaunch <your_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder> overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]' 
 
-The data collection script starts data labeling processes adequate for each sensor in your robotic system.
+When you launch the data collection script, it automatically starts data labeling processes adequate for each sensor in your robotic system.
+As such, the data is being continuously labeled as the bagfile is played.
 
 
-Next, some examples of collecting data in several robotic systems.
+
+
+Depending on the modalidity of the sensors in the system the labelling may be automatic or fully automatic.
+
+#### RGB camera labeling
+
+RGB cameras have a fully automatic pattern detection. It uses off the shelf [chessboard](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a) or [charuco](https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html) calibration pattern detectors.
+ATOM provides an rviz configuration which subscribes annotated images received from the pattern detectors. You can check if the detection is working 
+by observing the overlays of top of the images.
 
 <p align="center">
-  <img width="100%" src="/img/collect_data_atlascar2.gif">
+  <img width="100%" src="/img/ur10e_eye_to_base_collect_data.gif">
 </p>
 <p align = "center">
-Automatic labelling and creating an ATOM dataset of the AtlasCar2.
+Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
 </p>
+
+
+!!! Note
+    Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.
+
+#### 3D Lidar labeling
+
+3D Lidar labelling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  
+
+<p align="center">
+  <img width="100%" src="/img/MMTBot3DLidarLabeling.gif">
+</p>
+<p align = "center">
+Setting the seed point in 3D Lidar data for semi-automatic labeling (MMTBot).
+</p>
+
+After setting this seed position, the system continues to track the patterns pose over the next frames, even if it moves,
+as you can see below:
 
 <p align="center">
   <img width="100%" src="/img/agrob_data_collection.gif">
 </p>
 <p align = "center">
-Automatic labelling and creating an ATOM dataset of the AgrobV2.
+Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).
+</p>
+
+!!! Warning "Tracking limitations"
+
+    The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. 
+
+
+#### 2D Lidar labeling
+
+The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The user sets the seed point where the lidar points are observing the pattern, and then the pattern is tracked.
+
+<p align="center">
+  <img width="100%" src="/img/collect_data_atlascar2.gif">
+</p>
+<p align = "center">
+Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
 </p>
 
 
+!!! Warning "May be deprecated"
+    The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.
 
-[Atlascar2](https://github.com/lardemua/atlascar2)  | [AgrobV2](https://github.com/aaguiar96/agrob) | [UR10e eye to_base](https://github.com/iris-ua/iris_ur10e_calibration)
-------------- | ------------- | -------------
-<img align="center" src="docs/collect_data_atlascar2.gif" width="450"/>  | <img align="center" src="docs/agrob_data_collection.gif" width="450"/> | <img align="center" src="docs/ur10e_eye_to_base_collect_data.gif" width="450"/>
+
 
 
 ### Calibrate sensors
