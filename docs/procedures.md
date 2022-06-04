@@ -1,4 +1,4 @@
-## System calibration - Detailed Description
+## Calibration procedures
 
 To calibrate your robot you must define your robotic system, (e.g. <your_robot\>). You should also have a **system
 description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<your_robot\>_description**.
@@ -25,7 +25,7 @@ We consider this to be part of the normal configuration of your robotic system i
 In any case if you need inspiration you can take a look at the [calibration examples](examples.md) and how we configured our systems.
 
 
-### Creating a calibration package
+### Create a calibration package
 
 Assuming you have your robotic system setup, you can start creating the calibration package.
 You should create a calibration ros package specific for your robotic system. **ATOM** provides a script for this:
@@ -41,7 +41,7 @@ e.g.:
 rosrun atom_calibration create_calibration_pkg --name ~/my/path/<your_robot_calibration>
 ```
 
-### Configuring a calibration package
+### Configure a calibration package
 
 Once your calibration package is created you will have to configure the calibration procedure by editing the
 _<your_robot_calibration>/calibration/config.yml_ file with your system information.
@@ -76,7 +76,7 @@ usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-c
                       If this flag is not given, the standard config.yml ill be used.
 ```
 
-### Set initial estimate
+### Set an initial estimate
 
 Iterative optimization methods are often sensitive to the initial parameter configuration. There are several optimization parameters. 
 However, the ones we refer to in this case are those that represent the poses of each sensor. **ATOM** provides an interactive framework based on rviz which allows the
@@ -112,6 +112,9 @@ Setting initial estimate of sensor poses in the IRIS UR10e.
 </p>
 
 
+
+
+
 ### Collect data 
 
 To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as [collections](concepts.md#collections), and a set of collections as an [ATOM dataset](concepts.md#atom-datasets). 
@@ -141,13 +144,15 @@ It is also possible to add additional parameters to configure several aspects of
 
         roslaunch <your_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder> overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]' 
 
+
+
+
+
 When you launch the data collection script, it automatically starts data labeling processes adequate for each sensor in your robotic system.
 As such, the data is being continuously labeled as the bagfile is played.
 
-
-
-
 Depending on the modalidity of the sensors in the system the labelling may be automatic or fully automatic.
+Below we detail how each of the labelers operate.
 
 #### RGB camera labeling
 
@@ -191,6 +196,19 @@ Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).
 
     The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. 
 
+#### Visualizing sensor fustrums
+
+<p align="center">
+  <img width="100%" src="/img/MMTBot_fustrum.gif">
+</p>
+<p align = "center">
+Visualizing fustrum of RGB sensors in the MMTBot.
+</p>
+
+
+#### Depth camera labeling
+
+<to be written\>
 
 #### 2D Lidar labeling
 
@@ -208,48 +226,39 @@ Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
     The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.
 
 
-
-
-### Calibrate sensors
+### Calibrate 
 
 Finally, a system calibration is called through:
 
 ```bash
-roslaunch <your_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json
+roslaunch <your_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json 
 ```
+You can use a couple of launch file arguments to configure the calibration procedure, as seen below:
 
-You can use a couple of launch file arguments to configure the calibration procedure, namely
+!!! Tip "Additional parameters for calibrate.launch"
 
-* **single_pattern** [false] -
-* **use_incomplete_collections** [false] - Remove any collection which does not have a detection for all sensors.
-* **ssf** [false] - **S**ensor **S**election **F**unction: A string to be evaluated into a lambda function that receives
-  a sensor name as input and returns True or False to indicate if the sensor should be loaded (and used in the
-  optimization). An example:
-    ```
-    roslaunch <your_robot_calibration> calibrate.launch 
-      dataset_file:=$ATOM_DATASETS/<my_dataset>/dataset.json  
-      ssf:='lambda name: name in ["camera1, "lidar2"]'
-    ```
-* **csf** [false] - **C**ollection **S**election **F**unction: A string to be evaluated into a lambda function that
-  receives a collection name as input and returns True or False to indicate if that collection should be loaded (and
-  used in the optimization). An example:
-   ```
-    roslaunch <your_robot_calibration> calibrate.launch 
-      dataset_file:=$ATOM_DATASETS/<my_dataset>/dataset.json  
-      csf:='lambda name: int(name) < 7'
-    ```
+    | Argument  | Function | 
+    |:---:|:---:|
+    | use_incomplete_collections | Remove collections which do not have a detection for all sensors | 
+    | ssf | A string to be evaluated into a lambda function that receives  a sensor <br> name as input and returns True or False to indicate if the sensor <br>should be used in the optimization |  
+    | csf |  A string to be evaluated into a lambda function that receives a <br>collection name as input and returns True or False to indicate <br>if that collection should be used in the optimization.| 
+
+    One example using all the parameters above:
+
+        roslaunch <your_robot_calibration> calibrate.launch dataset_file:=$ATOM_DATASETS/<my_dataset>/dataset.json  use_incomplete_collections:=true ssf:='lambda name: name in ["camera1, "lidar2"]' csf:='lambda name: int(name) < 7'
+
 
 ##### Advanced usage - running calibration script in separate terminal
 
 Alternatively, for debugging the calibrate script it is better not to have it executed with a bunch of other scripts
 which is what happens when you call the launch file. You can run everything with the launch excluding without the
-calibrate script
+calibrate script using the **run_calibration:=false** option, e.g.:
 
 ```bash
 roslaunch <your_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json run_calibration:=false 
 ```
 
-and then launch the script in standalone mode
+and then launch the calibrate script in standalone mode:
 
 ```bash
 rosrun atom_calibration calibrate -json dataset_file:=~/datasets/<my_dataset>/dataset.json 
@@ -309,7 +318,7 @@ It is also possible to call some of these through the launch file. Check the lau
 
 ##### Advanced usage - two stage calibration for robotic systems with an anchored sensor
 
-When one sensor is set to be acnhored in the calibration/config.yml file, i.e. this [file](https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99) for the AtlaCar2, we recommend a two stage procedure to achieve a more accurate calibration:
+When one sensor is set to be anchored in the calibration/config.yml file, i.e. this [file](https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99) for the AtlaCar2, we recommend a two stage procedure to achieve a more accurate calibration:
 
 First, run a calibration using parameter **--only_anchored_sensor** (**-oas**) which will exclude from the optimization all sensors which are not the anchored one. This optimization will position the patterns correctly w.r.t. the anchored sensor. For example:
 

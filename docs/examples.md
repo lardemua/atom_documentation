@@ -11,6 +11,22 @@ So far, we have used **ATOM** to successfully calibrate several robotic platform
  
 [Atlascar2](https://github.com/lardemua/atlascar2) is an intelligent vehicle containing several cameras and 2D Lidars. 
 
+
+<p align="center">
+  <img width="90%" src="/img/atlas_nocircles.png">
+</p>
+<p align = "center">
+A photograph of the AtlasCar2.
+</p>
+
+<p align="center">
+  <img width="80%" src="/img/atlascar2_with_markers_first_guess.png">
+</p>
+<p align = "center">
+A 3D Model of the AtlasCar2.
+</p>
+
+
 ### IrisUA - ur10e 
 The [IrisUA - ur10e](https://github.com/iris-ua/iris_ur10e_calibration) includes several variants of the hand-eye calibration problem.
 
