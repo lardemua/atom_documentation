@@ -1,9 +1,9 @@
 ## Calibration Examples
 
-
-<p align="center">
-  <img width="70%" src="/img/atom_logo.png">
-</p>
+<figure markdown>
+  ![Image title](img/atom_logo.png){align=center; width="300" }
+  <figcaption>Image caption</figcaption>
+</figure>
 
 
 ATOM provides extensive visualization possibilities while running the calibration optimization procedure. To visualize in ROS Rviz use the -rv flag.
