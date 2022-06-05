@@ -1,5 +1,11 @@
 ## Calibration Examples
 
+
+<p align="center">
+  <img width="70%" src="/img/atom_logo.png">
+</p>
+
+
 ATOM provides extensive visualization possibilities while running the calibration optimization procedure. To visualize in ROS Rviz use the -rv flag.
 
 <!-- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1NOEBKDMIpk/0.jpg)](https://www.youtube.com/watch?v=1NOEBKDMIpk) -->
@@ -11,7 +17,7 @@ So far, we have used **ATOM** to successfully calibrate several robotic platform
  [MMTBot](https://github.com/miguelriemoliveira/mmtbot) is a simulated robotic system containing a manipulator, two rgb cameras and one 3D lidar, with the goal of reserching how ATOM can calibration hand-eye systems.
 
 <p align="center">
-  <img width="100%" src="/img/robotic_systems/mmtbot_rviz4.png">
+  <img width="100%" src="/img/mmtbot_rviz4.png">
 </p>
 <p align = "center">
 A 3D Model of the MMTBot.

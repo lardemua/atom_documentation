@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="70%" src="img/atom_logo.png">
+  <img width="70%" src="/img/atom_logo.png">
 </p>
 
 ## ATOM 

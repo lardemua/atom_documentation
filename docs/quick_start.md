@@ -2,7 +2,7 @@
 
 Unlike most other calibration approaches, **ATOM** offers tools to address the complete calibration pipeline. These are
 instructions for quick starting your robotic system calibration. If you need more details read through
-the [detailed description](detailed_description.md) below.
+the [detailed description](procedures.md) below.
 
 
 ### Create a calibration package 
