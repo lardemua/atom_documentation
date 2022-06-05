@@ -60,14 +60,16 @@
     <li class="toctree-l2"><a class="reference internal" href="#configure-a-calibration-package">Configure a calibration package</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#set-an-initial-estimate">Set an initial estimate</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#visualizing-sensor-fustrums">Visualizing sensor fustrums</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#collect-data">Collect data</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#rgb-camera-labeling">RGB camera labeling</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#3d-lidar-labeling">3D Lidar labeling</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#visualizing-sensor-fustrums">Visualizing sensor fustrums</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#depth-camera-labeling">Depth camera labeling</a>
     </li>
@@ -183,27 +185,28 @@ user to set the pose of the sensors while having immediate visual feedback.</p>
 <pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; set_initial_estimate.launch 
 </code></pre>
 <p>Here are a couple of examples of setting the initial estimate:</p>
-<p align="center">
-  <img width="100%" src="/img/agrob_initial_estimate.gif">
-</p>
-<p align = "center">
-Setting initial estimate of sensor poses in the AgrobV2.
-</p>
-
-<p align="center">
-  <img width="100%" src="/img/set_initial_estimate_atlascar2.gif">
-</p>
-<p align = "center">
-Setting initial estimate of sensor poses in the AtlasCar2.
-</p>
-
-<p align="center">
-  <img width="100%" src="/img/ur10e_eye_in_hand_set_initial_estimate.gif">
-</p>
-<p align = "center">
-Setting initial estimate of sensor poses in the IRIS UR10e.
-</p>
-
+<figure align="center">
+<p><img alt="" src="../img/agrob_initial_estimate.gif" width="100%" />
+  </p>
+<figcaption align="center">Setting initial estimate of sensor poses in the AgrobV2.</figcaption>
+</figure>
+<figure align="center">
+<p><img alt="" src="../img/set_initial_estimate_atlascar2.gif" width="100%" />
+  </p>
+<figcaption align="center">Setting initial estimate of sensor poses in the AtlasCar2.</figcaption>
+</figure>
+<figure align="center">
+<p><img alt="" src="../img/ur10e_eye_in_hand_set_initial_estimate.gif" width="100%" />
+  </p>
+<figcaption align="center">Setting initial estimate of sensor poses in the IRIS UR10e.</figcaption>
+</figure>
+<h4 id="visualizing-sensor-fustrums">Visualizing sensor fustrums</h4>
+<p>ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.</p>
+<figure align="center">
+<p><img alt="" src="../img/MMTBot_fustrum.gif" width="80%" />
+  </p>
+<figcaption align="center">Visualizing fustrum of RGB sensors in the MMTBot.</figcaption>
+</figure>
 <h3 id="collect-data">Collect data</h3>
 <p>To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as <a href="../concepts/#collections">collections</a>, and a set of collections as an <a href="../concepts/#atom-datasets">ATOM dataset</a>. </p>
 <p>To collect data, use:</p>
@@ -255,59 +258,43 @@ Below we detail how each of the labelers operate.</p>
 <p>RGB cameras have a fully automatic pattern detection. It uses off the shelf <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a">chessboard</a> or <a href="https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html">charuco</a> calibration pattern detectors.
 ATOM provides an rviz configuration which subscribes annotated images received from the pattern detectors. You can check if the detection is working 
 by observing the overlays of top of the images.</p>
-<p align="center">
-  <img width="100%" src="/img/ur10e_eye_to_base_collect_data.gif">
-</p>
-<p align = "center">
-Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
-</p>
-
+<figure align="center">
+<p><img alt="" src="../img/ur10e_eye_to_base_collect_data.gif" width="100%" />
+  </p>
+<figcaption align="center">Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
+</figcaption>
+</figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.</p>
 </div>
 <h4 id="3d-lidar-labeling">3D Lidar labeling</h4>
 <p>3D Lidar labelling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  </p>
-<p align="center">
-  <img width="100%" src="/img/MMTBot3DLidarLabeling.gif">
-</p>
-<p align = "center">
-Setting the seed point in 3D Lidar data for semi-automatic labeling (MMTBot).
-</p>
-
+<figure align="center">
+<p><img alt="" src="../img/MMTBot3DLidarLabeling.gif" width="100%" />
+  </p>
+<figcaption align="center">Setting the seed point in 3D Lidar data for semi-automatic labeling (MMTBot).</figcaption>
+</figure>
 <p>After setting this seed position, the system continues to track the patterns pose over the next frames, even if it moves,
 as you can see below:</p>
-<p align="center">
-  <img width="100%" src="/img/agrob_data_collection.gif">
-</p>
-<p align = "center">
-Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).
-</p>
-
+<figure align="center">
+<p><img alt="" src="../img/agrob_data_collection.gif" width="100%" />
+  </p>
+<figcaption align="center">Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).</figcaption>
+</figure>
 <div class="admonition warning">
 <p class="admonition-title">Tracking limitations</p>
 <p>The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. </p>
 </div>
-<h4 id="visualizing-sensor-fustrums">Visualizing sensor fustrums</h4>
-<p>ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.</p>
-<p align="center">
-  <img width="100%" src="/img/MMTBot_fustrum.gif">
-</p>
-<p align = "center">
-Visualizing fustrum of RGB sensors in the MMTBot.
-</p>
-
 <h4 id="depth-camera-labeling">Depth camera labeling</h4>
 <p>&lt;to be written></p>
 <h4 id="2d-lidar-labeling">2D Lidar labeling</h4>
 <p>The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The user sets the seed point where the lidar points are observing the pattern, and then the pattern is tracked.</p>
-<p align="center">
-  <img width="100%" src="/img/collect_data_atlascar2.gif">
-</p>
-<p align = "center">
-Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
-</p>
-
+<figure align="center">
+<p><img alt="" src="../img/collect_data_atlascar2.gif" width="100%" />
+  </p>
+<figcaption align="center">Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).</figcaption>
+</figure>
 <div class="admonition warning">
 <p class="admonition-title">May be deprecated</p>
 <p>The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.</p>
@@ -410,7 +397,11 @@ optional arguments:
 <p>The output is stored in the <strong>atom_calibration.json</strong>, which is used and the input for the second stage, where all sensors are used. In this second stage the poses of the patterns are frozen using the parameter <strong>--anchor_patterns</strong> (<strong>-ap</strong>). To avoid overwritting atom_calibration.json, you should also define the output json file (<strong>-oj</strong>). For example:</p>
 <pre><code>rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/atom_calibration.json -uic -nig 0.0 0.0 -ipg -si -rv -v -ap -oj atom_anchored_calibration.json
 </code></pre>
-<p><img alt="AgrobV2" src="/img/agrob_calibration.gif" style="width:100em" /></p>
+<figure align="center">
+<p><img alt="" src="../img/agrob_calibration.gif" width="100%" />
+  </p>
+<figcaption align="center">Calibration of AgrobV2.</figcaption>
+</figure>
               
             </div>
           </div><footer>
