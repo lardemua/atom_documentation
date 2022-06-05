@@ -198,6 +198,8 @@ Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).
 
 #### Visualizing sensor fustrums
 
+ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.
+
 <p align="center">
   <img width="100%" src="/img/MMTBot_fustrum.gif">
 </p>
@@ -329,3 +331,4 @@ The output is stored in the **atom_calibration.json**, which is used and the inp
     rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/atom_calibration.json -uic -nig 0.0 0.0 -ipg -si -rv -v -ap -oj atom_anchored_calibration.json
 
 
+![AgrobV2](/img/agrob_calibration.gif){: style="width:100em"}
