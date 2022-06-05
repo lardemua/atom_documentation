@@ -289,6 +289,7 @@ Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).
 <p>The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. </p>
 </div>
 <h4 id="visualizing-sensor-fustrums">Visualizing sensor fustrums</h4>
+<p>ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.</p>
 <p align="center">
   <img width="100%" src="/img/MMTBot_fustrum.gif">
 </p>
@@ -409,6 +410,7 @@ optional arguments:
 <p>The output is stored in the <strong>atom_calibration.json</strong>, which is used and the input for the second stage, where all sensors are used. In this second stage the poses of the patterns are frozen using the parameter <strong>--anchor_patterns</strong> (<strong>-ap</strong>). To avoid overwritting atom_calibration.json, you should also define the output json file (<strong>-oj</strong>). For example:</p>
 <pre><code>rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/atom_calibration.json -uic -nig 0.0 0.0 -ipg -si -rv -v -ap -oj atom_anchored_calibration.json
 </code></pre>
+<p><img alt="AgrobV2" src="/img/agrob_calibration.gif" style="width:100em" /></p>
               
             </div>
           </div><footer>
