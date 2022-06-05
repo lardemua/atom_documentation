@@ -1,6 +1,6 @@
-<figure markdown>
-  ![Image title](img/atom_logo.png){align=center; width="300" }
-  <figcaption></figcaption>
+<figure markdown align=center>
+  ![Image title](img/atom_logo.png){width="60%" }
+  <figcaption align=center></figcaption>
 </figure>
 
 ## ATOM 

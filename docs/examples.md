@@ -1,11 +1,5 @@
 ## Calibration Examples
 
-<figure markdown>
-  ![Image title](img/atom_logo.png){align=center; width="300" }
-  <figcaption>Image caption</figcaption>
-</figure>
-
-
 ATOM provides extensive visualization possibilities while running the calibration optimization procedure. To visualize in ROS Rviz use the -rv flag.
 
 <!-- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1NOEBKDMIpk/0.jpg)](https://www.youtube.com/watch?v=1NOEBKDMIpk) -->
@@ -16,12 +10,11 @@ So far, we have used **ATOM** to successfully calibrate several robotic platform
 ### MMTBot
  [MMTBot](https://github.com/miguelriemoliveira/mmtbot) is a simulated robotic system containing a manipulator, two rgb cameras and one 3D lidar, with the goal of reserching how ATOM can calibration hand-eye systems.
 
-<p align="center">
-  <img width="100%" src="/img/mmtbot_rviz4.png">
-</p>
-<p align = "center">
-A 3D Model of the MMTBot.
-</p>
+<figure markdown align=center>
+  ![Image title](../img/mmtbot_rviz4.png){width="100%" }
+  <figcaption align=center>A 3D Model of the MMTBot.</figcaption>
+</figure>
+
 
 ### Atlascar2
  
@@ -32,22 +25,17 @@ A 3D Model of the MMTBot.
 </p>
 
 
-<p align="center">
-  <img width="90%" src="/img/robotic_systems/atlas_nocircles.png">
-</p>
-<p align = "center">
-A photograph of the AtlasCar2.
-</p>
+<figure markdown align=center>
+  ![](img/robotic_systems/atlas_nocircles.png){width="80%" }
+  <figcaption align=center>A photograph of the AtlasCar2.</figcaption>
+</figure>
 
-<p align="center">
-  <img width="80%" src="/img/robotic_systems/atlascar2_with_markers_first_guess.png">
-</p>
-<p align = "center">
-A 3D Model of the AtlasCar2.
-</p>
+<figure markdown align=center>
+  ![](img/robotic_systems/atlascar2_with_markers_first_guess.png){width="80%" }
+  <figcaption align=center>A 3D model of the AtlasCar2.</figcaption>
+</figure>
 
 Further details on this system can be read in the [papers published in ROBOT 2019 and RAS 2020](publications.md).
-
 
 ### IrisUA - ur10e 
 The [IrisUA - ur10e](https://github.com/iris-ua/iris_ur10e_calibration) includes several variants of the hand-eye calibration problem. The repositories containing the calibration ros package for this system are here: 
@@ -57,42 +45,30 @@ The [IrisUA - ur10e](https://github.com/iris-ua/iris_ur10e_calibration) includes
 </p>
 
 
-<p align="center">
-  <img width="70%" src="/img/robotic_systems/eye-to-base-real_alpha.png">
-</p>
-<p align = "center">
-A photograph of the IRIS UA UR10e.
-</p>
+<figure markdown align=center>
+  ![](img/robotic_systems/eye-to-base-real_alpha.png){width="60%" }
+  <figcaption align=center>A photograph of the IRIS UA UR10e.</figcaption>
+</figure>
 
-<p align="center">
-  <img width="60%" src="/img/robotic_systems/set_initial_estimate_joint_hand_base_fixed.png">
-</p>
-<p align = "center">
-A 3D Model of the IRIS UA UR10e.
-</p>
+<figure markdown align=center>
+  ![](img/robotic_systems/set_initial_estimate_joint_hand_base_fixed.png){width="60%" }
+  <figcaption align=center>A 3D Model of the IRIS UA UR10e.</figcaption>
+</figure>
 
 Further details on this system can be read in the [paper published in T-Ro 2021](publications.md).
-
 
 ### AgrobV2 
  [AgrobV2](https://github.com/aaguiar96/agrob) is a mobile robot with a stereo camera and a 3D Lidar designed for agriculture robotics.
 
+<figure markdown align=center>
+  ![](img/robotic_systems/agrobv16.png){width="40%" }
+  <figcaption align=center>A photograph of the AgrobV2.</figcaption>
+</figure>
 
-<p align="center">
-  <img width="50%" src="/img/robotic_systems/agrobv16.png">
-</p>
-<p align = "center">
-A photograph of the AgrobV2.
-</p>
-
-
-<p align="center">
-  <img width="50%" src="/img/robotic_systems/agrob_rviz.png">
-</p>
-<p align = "center">
-A 3D Model of the AgrobV2.
-</p>
-
+<figure markdown align=center>
+  ![](img/robotic_systems/agrob_rviz.png){width="45%" }
+  <figcaption align=center>A 3D Model of the AgrobV2.</figcaption>
+</figure>
 
 Further details on this system can be read in the [paper published in ESWA 2021](publications.md).
 
