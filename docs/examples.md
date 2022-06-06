@@ -77,29 +77,25 @@ Further details on this system can be read in the [paper published in ESWA 2021]
 **L**aboratory of **A**utomation and **R**obotics **C**ollaborative **C**ell (LARCC) is included in a research project focusing of collaborative robotic industrial cells. The goal is to monitor in detail the volume of the cell in order to ensure safe collaboration between human operators and robots. For this, several sensors of different modalities are positioned everywhere in the cell, which makes the calibration of this robotic system a challenging task.
 
 
-<p align="center">
-  <img width="100%" src="/img/robotic_systems/larcc_real.jpeg">
-</p>
-<p align = "center">
-A photograph of LARCC.
-</p>
+<figure markdown align=center>
+  ![](img/robotic_systems/larcc_real.jpeg){width="100%" }
+  <figcaption align=center>A photograph of LARCC.</figcaption>
+</figure>
 
+<figure markdown align=center>
+  ![](img/robotic_systems/larcc_sim.png){width="100%" }
+  <figcaption align=center>A 3D Model of the LARCC..</figcaption>
+</figure>
 
-<p align="center">
-  <img width="100%" src="/img/robotic_systems/larcc_sim.png">
-</p>
-<p align = "center">
-A 3D Model of the LARCC.
-</p>
+<figure markdown align=center>
+  ![](img/larcc_fovs.png){width="100%" }
+  <figcaption align=center>Sensor fields of view in LARCC.</figcaption>
+</figure>
 
-
-
-![AgrobV2](/img/larcc_fovs.png){: style="width:100em"}
-*Sensor fields of view in LARCC.*
-
-
-![AgrobV2](/img/larcc_calibration.png){: style="width:100em"}
-*Calibration of LARCC.*
+<figure markdown align=center>
+  ![](img/larcc_calibration.png){width="100%" }
+  <figcaption align=center>Calibration of LARCC.</figcaption>
+</figure>
 
 
 

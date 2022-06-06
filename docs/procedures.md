@@ -90,30 +90,29 @@ roslaunch <your_robot_calibration> set_initial_estimate.launch
 
 Here are a couple of examples of setting the initial estimate:
 
-<p align="center">
-  <img width="100%" src="/img/agrob_initial_estimate.gif">
-</p>
-<p align = "center">
-Setting initial estimate of sensor poses in the AgrobV2.
-</p>
+<figure markdown align=center>
+  ![](img/agrob_initial_estimate.gif){width="100%" }
+  <figcaption align=center>Setting initial estimate of sensor poses in the AgrobV2.</figcaption>
+</figure>
 
-<p align="center">
-  <img width="100%" src="/img/set_initial_estimate_atlascar2.gif">
-</p>
-<p align = "center">
-Setting initial estimate of sensor poses in the AtlasCar2.
-</p>
+<figure markdown align=center>
+  ![](img/set_initial_estimate_atlascar2.gif){width="100%" }
+  <figcaption align=center>Setting initial estimate of sensor poses in the AtlasCar2.</figcaption>
+</figure>
 
-<p align="center">
-  <img width="100%" src="/img/ur10e_eye_in_hand_set_initial_estimate.gif">
-</p>
-<p align = "center">
-Setting initial estimate of sensor poses in the IRIS UR10e.
-</p>
+<figure markdown align=center>
+  ![](img/ur10e_eye_in_hand_set_initial_estimate.gif){width="100%" }
+  <figcaption align=center>Setting initial estimate of sensor poses in the IRIS UR10e.</figcaption>
+</figure>
 
+#### Visualizing sensor fustrums
 
+ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.
 
-
+<figure markdown align=center>
+  ![](img/MMTBot_fustrum.gif){width="100%" }
+  <figcaption align=center>Visualizing fustrum of RGB sensors in the MMTBot.</figcaption>
+</figure>
 
 ### Collect data 
 
@@ -160,13 +159,11 @@ RGB cameras have a fully automatic pattern detection. It uses off the shelf [che
 ATOM provides an rviz configuration which subscribes annotated images received from the pattern detectors. You can check if the detection is working 
 by observing the overlays of top of the images.
 
-<p align="center">
-  <img width="100%" src="/img/ur10e_eye_to_base_collect_data.gif">
-</p>
-<p align = "center">
-Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
-</p>
-
+<figure markdown align=center>
+  ![](img/ur10e_eye_to_base_collect_data.gif){width="100%" }
+  <figcaption align=center>Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
+</figcaption>
+</figure>
 
 !!! Note
     Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.
@@ -175,37 +172,22 @@ Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
 
 3D Lidar labelling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  
 
-<p align="center">
-  <img width="100%" src="/img/MMTBot3DLidarLabeling.gif">
-</p>
-<p align = "center">
-Setting the seed point in 3D Lidar data for semi-automatic labeling (MMTBot).
-</p>
+<figure markdown align=center>
+  ![](img/MMTBot3DLidarLabeling.gif){width="100%" }
+  <figcaption align=center>Setting the seed point in 3D Lidar data for semi-automatic labeling (MMTBot).</figcaption>
+</figure>
 
 After setting this seed position, the system continues to track the patterns pose over the next frames, even if it moves,
 as you can see below:
 
-<p align="center">
-  <img width="100%" src="/img/agrob_data_collection.gif">
-</p>
-<p align = "center">
-Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).
-</p>
+<figure markdown align=center>
+  ![](img/agrob_data_collection.gif){width="100%" }
+  <figcaption align=center>Automatic 3D Lidar labeling and creating an ATOM dataset (AgrobV2).</figcaption>
+</figure>
 
 !!! Warning "Tracking limitations"
 
     The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. 
-
-#### Visualizing sensor fustrums
-
-ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.
-
-<p align="center">
-  <img width="100%" src="/img/MMTBot_fustrum.gif">
-</p>
-<p align = "center">
-Visualizing fustrum of RGB sensors in the MMTBot.
-</p>
 
 
 #### Depth camera labeling
@@ -216,13 +198,10 @@ Visualizing fustrum of RGB sensors in the MMTBot.
 
 The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The user sets the seed point where the lidar points are observing the pattern, and then the pattern is tracked.
 
-<p align="center">
-  <img width="100%" src="/img/collect_data_atlascar2.gif">
-</p>
-<p align = "center">
-Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
-</p>
-
+<figure markdown align=center>
+  ![](img/collect_data_atlascar2.gif){width="100%" }
+  <figcaption align=center>Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).</figcaption>
+</figure>
 
 !!! Warning "May be deprecated"
     The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.
@@ -330,5 +309,7 @@ The output is stored in the **atom_calibration.json**, which is used and the inp
 
     rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/atom_calibration.json -uic -nig 0.0 0.0 -ipg -si -rv -v -ap -oj atom_anchored_calibration.json
 
-
-![AgrobV2](/img/agrob_calibration.gif){: style="width:100em"}
+<figure markdown align=center>
+  ![](img/agrob_calibration.gif){width="100%" }
+  <figcaption align=center>Calibration of AgrobV2.</figcaption>
+</figure>
