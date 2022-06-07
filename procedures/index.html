@@ -77,6 +77,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dataset-playback">Dataset playback</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#calibrate">Calibrate</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#advanced-usage-running-calibration-script-in-separate-terminal">Advanced usage - running calibration script in separate terminal</a>
@@ -203,7 +205,7 @@ user to set the pose of the sensors while having immediate visual feedback.</p>
 <h4 id="visualizing-sensor-fustrums">Visualizing sensor fustrums</h4>
 <p>ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.</p>
 <figure align="center">
-<p><img alt="" src="../img/MMTBot_fustrum.gif" width="80%" />
+<p><img alt="" src="../img/MMTBot_fustrum.gif" width="100%" />
   </p>
 <figcaption align="center">Visualizing fustrum of RGB sensors in the MMTBot.</figcaption>
 </figure>
@@ -287,7 +289,21 @@ as you can see below:</p>
 <p>The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. </p>
 </div>
 <h4 id="depth-camera-labeling">Depth camera labeling</h4>
-<p>&lt;to be written></p>
+<p>The labeling of depth cameras a semi-automatic procedure. It is done by clicking the depth image in rviz. The user should click somewhere inside the pattern, and then the system carries on the tracking of the pattern even if it moves. The user may reset the procedure by reclicking the image.</p>
+<figure align="center">
+<p><img alt="" src="../img/ATOMDepthLabeling.gif" width="100%" />
+  </p>
+<figcaption align="center">Labeling of depth data (LARCC).</figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">RViz fork required</p>
+<p>This functionality is only available using a special RViz fork at:</p>
+<p><a href="https://github.com/miguelriemoliveira/rviz">https://github.com/miguelriemoliveira/rviz</a> </p>
+<p>which extends the image display to suport mouse clicking. We are working on integrating this in the RViz main branch, but this is not available yet.
+More information here:</p>
+<p><a href="https://github.com/ros-visualization/rviz/issues/916">https://github.com/ros-visualization/rviz/issues/916</a></p>
+<p><a href="https://github.com/ros-visualization/rviz/pull/1737">https://github.com/ros-visualization/rviz/pull/1737</a></p>
+</div>
 <h4 id="2d-lidar-labeling">2D Lidar labeling</h4>
 <p>The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The user sets the seed point where the lidar points are observing the pattern, and then the pattern is tracked.</p>
 <figure align="center">
@@ -298,6 +314,24 @@ as you can see below:</p>
 <div class="admonition warning">
 <p class="admonition-title">May be deprecated</p>
 <p>The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.</p>
+</div>
+<h3 id="dataset-playback">Dataset playback</h3>
+<p>The dataset playback is used to review and eventually correct the automatic labels produced during the <a href="#collect-data">collection of data</a>.
+Ideally, the bulk of the annotations should be correct, but a few incorrect labels will disruot the calibration. As such, a review of the annotations is recommended by default.</p>
+<p>To run the dataset playback, first launch the visualization:</p>
+<pre><code>roslaunch &lt;your_robot_calibration&gt; dataset_playback.launch
+</code></pre>
+<p>and then s</p>
+<pre><code>clear &amp;&amp; rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/larcc/larcc_real/test_dataset/dataset_corrected.json -csf "lambda x: int(x) &lt;= 55" -uic -si  -ow
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">RViz fork required</p>
+<p>This functionality is only available using a special RViz fork at:</p>
+<p><a href="https://github.com/miguelriemoliveira/rviz">https://github.com/miguelriemoliveira/rviz</a> </p>
+<p>which extends the image display to suport mouse clicking. We are working on integrating this in the RViz main branch, but this is not available yet.
+More information here:</p>
+<p><a href="https://github.com/ros-visualization/rviz/issues/916">https://github.com/ros-visualization/rviz/issues/916</a></p>
+<p><a href="https://github.com/ros-visualization/rviz/pull/1737">https://github.com/ros-visualization/rviz/pull/1737</a></p>
 </div>
 <h3 id="calibrate">Calibrate</h3>
 <p>Finally, a system calibration is called through:</p>
