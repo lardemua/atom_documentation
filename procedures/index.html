@@ -41,15 +41,11 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                <li class="toctree-l1"><a class="reference internal" href="..">Introduction</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../quick_start/">Quick Start</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../concepts/">Concepts</a>
+                <li class="toctree-l1"><a class="reference internal" href="../getting_started/">Getting Started</a>
                 </li>
               </ul>
               <ul class="current">
@@ -95,11 +91,15 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../evaluations/">Evaluations</a>
+                <li class="toctree-l1"><a class="reference internal" href="../evaluations/">Evaluation Procedures</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../publications/">Publications</a>
+                <li class="toctree-l1"><a class="reference internal" href="../multimedia/">Multimedia</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../acknowledgment/">Acknowledgment</a>
                 </li>
               </ul>
       </div>
@@ -210,7 +210,7 @@ user to set the pose of the sensors while having immediate visual feedback.</p>
 <figcaption align="center">Visualizing fustrum of RGB sensors in the MMTBot.</figcaption>
 </figure>
 <h3 id="collect-data">Collect data</h3>
-<p>To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as <a href="../concepts/#collections">collections</a>, and a set of collections as an <a href="../concepts/#atom-datasets">ATOM dataset</a>. </p>
+<p>To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as <a href="concepts.md#collections">collections</a>, and a set of collections as an <a href="concepts.md#atom-datasets">ATOM dataset</a>. </p>
 <p>To collect data, use:</p>
 <pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt;
 </code></pre>
@@ -440,7 +440,7 @@ optional arguments:
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../concepts/" class="btn btn-neutral float-left" title="Concepts"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../getting_started/" class="btn btn-neutral float-left" title="Getting Started"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../examples/" class="btn btn-neutral float-right" title="Calibration Examples">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -464,7 +464,7 @@ optional arguments:
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../concepts/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../getting_started/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../examples/" style="color: #fcfcfc">Next &raquo;</a></span>
