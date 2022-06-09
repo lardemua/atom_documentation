@@ -108,11 +108,20 @@
             <div class="section" itemprop="articleBody">
               
                 <h2 id="evaluating-your-calibration">Evaluating your calibration</h2>
+<ul>
+<li><a href="#annotation-of-rgb-images">Annotation of rgb images</a></li>
+<li><a href="#rgb-to-rgb-camera-evaluation">RGB to RGB camera evaluation</a></li>
+<li><a href="#lidar-to-depth-camera-evaluation">LiDAR to Depth Camera evaluation</a></li>
+<li><a href="#rgb-to-depth-camera-evaluation">RGB to Depth camera evaluation</a></li>
+<li><a href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a></li>
+<li><a href="#lidar-to-rgb-camera-evaluation">LiDAR to RGB camera evaluation</a></li>
+<li><a href="#point-cloud-image-projection">Point cloud image projection</a></li>
+</ul>
 <p>After the system is calibrated one common concern is to be able to assess the accuracy of the produced calibration. ATOM provides several evaluation scripts for this purpose.</p>
 <p>Unlike ATOM which calibrates all sensors simultaneously, evaluations are performed in pairs of sensors, which facilitates comparisons with other calibration approaches (which are mostly pairwise),
 e.g. <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html">opencv's stereo calibration</a>. Thus, there is a different evaluation script for each combination of modalities.</p>
 <h4 id="annotation-of-rgb-images">Annotation of rgb images</h4>
-<p>To evaluate calibration between range sensors and cameras, it is necessary to annotate the physical limits on the calibration pattern in the images of the collection, to allow a comparison with physical labellings as measured by range sensors .</p>
+<p>To evaluate calibration between range sensors and cameras, it is necessary to annotate the physical limits on the calibration pattern in the images of the collection, to allow a comparison with physical labelings as measured by range sensors .</p>
 <pre><code class="language-bash">rosrun atom_evaluation  annotate_pattern_borders_in_rgb.py [-h] -d DATASET_FILE -cs CAMERA_SENSOR [-si] [-ww WINDOW_WIDTH] [-ps POINT_SIZE] [-ppp POINTS_PER_PIXEL]
 
 optional arguments:

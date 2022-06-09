@@ -46,6 +46,24 @@
     <li class="toctree-l2"><a class="reference internal" href="#what-is-atom">What is ATOM?</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#calibration-pipeline">Calibration Pipeline</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#robotic-system-configuration">Robotic System Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#data-logging">Data Logging</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#initial-positioning-of-sensors">Initial Positioning of Sensors</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#data-collection-and-labeling">Data Collection and Labeling</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#dataset-playback">Dataset playback</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#calibration">Calibration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#calibration-evaluation">Calibration Evaluation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#running-the-calibrated-system">Running the calibrated system</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#what-is-a-collection">What is a collection?</a>
     </li>
@@ -107,6 +125,22 @@
 <figcaption align="center"></figcaption>
 </figure>
 <h2 id="atom">ATOM</h2>
+<ul>
+<li><a href="#what-is-atom">What is ATOM?</a></li>
+<li><a href="#calibration-pipeline">Calibration Pipeline</a><ul>
+<li><a href="#robotic-system-configuration">Robotic System Configuration</a></li>
+<li><a href="#data-logging">Data Logging</a></li>
+<li><a href="#initial-positioning-of-sensors">Initial Positioning of Sensors</a></li>
+<li><a href="#data-collection-and-labeling">Data Collection and Labeling</a></li>
+<li><a href="#dataset-playback">Dataset playback</a></li>
+<li><a href="#calibration">Calibration</a></li>
+<li><a href="#calibration-evaluation">Calibration Evaluation</a></li>
+<li><a href="#running-the-calibrated-system">Running the calibrated system</a></li>
+</ul>
+</li>
+<li><a href="#what-is-a-collection">What is a collection?</a></li>
+<li><a href="#what-is-an-atom-dataset">What is an ATOM Dataset?</a></li>
+</ul>
 <h3 id="what-is-atom">What is ATOM?</h3>
 <p><a href="https://github.com/lardemua/atom">ATOM</a> is a calibration framework using the <strong>A</strong>tomic <strong>T</strong>ransformations <strong>O</strong>ptimization <strong>M</strong>ethod. </p>
 <p align="center">
@@ -118,18 +152,60 @@
 
 <p>If this work is helpful for you please cite <a href="acknowledgment/#citing-atom">our publications</a>.</p>
 <h3 id="calibration-pipeline">Calibration Pipeline</h3>
-<p>Note that in order to calibrate a robotic system one needs to carry out several tasks, such as acquiring data, labelling data, executing the calibration, interpreting the result of the calibration, etc.
+<p>In order to calibrate a robotic system one needs to carry out several tasks, such as acquiring data, labeling data, executing the calibration, interpreting the result of the calibration, etc.
 ATOM provides several scripts to address all the stages of a calibration procedure. 
-It is seamlessly integrated into <a href="https://www.ros.org/">ROS</a>, and makes use of <a href="http://wiki.ros.org/rviz">RViz</a> to provide extensive visualization in severall stages of the calibration procedure.
+These scripts are seamlessly integrated into <a href="https://www.ros.org/">ROS</a>, and makes use of <a href="http://wiki.ros.org/rviz">RViz</a> to provide extensive visualization in severall stages of the calibration procedure.
 We have divided the calibration procedure into several stages, shown in the scheme below.</p>
 <figure align="center">
-<p><img alt="Image title" src="img/architecture/atom_architecture.png" width="70%" />
+<p><img alt="Image title" src="img/architecture/atom_architecture.png" width="80%" />
   </p>
 <figcaption align="center">ATOM calibration pipeline.</figcaption>
 </figure>
-<p>The grey colored steps are considered to be out of the scope of ATOM, i.e., these are tasks one should do in order to configure a robot system in ROS.</p>
-<p>Robotic System Configuration</p>
-<p>Data Logging</p>
+<p>The <span style="color:gray">greyed out boxes </span> are steps considered to be out of the scope of ATOM, i.e., these are tasks one should do in order to configure a robot system in ROS. Dashed line boxes represent steps which are optional. They may be skipped if there is confidence that they are not required.</p>
+<p>Below we describe each of these stages, giving examples for the <a href="examples/#mmtbot">MMTBot</a>.</p>
+<h4 id="robotic-system-configuration">Robotic System Configuration</h4>
+<p>Robotic System Configuration concerns the design and implementation of your robotic system in ROS. It generally involves the writting of an <a href="http://wiki.ros.org/urdf">UDRF</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file that describes the links and joints of your robotic system. It sometimes also includes de configuration of a simulation of your system in <a href="https://gazebosim.org/home">Gazebo</a>.</p>
+<p>Tipically one creates a couple of ros packages for our robot, as described below.</p>
+<p><strong>&lt;my_robot>_description</strong> ros package contains the xacro files that describe your robot. It sometimes also contains cad models inside a models folder. An example from <a href="https://github.com/miguelriemoliveira/mmtbot/tree/main/mmtbot_description">MMTBot is here</a>.</p>
+<p><strong>&lt;my_robot>_bringup</strong> ros package contains the launch files used to bringup your robotic system. Tipically there is a <strong>bringup.launch</strong> that starts the complete system.
+An example from the <a href="https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_bringup/launch/bringup.launch">MMTBot</a>.</p>
+<h4 id="data-logging">Data Logging</h4>
+<p>Data Logging is the procedure by which a <a href="http://wiki.ros.org/Bags">ros bagfile</a> is recorded to be used in the calibration later on.</p>
+<p>You may record data by <a href="http://wiki.ros.org/rosbag/Tutorials/Recording%20and%20playing%20back%20data">calling rosbag record</a> directly, e.g.:</p>
+<pre><code>rosbag record /topic1 ... /topicN -o output.bag
+</code></pre>
+<p>We tipically have a roslaunch file to record data and produce a bagfile for each robotic system. Here's the example for <a href="https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_bringup/launch/record.launch">MMTBot</a>.</p>
+<p>A bagfile should contain several topics, namely transformations and joint state messages, as well as messages produced by the sensors in the system. For example, in the case of MMTBot, which has sensors <strong>world_camera</strong>, <strong>hand_camera</strong> and <strong>lidar</strong>, we record the following topics:</p>
+<ul>
+<li>/tf</li>
+<li>/tf_static</li>
+<li>/joint_states</li>
+<li>/world_camera/rgb/image_raw/compressed</li>
+<li>/world_camera/rgb/camera_info</li>
+<li>/hand_camera/rgb/image_raw/compressed</li>
+<li>/hand_camera/rgb/camera_info</li>
+<li>/lidar/points</li>
+</ul>
+<h4 id="initial-positioning-of-sensors">Initial Positioning of Sensors</h4>
+<p>The goal of this stage is to allow the user to define interactively the poses of each sensor, so that the optimization starts close to the optimal solution and thus avoids local minima. 
+This stage may be skiped in the transformations from the URDF are believed to be "more or less" accurate.</p>
+<p>More details <a href="procedures/#set-an-initial-estimate">here</a>.</p>
+<h4 id="data-collection-and-labeling">Data Collection and Labeling</h4>
+<p>This stage reads the bagfile and allows the user to assist the labeling procedure, i.e., the identification of the calibration pattern in the data of the sensors, and then to decide when to save each collection. The output is an <a href="#what-is-an-atom-dataset">ATOM dataset</a>.</p>
+<p>More details <a href="procedures/#collect-data">here</a>.</p>
+<h4 id="dataset-playback">Dataset playback</h4>
+<p>This stage is used to review ATOM datasets. The reviewing may identify incorrect labels, which can be corrected through manual annotation. It produces a corrected <a href="#what-is-an-atom-dataset">ATOM dataset</a>.</p>
+<p>More details <a href="procedures/#dataset-playback">here</a>.</p>
+<h4 id="calibration">Calibration</h4>
+<p>This is were finally the system is calibrated. ATOM provides extensive visualization funcionalities so that it is possible to observe how the calibration is performing.</p>
+<p>More details <a href="procedures/#calibrate">here</a>.</p>
+<h4 id="calibration-evaluation">Calibration Evaluation</h4>
+<p>ATOM provides several scripts designed to measure the accuracy of the calibration. 
+These tools are pairwise evaluations, which means it is possible to compare the accuracy of ATOM with other state of the art pairwise approaches.</p>
+<p>More details <a href="evaluations/">here</a>.</p>
+<h4 id="running-the-calibrated-system">Running the calibrated system</h4>
+<p>After calibration ATOM produces a calibrated URDF file which can be direcly used in ROS.</p>
+<p>If you get here unscathed you are a very lucky person ... Enjoy!</p>
 <h3 id="what-is-a-collection">What is a collection?</h3>
 <p>A collection is a recording of the data from all the sensors in the system at a particular time instant selected by the user. Collections also contain information about labels for the sensor data, as well as the state of the robotic system at that time, i.e., all the transformations.</p>
 <h3 id="what-is-an-atom-dataset">What is an ATOM Dataset?</h3>
@@ -197,5 +273,5 @@ We have divided the calibration procedure into several stages, shown in the sche
 
 <!--
 MkDocs version : 1.3.0
-Build Date UTC : 2022-06-08 13:38:59.869525+00:00
+Build Date UTC : 2022-06-09 12:46:50.898483+00:00
 -->

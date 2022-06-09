@@ -126,8 +126,29 @@
             <div class="section" itemprop="articleBody">
               
                 <h2 id="calibration-procedures">Calibration procedures</h2>
-<p>To calibrate your robot you must define your robotic system, (e.g. &lt;your_robot>). You should also have a <strong>system
-description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file(s). This is normally stored in a ros package named <strong>&lt;your_robot>_description</strong>.</p>
+<ul>
+<li><a href="#create-a-calibration-package">Create a calibration package</a></li>
+<li><a href="#configure-a-calibration-package">Configure a calibration package</a></li>
+<li><a href="#set-an-initial-estimate">Set an initial estimate</a><ul>
+<li><a href="#visualizing-sensor-fustrums">Visualizing sensor fustrums</a></li>
+</ul>
+</li>
+<li><a href="#collect-data">Collect data</a><ul>
+<li><a href="#rgb-camera-labeling">RGB camera labeling</a></li>
+<li><a href="#3d-lidar-labeling">3D Lidar labeling</a></li>
+<li><a href="#depth-camera-labeling">Depth camera labeling</a></li>
+<li><a href="#2d-lidar-labeling">2D Lidar labeling</a></li>
+</ul>
+</li>
+<li><a href="#dataset-playback">Dataset playback</a></li>
+<li><a href="#calibrate">Calibrate</a><ul>
+<li><a href="#advanced-usage---running-calibration-script-in-separate-terminal">Advanced usage - running calibration script in separate terminal</a></li>
+<li><a href="#advanced-usage---two-stage-calibration-for-robotic-systems-with-an-anchored-sensor">Advanced usage - two stage calibration for robotic systems with an anchored sensor</a></li>
+</ul>
+</li>
+</ul>
+<p>To calibrate your robot you must define your robotic system, (e.g. &lt;my_robot>). You should also have a <strong>system
+description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file(s). This is normally stored in a ros package named <strong>&lt;my_robot>_description</strong>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We recommend using xacro files instead of urdfs. </p>
@@ -148,22 +169,22 @@ In any case if you need inspiration you can take a look at the <a href="../examp
 <h3 id="create-a-calibration-package">Create a calibration package</h3>
 <p>Assuming you have your robotic system setup, you can start creating the calibration package.
 You should create a calibration ros package specific for your robotic system. <strong>ATOM</strong> provides a script for this:</p>
-<pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name &lt;your_robot_calibration&gt;
+<pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name &lt;my_robot_calibration&gt;
 </code></pre>
-<p>This will create the ros package <your_robot_calibration> in the current folder, but you can also specify another folder,
+<p>This will create the ros package <my_robot_calibration> in the current folder, but you can also specify another folder,
 e.g.:</p>
-<pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name ~/my/path/&lt;your_robot_calibration&gt;
+<pre><code class="language-bash">rosrun atom_calibration create_calibration_pkg --name ~/my/path/&lt;my_robot_calibration&gt;
 </code></pre>
 <h3 id="configure-a-calibration-package">Configure a calibration package</h3>
 <p>Once your calibration package is created you will have to configure the calibration procedure by editing the
-<em><your_robot_calibration>/calibration/config.yml</em> file with your system information.</p>
+<em><my_robot_calibration>/calibration/config.yml</em> file with your system information.</p>
 <p>Here are examples of calibration <strong>config.yml</strong> files for
 an <a href="https://github.com/lardemua/atlascar2/blob/master/atlascar2_calibration/calibration/config.yml">autonomous vehicle</a>
 and for
 a <a href="https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_calibration/calibration/config.yml">simulated hand eye system</a>.
 Also, the file contains several comments to provide clues on how to configure it.</p>
 <p>After filling the config.yml file, you should run the package configuration:</p>
-<pre><code class="language-bash">rosrun &lt;your_robot_calibration&gt; configure 
+<pre><code class="language-bash">rosrun &lt;my_robot_calibration&gt; configure 
 </code></pre>
 <p>This will go through a series of varifications, and create a set of files for launching the system, configuring rviz,
 etc.</p>
@@ -184,7 +205,7 @@ multiple configurations with multiple config.yml files. There are also other opt
 However, the ones we refer to in this case are those that represent the poses of each sensor. <strong>ATOM</strong> provides an interactive framework based on rviz which allows the
 user to set the pose of the sensors while having immediate visual feedback.</p>
 <p>To set an initial estimate run:</p>
-<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; set_initial_estimate.launch 
+<pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; set_initial_estimate.launch 
 </code></pre>
 <p>Here are a couple of examples of setting the initial estimate:</p>
 <figure align="center">
@@ -212,7 +233,7 @@ user to set the pose of the sensors while having immediate visual feedback.</p>
 <h3 id="collect-data">Collect data</h3>
 <p>To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as <a href="concepts.md#collections">collections</a>, and a set of collections as an <a href="concepts.md#atom-datasets">ATOM dataset</a>. </p>
 <p>To collect data, use:</p>
-<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt;
+<pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt;
 </code></pre>
 <p>The script launches an rviz window already configured. The user observes the data playback and <strong>decides when a collection should be saved</strong> by clicking a green sphere in that appears in the scene.</p>
 <p>It is also possible to add additional parameters to configure several aspects of the script. See below all the options.</p>
@@ -249,12 +270,12 @@ user to set the pose of the sensors while having immediate visual feedback.</p>
 </tbody>
 </table>
 <p>One example using all the parameters above:</p>
-<pre><code>roslaunch &lt;your_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt; overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]'
+<pre><code>roslaunch &lt;my_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt; overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]'
 </code></pre>
 </div>
 <p>When you launch the data collection script, it automatically starts data labeling processes adequate for each sensor in your robotic system.
 As such, the data is being continuously labeled as the bagfile is played.</p>
-<p>Depending on the modalidity of the sensors in the system the labelling may be automatic or fully automatic.
+<p>Depending on the modalidity of the sensors in the system the labeling may be automatic or fully automatic.
 Below we detail how each of the labelers operate.</p>
 <h4 id="rgb-camera-labeling">RGB camera labeling</h4>
 <p>RGB cameras have a fully automatic pattern detection. It uses off the shelf <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a">chessboard</a> or <a href="https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html">charuco</a> calibration pattern detectors.
@@ -271,7 +292,7 @@ by observing the overlays of top of the images.</p>
 <p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.</p>
 </div>
 <h4 id="3d-lidar-labeling">3D Lidar labeling</h4>
-<p>3D Lidar labelling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  </p>
+<p>3D Lidar labeling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  </p>
 <figure align="center">
 <p><img alt="" src="../img/MMTBot3DLidarLabeling.gif" width="100%" />
   </p>
@@ -313,13 +334,13 @@ More information here:</p>
 </figure>
 <div class="admonition warning">
 <p class="admonition-title">May be deprecated</p>
-<p>The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.</p>
+<p>The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality <a href="https://github.com/lardemua/atom/issues">create an issue</a> with a request.</p>
 </div>
 <h3 id="dataset-playback">Dataset playback</h3>
 <p>The dataset playback is used to review and eventually correct the automatic labels produced during the <a href="#collect-data">collection of data</a>.
 Ideally, the bulk of the annotations should be correct, but a few incorrect labels will disruot the calibration. As such, a review of the annotations is recommended by default.</p>
 <p>To run the dataset playback, first launch the visualization:</p>
-<pre><code>roslaunch &lt;your_robot_calibration&gt; dataset_playback.launch
+<pre><code>roslaunch &lt;my_robot_calibration&gt; dataset_playback.launch
 </code></pre>
 <p>and then s</p>
 <pre><code>clear &amp;&amp; rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/larcc/larcc_real/test_dataset/dataset_corrected.json -csf "lambda x: int(x) &lt;= 55" -uic -si  -ow
@@ -335,7 +356,7 @@ More information here:</p>
 </div>
 <h3 id="calibrate">Calibrate</h3>
 <p>Finally, a system calibration is called through:</p>
-<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; calibrate.launch dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json 
+<pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; calibrate.launch dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json 
 </code></pre>
 <p>You can use a couple of launch file arguments to configure the calibration procedure, as seen below:</p>
 <div class="admonition tip">
@@ -363,14 +384,14 @@ More information here:</p>
 </tbody>
 </table>
 <p>One example using all the parameters above:</p>
-<pre><code>roslaunch &lt;your_robot_calibration&gt; calibrate.launch dataset_file:=$ATOM_DATASETS/&lt;my_dataset&gt;/dataset.json  use_incomplete_collections:=true ssf:='lambda name: name in ["camera1, "lidar2"]' csf:='lambda name: int(name) &lt; 7'
+<pre><code>roslaunch &lt;my_robot_calibration&gt; calibrate.launch dataset_file:=$ATOM_DATASETS/&lt;my_dataset&gt;/dataset.json  use_incomplete_collections:=true ssf:='lambda name: name in ["camera1, "lidar2"]' csf:='lambda name: int(name) &lt; 7'
 </code></pre>
 </div>
 <h5 id="advanced-usage-running-calibration-script-in-separate-terminal">Advanced usage - running calibration script in separate terminal</h5>
 <p>Alternatively, for debugging the calibrate script it is better not to have it executed with a bunch of other scripts
 which is what happens when you call the launch file. You can run everything with the launch excluding without the
 calibrate script using the <strong>run_calibration:=false</strong> option, e.g.:</p>
-<pre><code class="language-bash">roslaunch &lt;your_robot_calibration&gt; calibrate.launch dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json run_calibration:=false 
+<pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; calibrate.launch dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json run_calibration:=false 
 </code></pre>
 <p>and then launch the calibrate script in standalone mode:</p>
 <pre><code class="language-bash">rosrun atom_calibration calibrate -json dataset_file:=~/datasets/&lt;my_dataset&gt;/dataset.json 
