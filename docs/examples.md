@@ -8,10 +8,14 @@ ATOM provides extensive visualization possibilities while running the calibratio
 So far, we have used **ATOM** to successfully calibrate several robotic platforms. Here are some examples:
 
 ### MMTBot
- [MMTBot](https://github.com/miguelriemoliveira/mmtbot) is a simulated robotic system containing a manipulator, two rgb cameras and one 3D lidar, with the goal of reserching how ATOM can calibration hand-eye systems.
+ [MMTBot](https://github.com/miguelriemoliveira/mmtbot) is a simulated robotic system containing a manipulator, two rgb cameras and one 3D lidar, with the goal of reserching how ATOM can calibration hand-eye systems. The respositories for this system are here:
+
+<p align="center">
+<a href="https://github.com/miguelriemoliveira/mmtbot">https://github.com/miguelriemoliveira/mmtbot</a>
+</p>
 
 <figure markdown align=center>
-  ![Image title](../img/mmtbot_rviz4.png){width="100%" }
+  ![Image title](img/mmtbot_rviz4.png){width="100%" }
   <figcaption align=center>A 3D Model of the MMTBot.</figcaption>
 </figure>
 
@@ -60,6 +64,11 @@ Further details on this system can be read in the [paper published in T-Ro 2021]
 ### AgrobV2 
  [AgrobV2](https://github.com/aaguiar96/agrob) is a mobile robot with a stereo camera and a 3D Lidar designed for agriculture robotics.
 
+<p align="center">
+<a href="https://github.com/aaguiar96/agrob">https://github.com/aaguiar96/agrob</a>
+</p>
+
+
 <figure markdown align=center>
   ![](img/robotic_systems/agrobv16.png){width="40%" }
   <figcaption align=center>A photograph of the AgrobV2.</figcaption>
@@ -75,6 +84,7 @@ Further details on this system can be read in the [paper published in ESWA 2021]
 ### LARCC
 
 **L**aboratory of **A**utomation and **R**obotics **C**ollaborative **C**ell (LARCC) is included in a research project focusing of collaborative robotic industrial cells. The goal is to monitor in detail the volume of the cell in order to ensure safe collaboration between human operators and robots. For this, several sensors of different modalities are positioned everywhere in the cell, which makes the calibration of this robotic system a challenging task.
+The repostiories of LARCC are not publicly available. 
 
 
 <figure markdown align=center>

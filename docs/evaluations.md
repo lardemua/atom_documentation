@@ -7,7 +7,7 @@ e.g. [opencv's stereo calibration](https://docs.opencv.org/4.x/d9/d0c/group__cal
 
 #### Annotation of rgb images
 
-To evaluate calibration between range sensors and cameras, it is necessary to annotate the physical limits on the calibration pattern in the images of the collection, to allow a comparison with physical labellings as measured by range sensors .
+To evaluate calibration between range sensors and cameras, it is necessary to annotate the physical limits on the calibration pattern in the images of the collection, to allow a comparison with physical labelings as measured by range sensors .
 
 ``` bash
 rosrun atom_evaluation  annotate_pattern_borders_in_rgb.py [-h] -d DATASET_FILE -cs CAMERA_SENSOR [-si] [-ww WINDOW_WIDTH] [-ps POINT_SIZE] [-ppp POINTS_PER_PIXEL]

@@ -16,10 +16,10 @@ markdown_extensions:
   - admonition
   - tables
 nav:
-  - "Home": "index.md"
-  - "Quick Start": "quick_start.md"
-  - "Concepts": "concepts.md"
+  - "Introduction": "index.md"
+  - "Getting Started": "getting_started.md"
   - "Calibration Procedures": "procedures.md"
   - "Calibration Examples": "examples.md"
-  - "Evaluations": "evaluations.md"
-  - "Publications": "publications.md"
+  - "Evaluation Procedures": "evaluations.md"
+  - "Multimedia": "multimedia.md"
+  - "Acknowledgment": "acknowledgment.md"

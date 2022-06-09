@@ -1,7 +1,7 @@
 ## Calibration procedures
 
-To calibrate your robot you must define your robotic system, (e.g. <your_robot\>). You should also have a **system
-description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<your_robot\>_description**.
+To calibrate your robot you must define your robotic system, (e.g. <my_robot\>). You should also have a **system
+description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<my_robot\>_description**.
 
 
 !!! Note
@@ -31,20 +31,20 @@ Assuming you have your robotic system setup, you can start creating the calibrat
 You should create a calibration ros package specific for your robotic system. **ATOM** provides a script for this:
 
 ```bash
-rosrun atom_calibration create_calibration_pkg --name <your_robot_calibration>
+rosrun atom_calibration create_calibration_pkg --name <my_robot_calibration>
 ```
 
-This will create the ros package <your_robot_calibration> in the current folder, but you can also specify another folder,
+This will create the ros package <my_robot_calibration> in the current folder, but you can also specify another folder,
 e.g.:
 
 ```bash
-rosrun atom_calibration create_calibration_pkg --name ~/my/path/<your_robot_calibration>
+rosrun atom_calibration create_calibration_pkg --name ~/my/path/<my_robot_calibration>
 ```
 
 ### Configure a calibration package
 
 Once your calibration package is created you will have to configure the calibration procedure by editing the
-_<your_robot_calibration>/calibration/config.yml_ file with your system information.
+_<my_robot_calibration>/calibration/config.yml_ file with your system information.
 
 Here are examples of calibration **config.yml** files for
 an [autonomous vehicle](https://github.com/lardemua/atlascar2/blob/master/atlascar2_calibration/calibration/config.yml)
@@ -55,7 +55,7 @@ Also, the file contains several comments to provide clues on how to configure it
 After filling the config.yml file, you should run the package configuration:
 
 ```bash
-rosrun <your_robot_calibration> configure 
+rosrun <my_robot_calibration> configure 
 ```
 
 This will go through a series of varifications, and create a set of files for launching the system, configuring rviz,
@@ -85,7 +85,7 @@ user to set the pose of the sensors while having immediate visual feedback.
 To set an initial estimate run:
 
 ```bash
-roslaunch <your_robot_calibration> set_initial_estimate.launch 
+roslaunch <my_robot_calibration> set_initial_estimate.launch 
 ```
 
 Here are a couple of examples of setting the initial estimate:
@@ -122,7 +122,7 @@ To run a system calibration, one requires data from the sensors collected at dif
 To collect data, use:
 
 ```bash
-roslaunch <your_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder>
+roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder>
 ```
 
 The script launches an rviz window already configured. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere in that appears in the scene.
@@ -141,16 +141,12 @@ It is also possible to add additional parameters to configure several aspects of
 
     One example using all the parameters above:
 
-        roslaunch <your_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder> overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]' 
-
-
-
-
+        roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder> overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]' 
 
 When you launch the data collection script, it automatically starts data labeling processes adequate for each sensor in your robotic system.
 As such, the data is being continuously labeled as the bagfile is played.
 
-Depending on the modalidity of the sensors in the system the labelling may be automatic or fully automatic.
+Depending on the modalidity of the sensors in the system the labeling may be automatic or fully automatic.
 Below we detail how each of the labelers operate.
 
 #### RGB camera labeling
@@ -170,7 +166,7 @@ by observing the overlays of top of the images.
 
 #### 3D Lidar labeling
 
-3D Lidar labelling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  
+3D Lidar labeling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  
 
 <figure markdown align=center>
   ![](img/MMTBot3DLidarLabeling.gif){width="100%" }
@@ -189,10 +185,29 @@ as you can see below:
 
     The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. 
 
-
 #### Depth camera labeling
 
-<to be written\>
+The labeling of depth cameras a semi-automatic procedure. It is done by clicking the depth image in rviz. The user should click somewhere inside the pattern, and then the system carries on the tracking of the pattern even if it moves. The user may reset the procedure by reclicking the image.
+
+<figure markdown align=center>
+  ![](img/ATOMDepthLabeling.gif){width="100%" }
+  <figcaption align=center>Labeling of depth data (LARCC).</figcaption>
+</figure>
+
+
+!!! Warning "RViz fork required"
+
+    This functionality is only available using a special RViz fork at:
+    
+    [https://github.com/miguelriemoliveira/rviz](https://github.com/miguelriemoliveira/rviz) 
+    
+    which extends the image display to suport mouse clicking. We are working on integrating this in the RViz main branch, but this is not available yet.
+    More information here:
+
+    [https://github.com/ros-visualization/rviz/issues/916](https://github.com/ros-visualization/rviz/issues/916)
+
+    [https://github.com/ros-visualization/rviz/pull/1737](https://github.com/ros-visualization/rviz/pull/1737)
+
 
 #### 2D Lidar labeling
 
@@ -207,12 +222,44 @@ The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The 
     The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.
 
 
+### Dataset playback 
+
+The dataset playback is used to review and eventually correct the automatic labels produced during the [collection of data](#collect-data).
+Ideally, the bulk of the annotations should be correct, but a few incorrect labels will disruot the calibration. As such, a review of the annotations is recommended by default.
+
+To run the dataset playback, first launch the visualization:
+
+    roslaunch <my_robot_calibration> dataset_playback.launch
+
+and then s
+
+    clear && rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/larcc/larcc_real/test_dataset/dataset_corrected.json -csf "lambda x: int(x) <= 55" -uic -si  -ow
+
+
+
+
+
+!!! Warning "RViz fork required"
+
+    This functionality is only available using a special RViz fork at:
+    
+    [https://github.com/miguelriemoliveira/rviz](https://github.com/miguelriemoliveira/rviz) 
+    
+    which extends the image display to suport mouse clicking. We are working on integrating this in the RViz main branch, but this is not available yet.
+    More information here:
+
+    [https://github.com/ros-visualization/rviz/issues/916](https://github.com/ros-visualization/rviz/issues/916)
+
+    [https://github.com/ros-visualization/rviz/pull/1737](https://github.com/ros-visualization/rviz/pull/1737)
+
+
+
 ### Calibrate 
 
 Finally, a system calibration is called through:
 
 ```bash
-roslaunch <your_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json 
+roslaunch <my_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json 
 ```
 You can use a couple of launch file arguments to configure the calibration procedure, as seen below:
 
@@ -226,7 +273,7 @@ You can use a couple of launch file arguments to configure the calibration proce
 
     One example using all the parameters above:
 
-        roslaunch <your_robot_calibration> calibrate.launch dataset_file:=$ATOM_DATASETS/<my_dataset>/dataset.json  use_incomplete_collections:=true ssf:='lambda name: name in ["camera1, "lidar2"]' csf:='lambda name: int(name) < 7'
+        roslaunch <my_robot_calibration> calibrate.launch dataset_file:=$ATOM_DATASETS/<my_dataset>/dataset.json  use_incomplete_collections:=true ssf:='lambda name: name in ["camera1, "lidar2"]' csf:='lambda name: int(name) < 7'
 
 
 ##### Advanced usage - running calibration script in separate terminal
@@ -236,7 +283,7 @@ which is what happens when you call the launch file. You can run everything with
 calibrate script using the **run_calibration:=false** option, e.g.:
 
 ```bash
-roslaunch <your_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json run_calibration:=false 
+roslaunch <my_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json run_calibration:=false 
 ```
 
 and then launch the calibrate script in standalone mode:
