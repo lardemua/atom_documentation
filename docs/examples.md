@@ -1,5 +1,11 @@
 ## Calibration Examples
 
+  - [MMTBot](#mmtbot)
+  - [Atlascar2](#atlascar2)
+  - [IrisUA - ur10e](#irisua---ur10e)
+  - [AgrobV2](#agrobv2)
+  - [LARCC](#larcc)
+
 ATOM provides extensive visualization possibilities while running the calibration optimization procedure. To visualize in ROS Rviz use the -rv flag.
 
 <!-- [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1NOEBKDMIpk/0.jpg)](https://www.youtube.com/watch?v=1NOEBKDMIpk) -->
@@ -39,7 +45,7 @@ So far, we have used **ATOM** to successfully calibrate several robotic platform
   <figcaption align=center>A 3D model of the AtlasCar2.</figcaption>
 </figure>
 
-Further details on this system can be read in the [papers published in ROBOT 2019 and RAS 2020](publications.md).
+Further details on this system can be read in the [papers published in ROBOT 2019 and RAS 2020](acknowledgment.md#citing-atom).
 
 ### IrisUA - ur10e 
 The [IrisUA - ur10e](https://github.com/iris-ua/iris_ur10e_calibration) includes several variants of the hand-eye calibration problem. The repositories containing the calibration ros package for this system are here: 
@@ -59,7 +65,7 @@ The [IrisUA - ur10e](https://github.com/iris-ua/iris_ur10e_calibration) includes
   <figcaption align=center>A 3D Model of the IRIS UA UR10e.</figcaption>
 </figure>
 
-Further details on this system can be read in the [paper published in T-Ro 2021](publications.md).
+Further details on this system can be read in the [paper published in T-Ro 2021](acknowledgment.md#citing-atom).
 
 ### AgrobV2 
  [AgrobV2](https://github.com/aaguiar96/agrob) is a mobile robot with a stereo camera and a 3D Lidar designed for agriculture robotics.
@@ -79,7 +85,7 @@ Further details on this system can be read in the [paper published in T-Ro 2021]
   <figcaption align=center>A 3D Model of the AgrobV2.</figcaption>
 </figure>
 
-Further details on this system can be read in the [paper published in ESWA 2021](publications.md).
+Further details on this system can be read in the [paper published in ESWA 2021](acknowledgment.md#citing-atom).
 
 ### LARCC
 

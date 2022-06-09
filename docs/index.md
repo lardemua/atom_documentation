@@ -5,7 +5,6 @@
 
 ## ATOM
 
-- [ATOM](#atom)
   - [What is ATOM?](#what-is-atom)
   - [Calibration Pipeline](#calibration-pipeline)
     - [Robotic System Configuration](#robotic-system-configuration)

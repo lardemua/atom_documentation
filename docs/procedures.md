@@ -1,5 +1,19 @@
 ## Calibration procedures
 
+  - [Create a calibration package](#create-a-calibration-package)
+  - [Configure a calibration package](#configure-a-calibration-package)
+  - [Set an initial estimate](#set-an-initial-estimate)
+    - [Visualizing sensor fustrums](#visualizing-sensor-fustrums)
+  - [Collect data](#collect-data)
+    - [RGB camera labeling](#rgb-camera-labeling)
+    - [3D Lidar labeling](#3d-lidar-labeling)
+    - [Depth camera labeling](#depth-camera-labeling)
+    - [2D Lidar labeling](#2d-lidar-labeling)
+  - [Dataset playback](#dataset-playback)
+  - [Calibrate](#calibrate)
+      - [Advanced usage - running calibration script in separate terminal](#advanced-usage---running-calibration-script-in-separate-terminal)
+      - [Advanced usage - two stage calibration for robotic systems with an anchored sensor](#advanced-usage---two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
+
 To calibrate your robot you must define your robotic system, (e.g. <my_robot\>). You should also have a **system
 description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<my_robot\>_description**.
 
@@ -116,7 +130,7 @@ ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These ma
 
 ### Collect data 
 
-To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as [collections](concepts.md#collections), and a set of collections as an [ATOM dataset](concepts.md#atom-datasets). 
+To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as [collections](index.md#what-is-a-collection), and a set of collections as an [ATOM dataset](index.md#what-is-an-atom-dataset). 
 
 
 To collect data, use:
@@ -219,7 +233,7 @@ The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The 
 </figure>
 
 !!! Warning "May be deprecated"
-    The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality create an issue with a request.
+    The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality [create an issue](https://github.com/lardemua/atom/issues) with a request.
 
 
 ### Dataset playback 

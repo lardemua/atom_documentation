@@ -1,6 +1,5 @@
 
 ## Getting Started
-<!-- TOC -->
 
 - [Getting Started](#getting-started)
   - [Installation](#installation)
@@ -12,9 +11,6 @@
     - [Collect Data](#collect-data)
     - [Dataset playback](#dataset-playback)
     - [Calibrate sensors](#calibrate-sensors)
-
-<!-- /TOC -->
-
 
 ### Installation
 

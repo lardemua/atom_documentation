@@ -1,5 +1,13 @@
 ## Evaluating your calibration
 
+  - [Annotation of rgb images](#annotation-of-rgb-images)
+  - [RGB to RGB camera evaluation](#rgb-to-rgb-camera-evaluation)
+  - [LiDAR to Depth Camera evaluation](#lidar-to-depth-camera-evaluation)
+  - [RGB to Depth camera evaluation](#rgb-to-depth-camera-evaluation)
+  - [LiDAR to LiDAR evaluation](#lidar-to-lidar-evaluation)
+  - [LiDAR to RGB camera evaluation](#lidar-to-rgb-camera-evaluation)
+  - [Point cloud image projection](#point-cloud-image-projection)
+
 After the system is calibrated one common concern is to be able to assess the accuracy of the produced calibration. ATOM provides several evaluation scripts for this purpose.
 
 Unlike ATOM which calibrates all sensors simultaneously, evaluations are performed in pairs of sensors, which facilitates comparisons with other calibration approaches (which are mostly pairwise),

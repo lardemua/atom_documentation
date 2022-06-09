@@ -1,4 +1,8 @@
-##Acknowledgements
+## Acknowledgements
+
+  - [Citing ATOM](#citing-atom)
+  - [Contributors](#contributors)
+  - [Current Maintainers](#current-maintainers)
 
 ### Citing ATOM
 
