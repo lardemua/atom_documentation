@@ -1,5 +1,6 @@
 ## Calibration procedures
 
+- [Calibration procedures](#calibration-procedures)
   - [Create a calibration package](#create-a-calibration-package)
   - [Configure a calibration package](#configure-a-calibration-package)
   - [Set an initial estimate](#set-an-initial-estimate)
@@ -10,9 +11,10 @@
     - [Depth camera labeling](#depth-camera-labeling)
     - [2D Lidar labeling](#2d-lidar-labeling)
   - [Dataset playback](#dataset-playback)
+    - [Correcting 3D Lidar labels](#correcting-3d-lidar-labels)
+    - [Correcting Depth labels](#correcting-depth-labels)
   - [Calibrate](#calibrate)
-      - [Advanced usage - running calibration script in separate terminal](#advanced-usage---running-calibration-script-in-separate-terminal)
-      - [Advanced usage - two stage calibration for robotic systems with an anchored sensor](#advanced-usage---two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
+    - [Advanced usage - Two stage calibration for robotic systems with an anchored sensor](#advanced-usage---two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
 
 To calibrate your robot you must define your robotic system, (e.g. <my_robot\>). You should also have a **system
 description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<my_robot\>_description**.
@@ -250,7 +252,7 @@ optional arguments:
   -ow, --overwrite      Overwrites the data_corrected.json without asking for permission
 ```
 
-
+Check the [video tutorial](multimedia.md#navigating-collections).
 
 <figure markdown align=center>
   ![](img/AtomDatasetPlaybackNavigation.gif){width="100%" }
@@ -267,6 +269,8 @@ Correcting 3D Lidar labels is done by selecting points in the point cloud displa
   <figcaption align=center>Correcting 3D Lidar labels in a dataset (LARCC).</figcaption>
 </figure>
 
+Check the [video tutorial](multimedia.md#correcting-3d-lidar-labels).
+
 !!! Tip "Do not forget to compile your catkin workspace"
 
     For selecting points from point clouds, we use an rviz plugin in cpp that must be compiled.
@@ -280,6 +284,7 @@ To correct depth modality labels the user draws a polygon around the pattern in 
   <figcaption align=center>Correcting depth labels in a dataset (LARCC).</figcaption>
 </figure>
 
+Check the [video tutorial](multimedia.md#correcting-depth-labels).
 
 !!! Warning "RViz fork required"
 
@@ -291,92 +296,121 @@ To correct depth modality labels the user draws a polygon around the pattern in 
 Finally, a system calibration is called through:
 
 ```bash
-roslaunch <my_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json 
-```
-You can use a couple of launch file arguments to configure the calibration procedure, as seen below:
-
-!!! Tip "Additional parameters for calibrate.launch"
-
-    | Argument  | Function | 
-    |:---:|:---:|
-    | use_incomplete_collections | Remove collections which do not have a detection for all sensors | 
-    | ssf | A string to be evaluated into a lambda function that receives  a sensor <br> name as input and returns True or False to indicate if the sensor <br>should be used in the optimization |  
-    | csf |  A string to be evaluated into a lambda function that receives a <br>collection name as input and returns True or False to indicate <br>if that collection should be used in the optimization.| 
-
-    One example using all the parameters above:
-
-        roslaunch <my_robot_calibration> calibrate.launch dataset_file:=$ATOM_DATASETS/<my_dataset>/dataset.json  use_incomplete_collections:=true ssf:='lambda name: name in ["camera1, "lidar2"]' csf:='lambda name: int(name) < 7'
-
-
-##### Advanced usage - running calibration script in separate terminal
-
-Alternatively, for debugging the calibrate script it is better not to have it executed with a bunch of other scripts
-which is what happens when you call the launch file. You can run everything with the launch excluding without the
-calibrate script using the **run_calibration:=false** option, e.g.:
-
-```bash
-roslaunch <my_robot_calibration> calibrate.launch dataset_file:=~/datasets/<my_dataset>/dataset.json run_calibration:=false 
+roslaunch <my_robot_calibration> calibrate.launch 
 ```
 
-and then launch the calibrate script in standalone mode:
+Then, in a second terminal, run the calibrate script:
 
 ```bash
-rosrun atom_calibration calibrate -json dataset_file:=~/datasets/<my_dataset>/dataset.json 
+rosrun atom_calibration calibrate -json $ATOM_DATASETS/<my_robot_dataset>/dataset_corrected.json -v -rv -si 
 ```
 
-There are several additional command line arguments to use with the **calibrate** script, run calibrate --help to get the complete list:
+There are several options to use in the calibrate script, one common usage is:
 
 ```bash
-usage: calibrate [-h] [-sv SKIP_VERTICES] [-z Z_INCONSISTENCY_THRESHOLD]
-                 [-vpv] [-vo] -json JSON_FILE [-v] [-rv] [-si] [-oi] [-pof]
-                 [-sr SAMPLE_RESIDUALS] [-ss SAMPLE_SEED] [-od] [-fec] [-uic]
-                 [-rpd] [-ssf SENSOR_SELECTION_FUNCTION]
-                 [-csf COLLECTION_SELECTION_FUNCTION]
+rosrun atom_calibration calibrate -json $ATOM_DATASETS/<my_robot_dataset>/dataset_corrected.json -v -rv -si -uic -csf 'lambda x: int(x)< 5'  -ssf 'lambda name: name in ["camera_2","camera_3"]'
+```
+
+which would run a calibration in verbose mode (-v), using ros visualization (-rv), showing images (-si), using incomplete collections, using collections with index smaller than 5, considering only sensors  camera_2 and camera_3.
+
+You can see all the options listed below:
+
+```
+usage: calibrate [-h] [-vo] -json JSON_FILE [-v] [-rv] [-si] [-oi] [-sr SAMPLE_RESIDUALS] [-ss SAMPLE_SEED]
+                 [-slr SAMPLE_LONGITUDINAL_RESIDUALS] [-ajf] [-oas] [-ap] [-uic] [-ias] [-rpd]
+                 [-nig translation rotation] [-ssf SENSOR_SELECTION_FUNCTION] [-csf COLLECTION_SELECTION_FUNCTION]
+                 [-phased] [-ipg] [-oj OUTPUT_JSON]
 
 optional arguments:
   -h, --help            show this help message and exit
+  -vo, --view_optimization
+                        ...
   -json JSON_FILE, --json_file JSON_FILE
                         Json file containing input dataset.
-  -vo, --view_optimization
-                        Displays generic total error and residuals graphs.
   -v, --verbose         Be verbose
   -rv, --ros_visualization
                         Publish ros visualization markers.
   -si, --show_images    shows images for each camera
   -oi, --optimize_intrinsics
-                        Adds camera instrinsics and distortion to the optimization
+                        Adds camera instrinsics to the ptimization
   -sr SAMPLE_RESIDUALS, --sample_residuals SAMPLE_RESIDUALS
                         Samples residuals
   -ss SAMPLE_SEED, --sample_seed SAMPLE_SEED
                         Sampling seed
+  -slr SAMPLE_LONGITUDINAL_RESIDUALS, --sample_longitudinal_residuals SAMPLE_LONGITUDINAL_RESIDUALS
+                        Samples residuals
+  -ajf, --all_joints_fixed
+                        Assume all joints are fixed and because of that draw a single robot mesh.Overrides automatic
+                        detection of static robot.
+  -oas, --only_anchored_sensor
+                        Runs optimization only using the anchored sensor and discarding all others.
+  -ap, --anchor_patterns
+                        Runs optimization without changing the poses of the patterns.
   -uic, --use_incomplete_collections
-                        Remove any collection which does not have a detection
-                        for all sensors.
+                        Remove any collection which does not have a detection for all sensors.
+  -ias, --ignore_anchored_sensor
+                        Ignore the anchored sensor information in the dataset.
   -rpd, --remove_partial_detections
-                        Remove detected labels which are only partial. Used or
-                        the Charuco.
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -nig translation rotation, --noisy_initial_guess translation rotation
+                        Percentage of noise to add to the initial guess atomic transformations set before.
   -ssf SENSOR_SELECTION_FUNCTION, --sensor_selection_function SENSOR_SELECTION_FUNCTION
-                        A string to be evaluated into a lambda function that
-                        receives a sensor name as input and returns True or
-                        False to indicate if the sensor should be loaded (and
-                        used in the optimization). The Syntax is lambda name:
-                        f(x), where f(x) is the function in python language.
-                        Example: lambda name: name in ["left_laser",
-                        "frontal_camera"] , to load only sensors left_laser
-                        and frontal_camera
+                        A string to be evaluated into a lambda function that receives a sensor name as input and
+                        returns True or False to indicate if the sensor should be loaded (and used in the
+                        optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: name in ["left_laser", "frontal_camera"] , to load only
+                        sensors left_laser and frontal_camera
   -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
-                        A string to be evaluated into a lambda function that
-                        receives a collection name as input and returns True
-                        or False to indicate if the collection should be
-                        loaded (and used in the optimization). The Syntax is
-                        lambda name: f(x), where f(x) is the function in
-                        python language. Example: lambda name: int(name) > 5 ,
-                        to load only collections 6, 7, and onward.
+                        A string to be evaluated into a lambda function that receives a collection name as input and
+                        returns True or False to indicate if the collection should be loaded (and used in the
+                        optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) > 5 , to load only collections 6, 7, and onward.
+  -phased, --phased_execution
+                        Stay in a loop before calling optimization, and in another after calling the optimization.
+                        Good for debugging.
+  -ipg, --initial_pose_ghost
+                        Draw a ghost mesh with the systems initial pose. Good for debugging.
+  -oj OUTPUT_JSON, --output_json OUTPUT_JSON
+                        Full path to output json file.
 ```
 
-It is also possible to call some of these through the launch file. Check the launch file to see how.
+If you use the --verbose option, the script will periodically print a table containing information about the errors per sensor and per collection.
 
-##### Advanced usage - two stage calibration for robotic systems with an anchored sensor
+```bash
+Errors per collection (anchored sensor,  max error per sensor, not detected as "---")
++------------+----------+----------+----------+----------------+---------+---------+---------+
+| Collection | camera_2 | camera_3 | camera_4 | depth_camera_1 | lidar_1 | lidar_2 | lidar_3 |
++------------+----------+----------+----------+----------------+---------+---------+---------+
+|     11     | 191.1838 |   ---    |  0.3000  |     0.1321     |  0.2606 |  0.1153 |  1.4850 |
+|     12     | 194.3039 | 98.7729  |  0.4031  |     0.1591     |  0.1043 |  0.0924 |  0.5050 |
+|     13     |   ---    | 94.6346  |  0.3795  |     0.1942     |  0.1657 |  0.1191 |  0.4210 |
+|     14     | 199.6314 |   ---    |  0.4001  |     0.1569     |  0.1897 |  0.0685 |  0.7067 |
+|     15     | 199.8989 |   ---    |  0.5995  |     0.1561     |  0.1956 |  0.0670 |  0.7074 |
+|     16     |   ---    | 146.3350 |  0.2370  |     0.1516     |  0.4412 |  0.1316 |  0.3175 |
+|     17     |   ---    | 150.6509 |  0.2204  |     0.1924     |  0.1747 |  0.0298 |  0.4698 |
+|     18     | 202.8877 |   ---    |  0.5371  |     0.0978     |  0.2200 |  0.1526 |  0.8007 |
+|     19     | 211.7066 | 133.3410 |  0.3598  |     0.2179     |  0.0909 |  0.0367 |  0.6065 |
+|     20     | 213.7645 |   ---    |  0.5272  |     0.2152     |  0.2647 |  0.2008 |  0.7670 |
+|     21     | 212.6482 |   ---    |  0.6358  |     0.2444     |  0.3512 |  0.0518 |  1.7215 |
+|     22     | 212.3743 |   ---    |  0.5967  |     0.2321     |  0.3342 |  0.0591 |  0.7347 |
+|     23     | 209.1305 |   ---    |  0.4488  |     0.1161     |  0.1601 |  0.0431 |  0.7198 |
+|     24     | 201.1378 | 139.1949 |  0.2539  |     0.1802     |  0.1114 |  0.0517 |  0.5524 |
+|     25     |   ---    | 139.2066 |  0.2994  |     0.0869     |  0.4260 |  0.1768 |  0.1162 |
+|     26     | 209.7005 |   ---    |  0.4192  |     0.1315     |  0.1400 |  0.0443 |  0.6932 |
+|     27     | 210.5517 |   ---    |  0.4042  |     0.2189     |  0.2926 |  0.0495 |  0.7068 |
+|     28     |   ---    | 142.4085 |  0.2628  |     0.1500     |  0.2662 |  0.1419 |  0.3405 |
+|  Averages  | 205.3015 | 130.5680 |  0.4047  |     0.1685     |  0.2327 |  0.0907 |  0.6873 |
++------------+----------+----------+----------+----------------+---------+---------+---------+
+```
+
+Here's an example of a system being calibrated.
+
+<figure markdown align=center>
+  ![](img/agrob_calibration.gif){width="100%" }
+  <figcaption align=center>Calibration of AgrobV2.</figcaption>
+</figure>
+
+#### Advanced usage - Two stage calibration for robotic systems with an anchored sensor
 
 When one sensor is set to be anchored in the calibration/config.yml file, i.e. this [file](https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99) for the AtlaCar2, we recommend a two stage procedure to achieve a more accurate calibration:
 
@@ -384,11 +418,8 @@ First, run a calibration using parameter **--only_anchored_sensor** (**-oas**) w
 
     rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/dataset_corrected.json -uic -nig 0.0 0.0 -ipg -si -rv -v -oas
 
-The output is stored in the **atom_calibration.json**, which is used and the input for the second stage, where all sensors are used. In this second stage the poses of the patterns are frozen using the parameter **--anchor_patterns** (**-ap**). To avoid overwritting atom_calibration.json, you should also define the output json file (**-oj**). For example:
+The output is stored in the **atom_calibration.json**, which is used and the input for the second stage, where all sensors are used. In this second stage the poses of the patterns are frozen using the parameter **--anchor_patterns** (**-ap**). To avoid overwriting atom_calibration.json, you should also define the output json file (**-oj**). For example:
 
     rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/atom_calibration.json -uic -nig 0.0 0.0 -ipg -si -rv -v -ap -oj atom_anchored_calibration.json
 
-<figure markdown align=center>
-  ![](img/agrob_calibration.gif){width="100%" }
-  <figcaption align=center>Calibration of AgrobV2.</figcaption>
-</figure>
+
