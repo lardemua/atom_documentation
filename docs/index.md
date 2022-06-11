@@ -50,9 +50,14 @@ The <span style="color:gray">greyed out boxes </span> are steps considered to be
 
 Below we describe each of these stages, giving examples for the [MMTBot](examples.md#mmtbot).
 
+
+
 #### Robotic System Configuration 
 
  Robotic System Configuration concerns the design and implementation of your robotic system in ROS. It generally involves the writting of an [UDRF](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file that describes the links and joints of your robotic system. It sometimes also includes de configuration of a simulation of your system in [Gazebo](https://gazebosim.org/home).
+
+!!! Note
+    We recommend using xacro files instead of urdfs. 
 
 Tipically one creates a couple of ros packages for our robot, as described below.
 

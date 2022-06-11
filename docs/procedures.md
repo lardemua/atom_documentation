@@ -16,12 +16,8 @@
 
 To calibrate your robot you must define your robotic system, (e.g. <my_robot\>). You should also have a **system
 description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<my_robot\>_description**.
-
-
-!!! Note
-    We recommend using xacro files instead of urdfs. 
-
-Finally, **ATOM** requires a bagfile with a recording of the data from the sensors you wish to calibrate.
+In addition to this, **ATOM** requires a bagfile with a recording of the data from the sensors you wish to calibrate.
+This was covered in detail in [Getting Started](index.md#calibration-pipeline).
 
 Transformations in the bagfile (i.e. topics /tf and /tf_static) will be ignored, so that they do not collide with the
 ones being published by the [robot_state_publisher](http://wiki.ros.org/robot_state_publisher). Thus, if your robotic system contains moving parts, the bagfile should also record the [sensor_msgs/JointState](http://docs.ros.org/en/lunar/api/sensor_msgs/html/msg/JointState.html) message.
@@ -132,7 +128,6 @@ ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These ma
 
 To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as [collections](index.md#what-is-a-collection), and a set of collections as an [ATOM dataset](index.md#what-is-an-atom-dataset). 
 
-
 To collect data, use:
 
 ```bash
@@ -211,16 +206,7 @@ The labeling of depth cameras a semi-automatic procedure. It is done by clicking
 
 !!! Warning "RViz fork required"
 
-    This functionality is only available using a special RViz fork at:
-    
-    [https://github.com/miguelriemoliveira/rviz](https://github.com/miguelriemoliveira/rviz) 
-    
-    which extends the image display to suport mouse clicking. We are working on integrating this in the RViz main branch, but this is not available yet.
-    More information here:
-
-    [https://github.com/ros-visualization/rviz/issues/916](https://github.com/ros-visualization/rviz/issues/916)
-
-    [https://github.com/ros-visualization/rviz/pull/1737](https://github.com/ros-visualization/rviz/pull/1737)
+    Learn about this [here](getting_started.md#clone-rviz-fork).
 
 
 #### 2D Lidar labeling
@@ -239,33 +225,65 @@ The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The 
 ### Dataset playback 
 
 The dataset playback is used to review and eventually correct the automatic labels produced during the [collection of data](#collect-data).
-Ideally, the bulk of the annotations should be correct, but a few incorrect labels will disruot the calibration. As such, a review of the annotations is recommended by default.
+Ideally, the bulk of the labels produced automatically during the collect data stage should be correct, but a few incorrect annotations will disrupt the calibration. As such, a review of the annotations is recommended. You may skip it if you feel that the automatic labeling went very well.
 
 To run the dataset playback, first launch the visualization:
 
     roslaunch <my_robot_calibration> dataset_playback.launch
 
-and then s
+and then the dataset_playback node:
 
-    clear && rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/larcc/larcc_real/test_dataset/dataset_corrected.json -csf "lambda x: int(x) <= 55" -uic -si  -ow
+    clear && rosrun atom_calibration dataset_playback -json <my_dataset_file>.json -ow
+
+This will create a new json file called <my_dataset_file_corrected/>.json. There are other available options listed below:
+
+```bash
+usage: dataset_playback [-h] -json JSON_FILE [-csf COLLECTION_SELECTION_FUNCTION] [-ow]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -json JSON_FILE, --json_file JSON_FILE
+                        Json file containing input dataset.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the collection should be loaded (and used in the optimization). The Syntax is
+                        lambda name: f(x), where f(x) is the function in python language. Example: lambda name: int(name) > 5 , to load only collections 6, 7, and onward.
+  -ow, --overwrite      Overwrites the data_corrected.json without asking for permission
+```
 
 
 
+<figure markdown align=center>
+  ![](img/AtomDatasetPlaybackNavigation.gif){width="100%" }
+  <figcaption align=center>Navigating through collections in a dataset (LARCC).</figcaption>
+</figure>
+
+
+#### Correcting 3D Lidar labels
+
+Correcting 3D Lidar labels is done by selecting points in the point cloud displayed by RViz and pressing keys in order to add these points as pattern points or boundary points.
+
+<figure markdown align=center>
+  ![](img/ATOMDatasetPlaybackCorrecting3DLidarLabels.gif){width="100%" }
+  <figcaption align=center>Correcting 3D Lidar labels in a dataset (LARCC).</figcaption>
+</figure>
+
+!!! Tip "Do not forget to compile your catkin workspace"
+
+    For selecting points from point clouds, we use an rviz plugin in cpp that must be compiled.
+
+#### Correcting Depth labels
+
+To correct depth modality labels the user draws a polygon around the pattern in the depth image.
+
+<figure markdown align=center>
+  ![](img/ATOMDatasetPlaybackCorrectingDepthLabels.gif){width="100%" }
+  <figcaption align=center>Correcting depth labels in a dataset (LARCC).</figcaption>
+</figure>
 
 
 !!! Warning "RViz fork required"
 
-    This functionality is only available using a special RViz fork at:
-    
-    [https://github.com/miguelriemoliveira/rviz](https://github.com/miguelriemoliveira/rviz) 
-    
-    which extends the image display to suport mouse clicking. We are working on integrating this in the RViz main branch, but this is not available yet.
-    More information here:
-
-    [https://github.com/ros-visualization/rviz/issues/916](https://github.com/ros-visualization/rviz/issues/916)
-
-    [https://github.com/ros-visualization/rviz/pull/1737](https://github.com/ros-visualization/rviz/pull/1737)
-
+    Learn about this [here](getting_started.md#clone-rviz-fork).
 
 
 ### Calibrate 
