@@ -48,10 +48,18 @@
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Getting Started</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#clone-atom-repository-and-install-dependencies">Clone ATOM repository and install dependencies</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#calibration-patterns">Calibration Patterns</a>
+    <li class="toctree-l3"><a class="reference internal" href="#clone-rviz-fork">Clone RViz fork</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a>
+    <li class="toctree-l3"><a class="reference internal" href="#set-environment-variables">Set environment variables</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#calibration-patterns">Calibration patterns</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic usage</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#create-a-calibration-package">Create a calibration package</a>
     </li>
@@ -59,7 +67,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#set-initial-estimate">Set initial estimate</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#collect-data">Collect Data</a>
+    <li class="toctree-l3"><a class="reference internal" href="#collect-data">Collect data</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#dataset-playback">Dataset playback</a>
     </li>
@@ -113,28 +121,47 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="getting-started">Getting Started</h2>
+                <h2 id="getting-started">Getting started</h2>
 <ul>
-<li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#installation">Installation</a></li>
-<li><a href="#calibration-patterns">Calibration Patterns</a></li>
-<li><a href="#basic-usage">Basic Usage</a><ul>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#clone-atom-repository-and-install-dependencies">Clone ATOM repository and install dependencies</a></li>
+<li><a href="#clone-rviz-fork">Clone RViz fork</a></li>
+<li><a href="#set-environment-variables">Set environment variables</a></li>
+</ul>
+</li>
+<li><a href="#calibration-patterns">Calibration patterns</a></li>
+<li><a href="#basic-usage">Basic usage</a><ul>
 <li><a href="#create-a-calibration-package">Create a calibration package</a></li>
 <li><a href="#configure-a-calibration-package">Configure a calibration package</a></li>
 <li><a href="#set-initial-estimate">Set initial estimate</a></li>
-<li><a href="#collect-data">Collect Data</a></li>
+<li><a href="#collect-data">Collect data</a></li>
 <li><a href="#dataset-playback">Dataset playback</a></li>
 <li><a href="#calibrate-sensors">Calibrate sensors</a></li>
 </ul>
 </li>
 </ul>
 <h3 id="installation">Installation</h3>
-<p>Clone the atom repository to a directory inside your catkin workspace:</p>
+<h4 id="clone-atom-repository-and-install-dependencies">Clone ATOM repository and install dependencies</h4>
+<p>Clone the atom repository to a directory soemwhere inside your catkin workspace:</p>
 <pre><code>git clone https://github.com/lardemua/atom
 </code></pre>
 <p>then install requirements.</p>
 <pre><code>sudo pip3 install -r requirements.txt
 </code></pre>
+<h4 id="clone-rviz-fork">Clone RViz fork</h4>
+<p>Some of the functionalities in ATOM, i.e., depth semi-automatic labeling and depth manual labeling, make use of a 
+<a href="https://github.com/miguelriemoliveira/rviz">special RViz fork</a> that allows for mouse clicking functionality. </p>
+<p>If you are interested in using one of these functionalities you have to clone it to your catkin workspace:</p>
+<pre><code>git clone https://github.com/miguelriemoliveira/rviz
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">To be integrated into RVIZ</p>
+<p>The functionality extends the image display to suport mouse clicking. We are working on integrating this in the RViz main branch, but this is not available yet.
+More information here:</p>
+<p><a href="https://github.com/ros-visualization/rviz/issues/916">https://github.com/ros-visualization/rviz/issues/916</a></p>
+<p><a href="https://github.com/ros-visualization/rviz/pull/1737">https://github.com/ros-visualization/rviz/pull/1737</a></p>
+</div>
+<h4 id="set-environment-variables">Set environment variables</h4>
 <p>We often use two enviroment variables to allow for easy cross machine access to bagfiles and datasets. If you want to use these you can also add these lines to your <em>.bashrc</em> or <em>.zhsrc</em>, adjusting the paths according to your case:</p>
 <pre><code class="language-bash">export ROS_BAGS=&quot;$HOME/&lt;bagfiles&quot;
 export ATOM_DATASETS=&quot;$HOME/datasets&quot;
@@ -142,9 +169,8 @@ export ATOM_DATASETS=&quot;$HOME/datasets&quot;
 <p>and then you can refer to these environment variables when providing paths to atom scripts, e.g.:</p>
 <pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; calibrate.launch dataset_file:=$ATOM_DATASETS/&lt;my_dataset&gt;/dataset.json
 </code></pre>
-<p>and you can also refer to them inside
-the <a href="https://github.com/lardemua/atlascar2/blob/0c065508f325fb57e0439c1ba2e00f9468cd73e7/atlascar2_calibration/calibration/config.yml#L14">calibration configuration file</a></p>
-<h3 id="calibration-patterns">Calibration Patterns</h3>
+<p>and you can also refer to them inside the <a href="https://github.com/lardemua/atlascar2/blob/0c065508f325fb57e0439c1ba2e00f9468cd73e7/atlascar2_calibration/calibration/config.yml#L14">calibration configuration file</a></p>
+<h3 id="calibration-patterns">Calibration patterns</h3>
 <p>We recomend the usage 
 RGB cameras have a fully automatic pattern detection. It uses off the shelf <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a">chessboard</a> or <a href="https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html">charuco</a> calibration pattern detectors.</p>
 <p>To calibrate our systems we purchased charuco calibration patterns from <a href="https://calib.io/products/charuco-targets?variant=9400455004207">calib.io</a>.</p>
@@ -152,7 +178,7 @@ RGB cameras have a fully automatic pattern detection. It uses off the shelf <a h
 <p class="admonition-title">Note</p>
 <p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.</p>
 </div>
-<h3 id="basic-usage">Basic Usage</h3>
+<h3 id="basic-usage">Basic usage</h3>
 <p>Unlike most other calibration approaches, <strong>ATOM</strong> offers tools to address the complete calibration pipeline. These are
 instructions for quick starting your robotic system calibration. If you need more details read through
 the <a href="../procedures/">detailed description</a> below.</p>
@@ -174,7 +200,7 @@ the <a href="../procedures/">detailed description</a> below.</p>
 <p>To use launch:</p>
 <pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; set_initial_estimate.launch 
 </code></pre>
-<h4 id="collect-data">Collect Data</h4>
+<h4 id="collect-data">Collect data</h4>
 <p>Collecting data produces an ATOM dataset, which is then used for calibrating the system.</p>
 <pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; collect_data.launch output_folder:=~/datasets/&lt;my_dataset&gt; 
 </code></pre>
