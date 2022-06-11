@@ -174,6 +174,11 @@ export ATOM_DATASETS=&quot;$HOME/datasets&quot;
 <p>We recomend the usage 
 RGB cameras have a fully automatic pattern detection. It uses off the shelf <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a">chessboard</a> or <a href="https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html">charuco</a> calibration pattern detectors.</p>
 <p>To calibrate our systems we purchased charuco calibration patterns from <a href="https://calib.io/products/charuco-targets?variant=9400455004207">calib.io</a>.</p>
+<figure align="center">
+<p><img alt="Image title" src="../img/CharucoPhoto.png" width="60%" />
+  </p>
+<figcaption align="center">An example of a Charuco calibration pattern.</figcaption>
+</figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.</p>
