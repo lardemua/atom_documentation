@@ -19,12 +19,17 @@
 
 ### Contributors
 
-* Miguel Riem Oliveira - University of Aveiro
-* Afonso Castro - University of Aveiro
-* Eurico Pedrosa - University of Aveiro
-* Tiago Madeira - University of Aveiro
-* André Aguiar - INESC TEC
-* Daniela Rato - University of Aveiro
+This project started in 2017, and since then many people have contributed to a lesser or larger degree. We list all of them here in alphabetical order:
+André Aguiar,
+Afonso Castro
+Daniel Coelho,
+Paulo Dias
+Manuel Gomes,
+Tiago Madeira,
+Miguel Riem Oliveira, 
+Eurico Pedrosa,
+Daniela Rato,
+Vitor Santos.
 
 ### Current Maintainers
 

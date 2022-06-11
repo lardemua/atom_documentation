@@ -15,6 +15,7 @@
     - [Calibration](#calibration)
     - [Calibration Evaluation](#calibration-evaluation)
     - [Running the calibrated system](#running-the-calibrated-system)
+  - [What is a Label?](#what-is-a-label)
   - [What is a collection?](#what-is-a-collection)
   - [What is an ATOM Dataset?](#what-is-an-atom-dataset)
 
@@ -110,7 +111,7 @@ This stage is used to review ATOM datasets. The reviewing may identify incorrect
 
 #### Calibration
 
-This is were finally the system is calibrated. ATOM provides extensive visualization funcionalities so that it is possible to observe how the calibration is performing.
+This is were finally the system is calibrated. ATOM provides extensive visualization functionalities so that it is possible to observe how the calibration is performing.
 
 More details [here](procedures.md#calibrate).
 
@@ -125,11 +126,48 @@ More details [here](evaluations.md).
 
 After calibration ATOM produces a calibrated URDF file which can be direcly used in ROS.
 
-If you get here unscathed you are a very lucky person ... Enjoy!
+
+If you get here unscathed, <span style="color:orange">you are a very lucky person :-) </span> ... Enjoy!
+
+### What is a Label?
+
+A label is a data point selected from the complete sensor data, obtained through a labeling or pattern detection procedure .
+The representation of a label differs according to the sensor modality, as detailed next.
+
+RGB camera labels are a list of image pixel coordinates of the corners of the pattern.
+
+<figure markdown align=center>
+  ![Image title](img/rgb_labels.png){width="60%" }
+  <figcaption align=center>Labels for RGB modality.</figcaption>
+</figure>
+
+
+3D Lidar labels contain the list of 3D point coordinates of the Lidar data points that belong to the pattern.
+In addition to this, 3D Lidar labels also contain a list of 3D points of the physical boundaries of the pattern.
+
+<figure markdown align=center>
+  ![Image title](img/lidar3d_labels.png){width="50%" }
+  <figcaption align=center>Labels for the 3D Lidar modality. Small green spheres are the pattern support points, larger green spheres are the points annotated as boundaries of the pattern.</figcaption>
+</figure>
+
+
+<figure markdown align=center>
+  ![Image title](img/depth_label.png){width="50%" }
+  <figcaption align=center>Labels for the depth modality. Pattern support points in yellow, and boundaries in pink.</figcaption>
+</figure>
+
 
 ### What is a collection?
 
 A collection is a recording of the data from all the sensors in the system at a particular time instant selected by the user. Collections also contain information about labels for the sensor data, as well as the state of the robotic system at that time, i.e., all the transformations.
+
+A collection is referred to as incomplete collection when it is not possible to detect the pattern in at least one of the sensors in the robotic system.
+
+<figure markdown align=center>
+  ![Image title](img/ATOMCollection.png){width="100%" }
+  <figcaption align=center>Sensor data from an MMTBot collection.</figcaption>
+</figure>
+
 
 ### What is an ATOM Dataset?
 

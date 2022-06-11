@@ -70,6 +70,12 @@ RGB cameras have a fully automatic pattern detection. It uses off the shelf [che
 
 To calibrate our systems we purchased charuco calibration patterns from [calib.io](https://calib.io/products/charuco-targets?variant=9400455004207).
 
+
+<figure markdown align=center>
+  ![Image title](img/CharucoPhoto.png){width="60%" }
+  <figcaption align=center>An example of a Charuco calibration pattern.</figcaption>
+</figure>
+
 !!! Note
     Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.
 
