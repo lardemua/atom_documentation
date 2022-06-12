@@ -1,6 +1,5 @@
 ## Calibration procedures
 
-- [Calibration procedures](#calibration-procedures)
   - [Create a calibration package](#create-a-calibration-package)
   - [Configure a calibration package](#configure-a-calibration-package)
   - [Set an initial estimate](#set-an-initial-estimate)
@@ -15,11 +14,11 @@
     - [Correcting Depth labels](#correcting-depth-labels)
   - [Calibrate](#calibrate)
     - [Advanced usage - Two stage calibration for robotic systems with an anchored sensor](#advanced-usage---two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
-
+  
 To calibrate your robot you must define your robotic system, (e.g. <my_robot\>). You should also have a **system
 description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<my_robot\>_description**.
 In addition to this, **ATOM** requires a bagfile with a recording of the data from the sensors you wish to calibrate.
-This was covered in detail in [Getting Started](index.md#calibration-pipeline).
+This was covered in detail in [here](index.md#calibration-pipeline).
 
 Transformations in the bagfile (i.e. topics /tf and /tf_static) will be ignored, so that they do not collide with the
 ones being published by the [robot_state_publisher](http://wiki.ros.org/robot_state_publisher). Thus, if your robotic system contains moving parts, the bagfile should also record the [sensor_msgs/JointState](http://docs.ros.org/en/lunar/api/sensor_msgs/html/msg/JointState.html) message.
@@ -210,8 +209,45 @@ After filling the config.yml file, you should run the package configuration:
 rosrun <my_robot_calibration> configure 
 ```
 
-This will go through a series of varifications, and create a set of files for launching the system, configuring rviz,
-etc.
+This will go through a series of verifications to check if the configuration is valid, if the bagfile exists and contains the necessary transformations, among many others.
+Once the verifications signal a correct calibration configuration, a set of files is automatically created inside your 
+**<my_robot\>_calibration** ros package, as shown below:
+
+```bash
+├<my_robot>_calibration
+├── launch
+│   ├── calibrate.launch
+│   ├── collect_data.launch
+│   ├── dataset_playback.launch
+│   ├── playbag.launch
+│   └── set_initial_estimate.launch
+├── rviz
+│   ├── calibrate.rviz
+│   ├── collect_data.rviz
+│   ├── dataset_playback.rviz
+│   └── set_initial_estimate.rviz
+├── scripts
+│   └── configure
+└── urdf
+    ├── initial_estimate.urdf.xacro
+├── calibration
+│   ├── config.yml
+│   └── summary.pdf
+
+```
+
+The **launch** directory contains automatically created launch files used to launch each of the calibration stages.
+The **rviz** folder contains several rviz configuration files used to launch the visualization of each stage.
+The **urdf** folder contains a symbolic link to the xacro file of <my_robot\>, and after calibration will contain a calibrated urdf. 
+Finally, the **calibration** folder contains the configuration file (config.yml) and also a schematic of the configuration of the calibration.
+It is used to inspect the configuration of the calibration and assess if the configuration is doing what we intended.
+Atomic transformations to be estimated are marked in blue, sensor coordinate systems, i.e. the coordinate systems in which sensors produce their data are marked in green, and the selected world coordinate frame is highlighted in red.
+
+<figure markdown align=center>
+  ![](img/calibration_summary.png){width="120%" }
+  <figcaption align=center>Summary of a calibration configuration (MMTBot).</figcaption>
+</figure>
+
 
 It is also possible to configure your calibration package with a different configuration file, in the case you have
 multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:
