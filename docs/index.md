@@ -15,10 +15,9 @@
     - [Calibration](#calibration)
     - [Calibration Evaluation](#calibration-evaluation)
     - [Running the calibrated system](#running-the-calibrated-system)
-  - [What is a Label?](#what-is-a-label)
+  - [What is a label?](#what-is-a-label)
   - [What is a collection?](#what-is-a-collection)
-  - [What is an ATOM Dataset?](#what-is-an-atom-dataset)
-
+  - [What is an ATOM dataset?](#what-is-an-atom-dataset)
 ### What is ATOM?
 
 
@@ -129,7 +128,7 @@ After calibration ATOM produces a calibrated URDF file which can be direcly used
 
 If you get here unscathed, <span style="color:orange">you are a very lucky person :-) </span> ... Enjoy!
 
-### What is a Label?
+### What is a label?
 
 A label is a data point selected from the complete sensor data, obtained through a labeling or pattern detection procedure .
 The representation of a label differs according to the sensor modality, as detailed next.
@@ -150,6 +149,7 @@ In addition to this, 3D Lidar labels also contain a list of 3D points of the phy
   <figcaption align=center>Labels for the 3D Lidar modality. Small green spheres are the pattern support points, larger green spheres are the points annotated as boundaries of the pattern.</figcaption>
 </figure>
 
+Depth modality labels contain a list of image pixel coordinates that are annotated to be inside the pattern. In addition to this, depth labels also contain a set of pixel coordinates of the boundaries of the pattern.
 
 <figure markdown align=center>
   ![Image title](img/depth_label.png){width="50%" }
@@ -169,19 +169,21 @@ A collection is referred to as incomplete collection when it is not possible to 
 </figure>
 
 
-### What is an ATOM Dataset?
+### What is an ATOM dataset?
 
 
 An ATOM dataset is a folder which contains data used for the calibration of a robotic system. Every ATOM dataset contains a **dataset.json** which provides details about the dataset, such as the defined configuration, the number of sensors, etc. 
 
 Several scripts in the calibration pipeline require an ATOM dataset, but is worth mentioning that the files are also human readable. 
 
+Here is an [example of a dataset from LARCC](https://jsoneditoronline.org/#left=cloud.d9efaa274cb44579ad73553dea513ed8).
 Below you can see the structure of an ATOM dataset.
 
 <figure markdown align=center>
   ![Image title](img/ATOMDataset_tree.png){width="60%" }
   <figcaption align=center>Structure of an ATOM dataset json file.</figcaption>
 </figure>
+
 
 A **dataset.json** file contains a **_metadata** field, where details about the date, user and others are stored. It also contains a **calibration_config**, which is a copy of the state of the configuration file at the time of creation of the dataset. The **sensors** field describes each of the sensors in the system, in particular those selected to be calibrated. 
 
