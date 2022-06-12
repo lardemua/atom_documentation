@@ -65,11 +65,11 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#what-is-a-label">What is a Label?</a>
+    <li class="toctree-l2"><a class="reference internal" href="#what-is-a-label">What is a label?</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#what-is-a-collection">What is a collection?</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#what-is-an-atom-dataset">What is an ATOM Dataset?</a>
+    <li class="toctree-l2"><a class="reference internal" href="#what-is-an-atom-dataset">What is an ATOM dataset?</a>
     </li>
     </ul>
                 </li>
@@ -140,9 +140,9 @@
 <li><a href="#running-the-calibrated-system">Running the calibrated system</a></li>
 </ul>
 </li>
-<li><a href="#what-is-a-label">What is a Label?</a></li>
+<li><a href="#what-is-a-label">What is a label?</a></li>
 <li><a href="#what-is-a-collection">What is a collection?</a></li>
-<li><a href="#what-is-an-atom-dataset">What is an ATOM Dataset?</a></li>
+<li><a href="#what-is-an-atom-dataset">What is an ATOM dataset?</a></li>
 </ul>
 <h3 id="what-is-atom">What is ATOM?</h3>
 <p><a href="https://github.com/lardemua/atom">ATOM</a> is a calibration framework using the <strong>A</strong>tomic <strong>T</strong>ransformations <strong>O</strong>ptimization <strong>M</strong>ethod. </p>
@@ -213,7 +213,7 @@ These tools are pairwise evaluations, which means it is possible to compare the 
 <h4 id="running-the-calibrated-system">Running the calibrated system</h4>
 <p>After calibration ATOM produces a calibrated URDF file which can be direcly used in ROS.</p>
 <p>If you get here unscathed, <span style="color:orange">you are a very lucky person :-) </span> ... Enjoy!</p>
-<h3 id="what-is-a-label">What is a Label?</h3>
+<h3 id="what-is-a-label">What is a label?</h3>
 <p>A label is a data point selected from the complete sensor data, obtained through a labeling or pattern detection procedure .
 The representation of a label differs according to the sensor modality, as detailed next.</p>
 <p>RGB camera labels are a list of image pixel coordinates of the corners of the pattern.</p>
@@ -229,6 +229,7 @@ In addition to this, 3D Lidar labels also contain a list of 3D points of the phy
   </p>
 <figcaption align="center">Labels for the 3D Lidar modality. Small green spheres are the pattern support points, larger green spheres are the points annotated as boundaries of the pattern.</figcaption>
 </figure>
+<p>Depth modality labels contain a list of image pixel coordinates that are annotated to be inside the pattern. In addition to this, depth labels also contain a set of pixel coordinates of the boundaries of the pattern.</p>
 <figure align="center">
 <p><img alt="Image title" src="img/depth_label.png" width="50%" />
   </p>
@@ -242,10 +243,11 @@ In addition to this, 3D Lidar labels also contain a list of 3D points of the phy
   </p>
 <figcaption align="center">Sensor data from an MMTBot collection.</figcaption>
 </figure>
-<h3 id="what-is-an-atom-dataset">What is an ATOM Dataset?</h3>
+<h3 id="what-is-an-atom-dataset">What is an ATOM dataset?</h3>
 <p>An ATOM dataset is a folder which contains data used for the calibration of a robotic system. Every ATOM dataset contains a <strong>dataset.json</strong> which provides details about the dataset, such as the defined configuration, the number of sensors, etc. </p>
 <p>Several scripts in the calibration pipeline require an ATOM dataset, but is worth mentioning that the files are also human readable. </p>
-<p>Below you can see the structure of an ATOM dataset.</p>
+<p>Here is an <a href="https://jsoneditoronline.org/#left=cloud.d9efaa274cb44579ad73553dea513ed8">example of a dataset from LARCC</a>.
+Below you can see the structure of an ATOM dataset.</p>
 <figure align="center">
 <p><img alt="Image title" src="img/ATOMDataset_tree.png" width="60%" />
   </p>
@@ -307,5 +309,5 @@ In addition to this, 3D Lidar labels also contain a list of 3D points of the phy
 
 <!--
 MkDocs version : 1.3.0
-Build Date UTC : 2022-06-11 22:44:32.277092+00:00
+Build Date UTC : 2022-06-12 13:14:24.725652+00:00
 -->

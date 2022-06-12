@@ -131,7 +131,6 @@
               
                 <h2 id="calibration-procedures">Calibration procedures</h2>
 <ul>
-<li><a href="#calibration-procedures">Calibration procedures</a></li>
 <li><a href="#create-a-calibration-package">Create a calibration package</a></li>
 <li><a href="#configure-a-calibration-package">Configure a calibration package</a></li>
 <li><a href="#set-an-initial-estimate">Set an initial estimate</a><ul>
@@ -158,7 +157,7 @@
 <p>To calibrate your robot you must define your robotic system, (e.g. &lt;my_robot>). You should also have a <strong>system
 description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file(s). This is normally stored in a ros package named <strong>&lt;my_robot>_description</strong>.
 In addition to this, <strong>ATOM</strong> requires a bagfile with a recording of the data from the sensors you wish to calibrate.
-This was covered in detail in <a href="..#calibration-pipeline">Getting Started</a>.</p>
+This was covered in detail in <a href="..#calibration-pipeline">here</a>.</p>
 <p>Transformations in the bagfile (i.e. topics /tf and /tf_static) will be ignored, so that they do not collide with the
 ones being published by the <a href="http://wiki.ros.org/robot_state_publisher">robot_state_publisher</a>. Thus, if your robotic system contains moving parts, the bagfile should also record the <a href="http://docs.ros.org/en/lunar/api/sensor_msgs/html/msg/JointState.html">sensor_msgs/JointState</a> message.</p>
 <div class="admonition note">
@@ -327,8 +326,41 @@ max_duration_between_msgs: 1000
 <p>After filling the config.yml file, you should run the package configuration:</p>
 <pre><code class="language-bash">rosrun &lt;my_robot_calibration&gt; configure 
 </code></pre>
-<p>This will go through a series of varifications, and create a set of files for launching the system, configuring rviz,
-etc.</p>
+<p>This will go through a series of verifications to check if the configuration is valid, if the bagfile exists and contains the necessary transformations, among many others.
+Once the verifications signal a correct calibration configuration, a set of files is automatically created inside your 
+<strong>&lt;my_robot>_calibration</strong> ros package, as shown below:</p>
+<pre><code class="language-bash">├&lt;my_robot&gt;_calibration
+├── launch
+│   ├── calibrate.launch
+│   ├── collect_data.launch
+│   ├── dataset_playback.launch
+│   ├── playbag.launch
+│   └── set_initial_estimate.launch
+├── rviz
+│   ├── calibrate.rviz
+│   ├── collect_data.rviz
+│   ├── dataset_playback.rviz
+│   └── set_initial_estimate.rviz
+├── scripts
+│   └── configure
+└── urdf
+    ├── initial_estimate.urdf.xacro
+├── calibration
+│   ├── config.yml
+│   └── summary.pdf
+
+</code></pre>
+<p>The <strong>launch</strong> directory contains automatically created launch files used to launch each of the calibration stages.
+The <strong>rviz</strong> folder contains several rviz configuration files used to launch the visualization of each stage.
+The <strong>urdf</strong> folder contains a symbolic link to the xacro file of &lt;my_robot>, and after calibration will contain a calibrated urdf. 
+Finally, the <strong>calibration</strong> folder contains the configuration file (config.yml) and also a schematic of the configuration of the calibration.
+It is used to inspect the configuration of the calibration and assess if the configuration is doing what we intended.
+Atomic transformations to be estimated are marked in blue, sensor coordinate systems, i.e. the coordinate systems in which sensors produce their data are marked in green, and the selected world coordinate frame is highlighted in red.</p>
+<figure align="center">
+<p><img alt="" src="../img/calibration_summary.png" width="120%" />
+  </p>
+<figcaption align="center">Summary of a calibration configuration (MMTBot).</figcaption>
+</figure>
 <p>It is also possible to configure your calibration package with a different configuration file, in the case you have
 multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:</p>
 <pre><code class="language-bash">usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
