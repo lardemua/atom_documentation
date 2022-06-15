@@ -83,7 +83,9 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#calibrate">Calibrate</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#advanced-usage-two-stage-calibration-for-robotic-systems-with-an-anchored-sensor">Advanced usage - Two stage calibration for robotic systems with an anchored sensor</a>
+    <li class="toctree-l3"><a class="reference internal" href="#calibrating-intrinsic-parameters">Calibrating intrinsic parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#two-stage-calibration-for-robotic-systems-with-an-anchored-sensor">Two stage calibration for robotic systems with an anchored sensor</a>
     </li>
         </ul>
     </li>
@@ -408,7 +410,11 @@ user to set the pose of the sensors while having immediate visual feedback.</p>
 <p>To collect data, use:</p>
 <pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt;
 </code></pre>
-<p>The script launches an rviz window already configured. The user observes the data playback and <strong>decides when a collection should be saved</strong> by clicking a green sphere in that appears in the scene.</p>
+<p>The script launches an rviz window already configured. The user observes the data playback and <strong>decides when a collection should be saved</strong> by clicking a green sphere in that appears in the scene. </p>
+<p>The number of collections required to accurately calibrate a system vary according to the number, modality and positioning of the sensors. 
+Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
+That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
+of overlap there is between the sensors.</p>
 <p>It is also possible to add additional parameters to configure several aspects of the script. See below all the options.</p>
 <div class="admonition tip">
 <p class="admonition-title">Additional parameters for collect_data.launch</p>
@@ -656,7 +662,10 @@ optional arguments:
   </p>
 <figcaption align="center">Calibration of AgrobV2.</figcaption>
 </figure>
-<h4 id="advanced-usage-two-stage-calibration-for-robotic-systems-with-an-anchored-sensor">Advanced usage - Two stage calibration for robotic systems with an anchored sensor</h4>
+<h4 id="calibrating-intrinsic-parameters">Calibrating intrinsic parameters</h4>
+<p>ATOM also supports intrinsic camera calibration (for now just RGB modality), but requires a first guess for these parameters. </p>
+<p>We compute a first guess using the <a href="http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration">ROS monocular camera calibration</a> for rgb cameras, and the <a href="http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration">depth camera intrinsic calibration</a> for depth cameras. After these calibrations are carried out, the sensor drivers publish calibrated <a href="http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/CameraInfo.html">camera_info messages</a> which are saved to the bag files that is used for calibration, and then used a as first guess for ATOM's intrinsic parameter estimation. Intrinsic calibration runs simultaneous with the extrinsic calibration. </p>
+<h4 id="two-stage-calibration-for-robotic-systems-with-an-anchored-sensor">Two stage calibration for robotic systems with an anchored sensor</h4>
 <p>When one sensor is set to be anchored in the calibration/config.yml file, i.e. this <a href="https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99">file</a> for the AtlaCar2, we recommend a two stage procedure to achieve a more accurate calibration:</p>
 <p>First, run a calibration using parameter <strong>--only_anchored_sensor</strong> (<strong>-oas</strong>) which will exclude from the optimization all sensors which are not the anchored one. This optimization will position the patterns correctly w.r.t. the anchored sensor. For example:</p>
 <pre><code>rosrun atom_calibration calibrate -json $ATOM_DATASETS/larcc_real/ dataset_train/dataset_corrected.json -uic -nig 0.0 0.0 -ipg -si -rv -v -oas
