@@ -21,9 +21,9 @@
 
 This project started in 2017, and since then many people have contributed to a lesser or larger degree. We list all of them here in alphabetical order:
 André Aguiar,
-Afonso Castro
+Afonso Castro,
 Daniel Coelho,
-Paulo Dias
+Paulo Dias,
 Manuel Gomes,
 Tiago Madeira,
 Miguel Riem Oliveira, 

@@ -2,6 +2,9 @@
 
   - [Create a calibration package](#create-a-calibration-package)
   - [Configure a calibration package](#configure-a-calibration-package)
+      - [Recording compressed images](#recording-compressed-images)
+      - [Throttling topics](#throttling-topics)
+      - [Using a different configuration file](#using-a-different-configuration-file)
   - [Set an initial estimate](#set-an-initial-estimate)
     - [Visualizing sensor fustrums](#visualizing-sensor-fustrums)
   - [Collect data](#collect-data)
@@ -13,7 +16,8 @@
     - [Correcting 3D Lidar labels](#correcting-3d-lidar-labels)
     - [Correcting Depth labels](#correcting-depth-labels)
   - [Calibrate](#calibrate)
-    - [Advanced usage - Two stage calibration for robotic systems with an anchored sensor](#advanced-usage---two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
+    - [Calibrating intrinsic parameters](#calibrating-intrinsic-parameters)
+    - [Two stage calibration for robotic systems with an anchored sensor](#two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
   
 To calibrate your robot you must define your robotic system, (e.g. <my_robot\>). You should also have a **system
 description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<my_robot\>_description**.
@@ -25,7 +29,7 @@ ones being published by the [robot_state_publisher](http://wiki.ros.org/robot_st
 
 !!! Note
     It is also possible to use the transformations in the bagfile instead of using the xacro description and the robot state publisher to produce them. 
-    See section on [configuring a calibration package](#configuring-a-calibration-package).
+    See section on [using tfs instead of a xacro file](#using-tfs-instead-of-the-xacro-file).
 
 
 To reduce the bag size, it may contain compressed images instead of raw images, since **ATOM** can decompress them while playing back the bagfile. 
@@ -238,8 +242,10 @@ Once the verifications signal a correct calibration configuration, a set of file
 
 The **launch** directory contains automatically created launch files used to launch each of the calibration stages.
 The **rviz** folder contains several rviz configuration files used to launch the visualization of each stage.
-The **urdf** folder contains a symbolic link to the xacro file of <my_robot\>, and after calibration will contain a calibrated urdf. 
-Finally, the **calibration** folder contains the configuration file (config.yml) and also a schematic of the configuration of the calibration.
+The **urdf** folder contains a symbolic link to the xacro file of <my_robot\> and, after calibration, will contain a calibrated urdf. 
+Finally, the **calibration** folder contains the configuration file (config.yml). 
+
+This folder also contains an automatically produced schematic of the configuration of the calibration.
 It is used to inspect the configuration of the calibration and assess if the configuration is doing what we intended.
 Atomic transformations to be estimated are marked in blue, sensor coordinate systems, i.e. the coordinate systems in which sensors produce their data are marked in green, and the selected world coordinate frame is highlighted in red.
 
@@ -249,6 +255,21 @@ Atomic transformations to be estimated are marked in blue, sensor coordinate sys
 </figure>
 
 
+##### Recording compressed images
+
+In case the topics from RGB camera(s) are published using the [ROS image transport](http://wiki.ros.org/image_transport), it is possible to record the compressed image topic instead of the raw image topic as in [this example](index.md#data-logging). During the configuration of your calibration package, ATOM will detect that these are compressed topics and automatically generate a decompressing mechanism in the launch files. 
+
+The advantage is that you get much smaller bag files since they contain compressed images.
+This may be critical for large systems such as [LARCC](examples.md#larcc), where the data output may reach over 1GB per minute.
+
+##### Throttling topics
+
+For an offline calibration procedure, speed is not critical. Thus, it is possible to configure a [ROS topic throttler](http://wiki.ros.org/topic_tools/throttle) for your sensor messages, if they have been recorded in a higher than necessary frequency.
+For that just add a field **throttle** to the section of the corresponding sensor in your calibration config.yaml file.
+
+
+##### Using a different configuration file
+
 It is also possible to configure your calibration package with a different configuration file, in the case you have
 multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:
 
@@ -257,18 +278,38 @@ usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-c
 
 -h, --help            show this help message and exit
 -n NAME, --name NAME  package name
--utf, --use_tfs       Use transformations in the bag file instead of generating new tfs from the xacro,
-                      joint_state_msgs and robot state publisher.
 -cfg CONFIG_FILE, --config_file CONFIG_FILE
                       Specify if you want to configure the calibration package with a specific configutation file.
                       If this flag is not given, the standard config.yml ill be used.
 ```
 
+
+##### Using tfs instead of the xacro file
+
+If you prefer ATOM may use the tra
+Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. 
+To do this use tehe --use_tfs option when configuring your package:
+
+```bash
+usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
+
+-h, --help            show this help message and exit
+-n NAME, --name NAME  package name
+-utf, --use_tfs       Use transformations in the bag file instead of generating new tfs from the xacro,
+                      joint_state_msgs and robot state publisher.
+```
+
+
 ### Set an initial estimate
 
-Iterative optimization methods are often sensitive to the initial parameter configuration. There are several optimization parameters. 
-However, the ones we refer to in this case are those that represent the poses of each sensor. **ATOM** provides an interactive framework based on rviz which allows the
-user to set the pose of the sensors while having immediate visual feedback.
+Iterative optimization methods such as ATOM are sensitive to the initial parameter configuration. 
+ATOM uses several groups of optimization parameters and uses distinct strategies to initialize each class. 
+The most important group, sensor poses, may be manually initialized to ensure that the initial estimate is plausible and thus reduce the likelihood of encountering a local minima.
+
+ATOM provides an interactive framework based on rviz which allows the user to set the pose of the sensors while having immediate visual feedback.
+The system configures an [RViz interactive marker](http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Getting%20Started) for each sensor to be calibrated, so that it is possible to move the sensor in RViz.
+
+During this procedure one may use several visual clues to better position the sensors, i.e. it is possible to see the CAD model of the sensors and the rest of the structure of the robotic system or one could observe the amount of overlap between sensors.
 
 To set an initial estimate run:
 
@@ -297,6 +338,8 @@ Here are a couple of examples of setting the initial estimate:
 
 ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.
 
+This functionality is only available in the set initial estimate stage.
+
 <figure markdown align=center>
   ![](img/MMTBot_fustrum.gif){width="100%" }
   <figcaption align=center>Visualizing fustrum of RGB sensors in the MMTBot.</figcaption>
@@ -312,7 +355,12 @@ To collect data, use:
 roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder>
 ```
 
-The script launches an rviz window already configured. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere in that appears in the scene.
+The script launches a fully configured rviz window. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere in that appears in the scene. 
+
+The number of collections required to accurately calibrate a system vary according to the number, modality and positioning of the sensors. 
+Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
+That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
+of overlap there is between the sensors.
 
 It is also possible to add additional parameters to configure several aspects of the script. See below all the options.
 
@@ -586,7 +634,14 @@ Here's an example of a system being calibrated.
   <figcaption align=center>Calibration of AgrobV2.</figcaption>
 </figure>
 
-#### Advanced usage - Two stage calibration for robotic systems with an anchored sensor
+
+#### Calibrating intrinsic parameters
+
+ATOM also supports intrinsic camera calibration (for now just RGB modality), but requires a first guess for these parameters. 
+
+We compute a first guess using the [ROS monocular camera calibration](http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration) for rgb cameras, and the [depth camera intrinsic calibration](http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration) for depth cameras. After these calibrations are carried out, the sensor drivers publish calibrated [camera_info messages](http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/CameraInfo.html) which are saved to the bag files that is used for calibration, and then used a as first guess for ATOM's intrinsic parameter estimation. Intrinsic calibration runs simultaneous with the extrinsic calibration. 
+
+#### Two stage calibration for robotic systems with an anchored sensor
 
 When one sensor is set to be anchored in the calibration/config.yml file, i.e. this [file](https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99) for the AtlaCar2, we recommend a two stage procedure to achieve a more accurate calibration:
 

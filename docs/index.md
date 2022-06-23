@@ -38,7 +38,7 @@ If this work is helpful for you please cite [our publications](acknowledgment.md
 
 In order to calibrate a robotic system one needs to carry out several tasks, such as acquiring data, labeling data, executing the calibration, interpreting the result of the calibration, etc.
 ATOM provides several scripts to address all the stages of a calibration procedure. 
-These scripts are seamlessly integrated into [ROS](https://www.ros.org/), and makes use of [RViz](http://wiki.ros.org/rviz) to provide extensive visualization in severall stages of the calibration procedure.
+These scripts are seamlessly integrated into [ROS](https://www.ros.org/), and make use of [RViz](http://wiki.ros.org/rviz) to provide extensive visualization functionalites.
 We have divided the calibration procedure into several stages, shown in the scheme below.
 
 <figure markdown align=center>
@@ -46,25 +46,27 @@ We have divided the calibration procedure into several stages, shown in the sche
   <figcaption align=center>ATOM calibration pipeline.</figcaption>
 </figure>
 
-The <span style="color:gray">greyed out boxes </span> are steps considered to be out of the scope of ATOM, i.e., these are tasks one should do in order to configure a robot system in ROS. Dashed line boxes represent steps which are optional. They may be skipped if there is confidence that they are not required.
+The <span style="color:gray">greyed out boxes </span> are steps considered to be out of the scope of ATOM, i.e., these are tasks one should do in order to properly configure a robotic system in ROS, even if ATOM is not going to be used. Dashed line boxes represent steps which are optional, i.e., they may improve the calibration but are not essential to the procedure. 
 
 Below we describe each of these stages, giving examples for the [MMTBot](examples.md#mmtbot).
 
-
-
 #### Robotic System Configuration 
 
- Robotic System Configuration concerns the design and implementation of your robotic system in ROS. It generally involves the writting of an [UDRF](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file that describes the links and joints of your robotic system. It sometimes also includes de configuration of a simulation of your system in [Gazebo](https://gazebosim.org/home).
-
+ Robotic System Configuration concerns the design and implementation of your robotic system in ROS. It generally involves the writing of an [UDRF](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file that describes the links and joints of your robotic system, among other things.
+If you are not familiar with this there are ROS tutorials to [build your robot URDF](http://wiki.ros.org/urdf/Tutorials/Building%20a%20Visual%20Robot%20Model%20with%20URDF%20from%20Scratch) and also to [create your robot xacro](http://wiki.ros.org/urdf/Tutorials/Using%20Xacro%20to%20Clean%20Up%20a%20URDF%20File).
+ 
 !!! Note
-    We recommend using xacro files instead of urdfs. 
+    To calibrate your robot with ATOM, we recommend using xacro files instead of urdfs. 
+ 
+This stage may also include de configuration of a simulation of your system in [Gazebo](https://gazebosim.org/home).
 
-Tipically one creates a couple of ros packages for our robot, as described below.
+Typically one creates a couple of ros packages for our robot, as described below.
 
 **<my_robot\>_description** ros package contains the xacro files that describe your robot. It sometimes also contains cad models inside a models folder. An example from [MMTBot is here](https://github.com/miguelriemoliveira/mmtbot/tree/main/mmtbot_description).
 
 **<my_robot\>_bringup** ros package contains the launch files used to bringup your robotic system. Tipically there is a **bringup.launch** that starts the complete system.
 An example from the [MMTBot](https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_bringup/launch/bringup.launch).
+
 
 #### Data Logging
 
@@ -87,10 +89,12 @@ A bagfile should contain several topics, namely transformations and joint state 
    - /hand_camera/rgb/camera_info
    - /lidar/points
 
+    
+
 #### Initial Positioning of Sensors
 
 The goal of this stage is to allow the user to define interactively the poses of each sensor, so that the optimization starts close to the optimal solution and thus avoids local minima. 
-This stage may be skiped in the transformations from the URDF are believed to be "more or less" accurate.
+This stage may be skiped if the transformations from the URDF are believed to be "sufficiently" accurate.
 
 More details [here](procedures.md#set-an-initial-estimate).
 
@@ -130,7 +134,7 @@ If you get here unscathed, <span style="color:orange">you are a very lucky perso
 
 ### What is a label?
 
-A label is a data point selected from the complete sensor data, obtained through a labeling or pattern detection procedure .
+A label is a set of data points selected from the complete sensor data, obtained through a labeling or pattern detection procedure.
 The representation of a label differs according to the sensor modality, as detailed next.
 
 RGB camera labels are a list of image pixel coordinates of the corners of the pattern.
@@ -161,13 +165,15 @@ Depth modality labels contain a list of image pixel coordinates that are annotat
 
 A collection is a recording of the data from all the sensors in the system at a particular time instant selected by the user. Collections also contain information about labels for the sensor data, as well as the state of the robotic system at that time, i.e., all the transformations.
 
-A collection is referred to as incomplete collection when it is not possible to detect the pattern in at least one of the sensors in the robotic system.
 
 <figure markdown align=center>
   ![Image title](img/ATOMCollection.png){width="100%" }
   <figcaption align=center>Sensor data from an MMTBot collection.</figcaption>
 </figure>
 
+
+!!! Info "Incomplete collections"
+    A collection is referred to as an **incomplete collection** when it is not possible to detect the pattern in at least one of the sensors of the robotic system.
 
 ### What is an ATOM dataset?
 
@@ -176,8 +182,7 @@ An ATOM dataset is a folder which contains data used for the calibration of a ro
 
 Several scripts in the calibration pipeline require an ATOM dataset, but is worth mentioning that the files are also human readable. 
 
-Here is an [example of a dataset from LARCC](https://jsoneditoronline.org/#left=cloud.d9efaa274cb44579ad73553dea513ed8).
-Below you can see the structure of an ATOM dataset.
+Below you can see the structure of an ATOM dataset. 
 
 <figure markdown align=center>
   ![Image title](img/ATOMDataset_tree.png){width="60%" }
@@ -189,11 +194,14 @@ A **dataset.json** file contains a **_metadata** field, where details about the 
 
 Finally, the **collections** field contains several collections, i.e. snapshots of data. Each collection contains a subfield **data**, that stores a dictionary obtained through the [conversion of the ROS message to a python dictionary](http://wiki.ros.org/rospy_message_converter), the subfield **labels** contains information about annotations (automatic or manual) of each sensor data, and the subfield **transforms** contains all the transformations published at (or near) the time of the collection.
 
-In addition to the **dataset.json** file, ATOM datasets also contain dedicated files for larger data blobs, such as point clouds or images are saved separately in the same folder.
+In addition to the **dataset.json** file, ATOM datasets also contain dedicated files for larger data blobs, such as point clouds or images, which are saved separately in the same folder.
 
-Because the transformations are stored for each collection, it is possible recover the complete state of the robotic system at the time of each collection. Below we view the different poses of the manipulator and the calibration pattern for each collection.
+Because the transformations are stored for each collection, it is possible recover the complete state of the robotic system at the time of each collection. 
+ATOM then provides visualization functionalities to display all collections at once. Below we can see the different poses of the manipulator and the calibration pattern for each collection of an MMTBot dataset.
 
 <figure markdown align=center>
   ![Image title](img/mmtbot_multiple_collections4.png){width="90%" }
   <figcaption align=center>Several collections in an MMTBot dataset.</figcaption>
 </figure>
+
+Here is an [ATOM dataset example from LARCC](https://jsoneditoronline.org/#left=cloud.d9efaa274cb44579ad73553dea513ed8).
