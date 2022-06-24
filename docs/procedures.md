@@ -5,6 +5,7 @@
       - [Recording compressed images](#recording-compressed-images)
       - [Throttling topics](#throttling-topics)
       - [Using a different configuration file](#using-a-different-configuration-file)
+      - [Using tfs instead of the xacro file](#using-tfs-instead-of-the-xacro-file)
   - [Set an initial estimate](#set-an-initial-estimate)
     - [Visualizing sensor fustrums](#visualizing-sensor-fustrums)
   - [Collect data](#collect-data)
@@ -245,7 +246,7 @@ The **rviz** folder contains several rviz configuration files used to launch the
 The **urdf** folder contains a symbolic link to the xacro file of <my_robot\> and, after calibration, will contain a calibrated urdf. 
 Finally, the **calibration** folder contains the configuration file (config.yml). 
 
-This folder also contains an automatically produced schematic of the configuration of the calibration.
+This folder also contains an automatically produced schematic of the configuration of the calibration named [summary.pdf](img/summary_example.pdf).
 It is used to inspect the configuration of the calibration and assess if the configuration is doing what we intended.
 Atomic transformations to be estimated are marked in blue, sensor coordinate systems, i.e. the coordinate systems in which sensors produce their data are marked in green, and the selected world coordinate frame is highlighted in red.
 
@@ -396,7 +397,7 @@ by observing the overlays of top of the images.
 </figcaption>
 </figure>
 
-!!! Note
+!!! Note "Use charuco boards"
     Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.
 
 #### 3D Lidar labeling
@@ -598,7 +599,7 @@ optional arguments:
                         Full path to output json file.
 ```
 
-If you use the --verbose option, the script will periodically print a table containing information about the errors per sensor and per collection.
+If you use the --verbose option, the script will periodically print a table containing information about the errors per sensor and per collection, e.g.:
 
 ```bash
 Errors per collection (anchored sensor,  max error per sensor, not detected as "---")
