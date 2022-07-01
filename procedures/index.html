@@ -54,6 +54,16 @@
     <li class="toctree-l2"><a class="reference internal" href="#create-a-calibration-package">Create a calibration package</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#configure-a-calibration-package">Configure a calibration package</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#recording-compressed-images">Recording compressed images</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#throttling-topics">Throttling topics</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-a-different-configuration-file">Using a different configuration file</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-tfs-instead-of-the-xacro-file">Using tfs instead of the xacro file</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#set-an-initial-estimate">Set an initial estimate</a>
         <ul>
@@ -134,7 +144,13 @@
                 <h2 id="calibration-procedures">Calibration procedures</h2>
 <ul>
 <li><a href="#create-a-calibration-package">Create a calibration package</a></li>
-<li><a href="#configure-a-calibration-package">Configure a calibration package</a></li>
+<li><a href="#configure-a-calibration-package">Configure a calibration package</a><ul>
+<li><a href="#recording-compressed-images">Recording compressed images</a></li>
+<li><a href="#throttling-topics">Throttling topics</a></li>
+<li><a href="#using-a-different-configuration-file">Using a different configuration file</a></li>
+<li><a href="#using-tfs-instead-of-the-xacro-file">Using tfs instead of the xacro file</a></li>
+</ul>
+</li>
 <li><a href="#set-an-initial-estimate">Set an initial estimate</a><ul>
 <li><a href="#visualizing-sensor-fustrums">Visualizing sensor fustrums</a></li>
 </ul>
@@ -152,7 +168,8 @@
 </ul>
 </li>
 <li><a href="#calibrate">Calibrate</a><ul>
-<li><a href="#advanced-usage---two-stage-calibration-for-robotic-systems-with-an-anchored-sensor">Advanced usage - Two stage calibration for robotic systems with an anchored sensor</a></li>
+<li><a href="#calibrating-intrinsic-parameters">Calibrating intrinsic parameters</a></li>
+<li><a href="#two-stage-calibration-for-robotic-systems-with-an-anchored-sensor">Two stage calibration for robotic systems with an anchored sensor</a></li>
 </ul>
 </li>
 </ul>
@@ -165,7 +182,7 @@ ones being published by the <a href="http://wiki.ros.org/robot_state_publisher">
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>It is also possible to use the transformations in the bagfile instead of using the xacro description and the robot state publisher to produce them. 
-See section on <a href="#configuring-a-calibration-package">configuring a calibration package</a>.</p>
+See section on <a href="#using-tfs-instead-of-the-xacro-file">using tfs instead of a xacro file</a>.</p>
 </div>
 <p>To reduce the bag size, it may contain compressed images instead of raw images, since <strong>ATOM</strong> can decompress them while playing back the bagfile. 
 Here is an example of a <a href="https://github.com/lardemua/atlascar2/blob/master/atlascar2_bringup/launch/record_sensor_data.launch">launch file</a>
@@ -354,8 +371,9 @@ Once the verifications signal a correct calibration configuration, a set of file
 </code></pre>
 <p>The <strong>launch</strong> directory contains automatically created launch files used to launch each of the calibration stages.
 The <strong>rviz</strong> folder contains several rviz configuration files used to launch the visualization of each stage.
-The <strong>urdf</strong> folder contains a symbolic link to the xacro file of &lt;my_robot>, and after calibration will contain a calibrated urdf. 
-Finally, the <strong>calibration</strong> folder contains the configuration file (config.yml) and also a schematic of the configuration of the calibration.
+The <strong>urdf</strong> folder contains a symbolic link to the xacro file of &lt;my_robot> and, after calibration, will contain a calibrated urdf. 
+Finally, the <strong>calibration</strong> folder contains the configuration file (config.yml). </p>
+<p>This folder also contains an automatically produced schematic of the configuration of the calibration named <a href="../img/summary_example.pdf">summary.pdf</a>.
 It is used to inspect the configuration of the calibration and assess if the configuration is doing what we intended.
 Atomic transformations to be estimated are marked in blue, sensor coordinate systems, i.e. the coordinate systems in which sensors produce their data are marked in green, and the selected world coordinate frame is highlighted in red.</p>
 <figure align="center">
@@ -363,22 +381,42 @@ Atomic transformations to be estimated are marked in blue, sensor coordinate sys
   </p>
 <figcaption align="center">Summary of a calibration configuration (MMTBot).</figcaption>
 </figure>
+<h5 id="recording-compressed-images">Recording compressed images</h5>
+<p>In case the topics from RGB camera(s) are published using the <a href="http://wiki.ros.org/image_transport">ROS image transport</a>, it is possible to record the compressed image topic instead of the raw image topic as in <a href="..#data-logging">this example</a>. During the configuration of your calibration package, ATOM will detect that these are compressed topics and automatically generate a decompressing mechanism in the launch files. </p>
+<p>The advantage is that you get much smaller bag files since they contain compressed images.
+This may be critical for large systems such as <a href="../examples/#larcc">LARCC</a>, where the data output may reach over 1GB per minute.</p>
+<h5 id="throttling-topics">Throttling topics</h5>
+<p>For an offline calibration procedure, speed is not critical. Thus, it is possible to configure a <a href="http://wiki.ros.org/topic_tools/throttle">ROS topic throttler</a> for your sensor messages, if they have been recorded in a higher than necessary frequency.
+For that just add a field <strong>throttle</strong> to the section of the corresponding sensor in your calibration config.yaml file.</p>
+<h5 id="using-a-different-configuration-file">Using a different configuration file</h5>
 <p>It is also possible to configure your calibration package with a different configuration file, in the case you have
 multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:</p>
 <pre><code class="language-bash">usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
 
 -h, --help            show this help message and exit
 -n NAME, --name NAME  package name
--utf, --use_tfs       Use transformations in the bag file instead of generating new tfs from the xacro,
-                      joint_state_msgs and robot state publisher.
 -cfg CONFIG_FILE, --config_file CONFIG_FILE
                       Specify if you want to configure the calibration package with a specific configutation file.
                       If this flag is not given, the standard config.yml ill be used.
 </code></pre>
+<h5 id="using-tfs-instead-of-the-xacro-file">Using tfs instead of the xacro file</h5>
+<p>If you prefer ATOM may use the tra
+Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. 
+To do this use tehe --use_tfs option when configuring your package:</p>
+<pre><code class="language-bash">usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
+
+-h, --help            show this help message and exit
+-n NAME, --name NAME  package name
+-utf, --use_tfs       Use transformations in the bag file instead of generating new tfs from the xacro,
+                      joint_state_msgs and robot state publisher.
+</code></pre>
 <h3 id="set-an-initial-estimate">Set an initial estimate</h3>
-<p>Iterative optimization methods are often sensitive to the initial parameter configuration. There are several optimization parameters. 
-However, the ones we refer to in this case are those that represent the poses of each sensor. <strong>ATOM</strong> provides an interactive framework based on rviz which allows the
-user to set the pose of the sensors while having immediate visual feedback.</p>
+<p>Iterative optimization methods such as ATOM are sensitive to the initial parameter configuration. 
+ATOM uses several groups of optimization parameters and uses distinct strategies to initialize each class. 
+The most important group, sensor poses, may be manually initialized to ensure that the initial estimate is plausible and thus reduce the likelihood of encountering a local minima.</p>
+<p>ATOM provides an interactive framework based on rviz which allows the user to set the pose of the sensors while having immediate visual feedback.
+The system configures an <a href="http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Getting%20Started">RViz interactive marker</a> for each sensor to be calibrated, so that it is possible to move the sensor in RViz.</p>
+<p>During this procedure one may use several visual clues to better position the sensors, i.e. it is possible to see the CAD model of the sensors and the rest of the structure of the robotic system or one could observe the amount of overlap between sensors.</p>
 <p>To set an initial estimate run:</p>
 <pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; set_initial_estimate.launch 
 </code></pre>
@@ -400,6 +438,7 @@ user to set the pose of the sensors while having immediate visual feedback.</p>
 </figure>
 <h4 id="visualizing-sensor-fustrums">Visualizing sensor fustrums</h4>
 <p>ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.</p>
+<p>This functionality is only available in the set initial estimate stage.</p>
 <figure align="center">
 <p><img alt="" src="../img/MMTBot_fustrum.gif" width="100%" />
   </p>
@@ -410,7 +449,7 @@ user to set the pose of the sensors while having immediate visual feedback.</p>
 <p>To collect data, use:</p>
 <pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; collect_data.launch output_folder:=$ATOM_DATASETS/&lt;your_dataset_folder&gt;
 </code></pre>
-<p>The script launches an rviz window already configured. The user observes the data playback and <strong>decides when a collection should be saved</strong> by clicking a green sphere in that appears in the scene. </p>
+<p>The script launches a fully configured rviz window. The user observes the data playback and <strong>decides when a collection should be saved</strong> by clicking a green sphere in that appears in the scene. </p>
 <p>The number of collections required to accurately calibrate a system vary according to the number, modality and positioning of the sensors. 
 Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
 That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
@@ -467,7 +506,7 @@ by observing the overlays of top of the images.</p>
 </figcaption>
 </figure>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="admonition-title">Use charuco boards</p>
 <p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.</p>
 </div>
 <h4 id="3d-lidar-labeling">3D Lidar labeling</h4>
@@ -630,7 +669,7 @@ optional arguments:
   -oj OUTPUT_JSON, --output_json OUTPUT_JSON
                         Full path to output json file.
 </code></pre>
-<p>If you use the --verbose option, the script will periodically print a table containing information about the errors per sensor and per collection.</p>
+<p>If you use the --verbose option, the script will periodically print a table containing information about the errors per sensor and per collection, e.g.:</p>
 <pre><code class="language-bash">Errors per collection (anchored sensor,  max error per sensor, not detected as &quot;---&quot;)
 +------------+----------+----------+----------+----------------+---------+---------+---------+
 | Collection | camera_2 | camera_3 | camera_4 | depth_camera_1 | lidar_1 | lidar_2 | lidar_3 |
