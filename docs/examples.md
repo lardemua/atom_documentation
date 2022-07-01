@@ -25,6 +25,8 @@ So far, we have used **ATOM** to successfully calibrate several robotic platform
   <figcaption align=center>A 3D Model of the MMTBot.</figcaption>
 </figure>
 
+Further details on this system can be read in the [paper published in ESWA 2022](acknowledgment.md#citing-atom).
+
 
 ### Atlascar2
  
