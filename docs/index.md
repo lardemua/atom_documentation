@@ -196,7 +196,7 @@ Finally, the **collections** field contains several collections, i.e. snapshots 
 
 In addition to the **dataset.json** file, ATOM datasets also contain dedicated files for larger data blobs, such as point clouds or images, which are saved separately in the same folder.
 
-Because the transformations are stored for each collection, it is possible recover the complete state of the robotic system at the time of each collection. 
+Because the transformations are stored for each collection, it is possible to recover the complete state of the robotic system at the time of each collection. 
 ATOM then provides visualization functionalities to display all collections at once. Below we can see the different poses of the manipulator and the calibration pattern for each collection of an MMTBot dataset.
 
 <figure markdown align=center>
