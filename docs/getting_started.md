@@ -50,7 +50,7 @@ If you are interested in using one of these functionalities you have to clone it
 We often use two enviroment variables to allow for easy cross machine access to bagfiles and datasets. If you want to use these you can also add these lines to your _.bashrc_ or _.zhsrc_, adjusting the paths according to your case:
 
 ```bash
-export ROS_BAGS="$HOME/<bagfiles"
+export ROS_BAGS="$HOME/bagfiles"
 export ATOM_DATASETS="$HOME/datasets"
 ```
 
@@ -65,10 +65,9 @@ and you can also refer to them inside the [calibration configuration file](https
 
 ### Calibration patterns
 
-We recomend the usage 
-RGB cameras have a fully automatic pattern detection. It uses off the shelf [chessboard](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a) or [charuco](https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html) calibration pattern detectors.
+ATOM can be used with [chessboard](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a) or [charuco](https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html) calibration patterns.
 
-To calibrate our systems we purchased charuco calibration patterns from [calib.io](https://calib.io/products/charuco-targets?variant=9400455004207).
+To calibrate our systems we purchased charuco calibration patterns from [calib.io](https://calib.io/products/charuco-targets?variant=9400455004207.
 
 
 <figure markdown align=center>
@@ -151,9 +150,17 @@ rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/<my_robot_calibrat
 
 #### Calibrate sensors 
 
-Finally run an optimization that will calibrate your sensors:
+Finally, run an optimization that will calibrate your sensors. First launch:
 
 ```bash
-roslaunch <my_robot_calibration> dataset_playback.launch 
+roslaunch <my_robot_calibration> calibrate.launch 
 ```
+
+Then, in a second terminal, run the calibrate script:
+
+```bash
+rosrun atom_calibration calibrate -json $ATOM_DATASETS/<my_robot_dataset>/dataset.json -v -rv -si 
+```
+
+There are many different options to customize the calibration. Check the [detailed description](procedures.md#calibrate) to know more.
 
