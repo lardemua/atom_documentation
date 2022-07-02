@@ -260,7 +260,7 @@ In addition to this, 3D Lidar labels also contain a list of 3D points of the phy
 <p>A <strong>dataset.json</strong> file contains a <strong>_metadata</strong> field, where details about the date, user and others are stored. It also contains a <strong>calibration_config</strong>, which is a copy of the state of the configuration file at the time of creation of the dataset. The <strong>sensors</strong> field describes each of the sensors in the system, in particular those selected to be calibrated. </p>
 <p>Finally, the <strong>collections</strong> field contains several collections, i.e. snapshots of data. Each collection contains a subfield <strong>data</strong>, that stores a dictionary obtained through the <a href="http://wiki.ros.org/rospy_message_converter">conversion of the ROS message to a python dictionary</a>, the subfield <strong>labels</strong> contains information about annotations (automatic or manual) of each sensor data, and the subfield <strong>transforms</strong> contains all the transformations published at (or near) the time of the collection.</p>
 <p>In addition to the <strong>dataset.json</strong> file, ATOM datasets also contain dedicated files for larger data blobs, such as point clouds or images, which are saved separately in the same folder.</p>
-<p>Because the transformations are stored for each collection, it is possible recover the complete state of the robotic system at the time of each collection. 
+<p>Because the transformations are stored for each collection, it is possible to recover the complete state of the robotic system at the time of each collection. 
 ATOM then provides visualization functionalities to display all collections at once. Below we can see the different poses of the manipulator and the calibration pattern for each collection of an MMTBot dataset.</p>
 <figure align="center">
 <p><img alt="Image title" src="img/mmtbot_multiple_collections4.png" width="90%" />
@@ -315,5 +315,5 @@ ATOM then provides visualization functionalities to display all collections at o
 
 <!--
 MkDocs version : 1.3.0
-Build Date UTC : 2022-07-01 07:07:38.419662+00:00
+Build Date UTC : 2022-07-02 05:40:42.340197+00:00
 -->

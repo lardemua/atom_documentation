@@ -163,7 +163,7 @@ More information here:</p>
 </div>
 <h4 id="set-environment-variables">Set environment variables</h4>
 <p>We often use two enviroment variables to allow for easy cross machine access to bagfiles and datasets. If you want to use these you can also add these lines to your <em>.bashrc</em> or <em>.zhsrc</em>, adjusting the paths according to your case:</p>
-<pre><code class="language-bash">export ROS_BAGS=&quot;$HOME/&lt;bagfiles&quot;
+<pre><code class="language-bash">export ROS_BAGS=&quot;$HOME/bagfiles&quot;
 export ATOM_DATASETS=&quot;$HOME/datasets&quot;
 </code></pre>
 <p>and then you can refer to these environment variables when providing paths to atom scripts, e.g.:</p>
@@ -171,9 +171,8 @@ export ATOM_DATASETS=&quot;$HOME/datasets&quot;
 </code></pre>
 <p>and you can also refer to them inside the <a href="https://github.com/lardemua/atlascar2/blob/0c065508f325fb57e0439c1ba2e00f9468cd73e7/atlascar2_calibration/calibration/config.yml#L14">calibration configuration file</a></p>
 <h3 id="calibration-patterns">Calibration patterns</h3>
-<p>We recomend the usage 
-RGB cameras have a fully automatic pattern detection. It uses off the shelf <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a">chessboard</a> or <a href="https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html">charuco</a> calibration pattern detectors.</p>
-<p>To calibrate our systems we purchased charuco calibration patterns from <a href="https://calib.io/products/charuco-targets?variant=9400455004207">calib.io</a>.</p>
+<p>ATOM can be used with <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a">chessboard</a> or <a href="https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html">charuco</a> calibration patterns.</p>
+<p>To calibrate our systems we purchased charuco calibration patterns from [calib.io](https://calib.io/products/charuco-targets?variant=9400455004207.</p>
 <figure align="center">
 <p><img alt="Image title" src="../img/CharucoPhoto.png" width="60%" />
   </p>
@@ -222,9 +221,13 @@ the <a href="../procedures/">detailed description</a> below.</p>
 <pre><code class="language-bash">rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/&lt;my_robot_calibration&gt;/&lt;your_dataset&gt;/dataset.json -uic -si  -ow
 </code></pre>
 <h4 id="calibrate-sensors">Calibrate sensors</h4>
-<p>Finally run an optimization that will calibrate your sensors:</p>
-<pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; dataset_playback.launch 
+<p>Finally, run an optimization that will calibrate your sensors. First launch:</p>
+<pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; calibrate.launch 
 </code></pre>
+<p>Then, in a second terminal, run the calibrate script:</p>
+<pre><code class="language-bash">rosrun atom_calibration calibrate -json $ATOM_DATASETS/&lt;my_robot_dataset&gt;/dataset.json -v -rv -si 
+</code></pre>
+<p>There are many different options to customize the calibration. Check the <a href="../procedures/#calibrate">detailed description</a> to know more.</p>
               
             </div>
           </div><footer>
