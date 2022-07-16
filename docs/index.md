@@ -5,6 +5,7 @@
 
 ## ATOM
 
+- [ATOM](#atom)
   - [What is ATOM?](#what-is-atom)
   - [Calibration Pipeline](#calibration-pipeline)
     - [Robotic System Configuration](#robotic-system-configuration)
@@ -18,6 +19,8 @@
   - [What is a label?](#what-is-a-label)
   - [What is a collection?](#what-is-a-collection)
   - [What is an ATOM dataset?](#what-is-an-atom-dataset)
+  - [ROS1 and ROS2](#ros1-and-ros2)
+
 ### What is ATOM?
 
 
@@ -205,3 +208,11 @@ ATOM then provides visualization functionalities to display all collections at o
 </figure>
 
 Here is an [ATOM dataset example from LARCC](https://jsoneditoronline.org/#left=cloud.d9efaa274cb44579ad73553dea513ed8).
+
+### ROS1 and ROS2
+
+At the moment, ATOM is only supported in ROS1 and
+
+We have tested it running on Ubuntu 20.04 LTS, ROS Noetic.
+
+We have plans to work on a ROS2 version in the near future.
