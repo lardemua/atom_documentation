@@ -142,11 +142,14 @@
 </ul>
 <h3 id="installation">Installation</h3>
 <h4 id="clone-atom-repository-and-install-dependencies">Clone ATOM repository and install dependencies</h4>
-<p>Clone the atom repository to a directory soemwhere inside your catkin workspace:</p>
+<p>Clone the atom repository to a directory somewhere inside your catkin workspace:</p>
 <pre><code>git clone https://github.com/lardemua/atom
 </code></pre>
-<p>then install requirements.</p>
+<p>then install requirements:</p>
 <pre><code>sudo pip3 install -r requirements.txt
+</code></pre>
+<p>Also, you need to install the following packages using apt-get</p>
+<pre><code>sudo apt-get install ros-noetic-ros-numpy
 </code></pre>
 <h4 id="clone-rviz-fork">Clone RViz fork</h4>
 <p>Some of the functionalities in ATOM, i.e., depth semi-automatic labeling and depth manual labeling, make use of a 
@@ -162,7 +165,7 @@ More information here:</p>
 <p><a href="https://github.com/ros-visualization/rviz/pull/1737">https://github.com/ros-visualization/rviz/pull/1737</a></p>
 </div>
 <h4 id="set-environment-variables">Set environment variables</h4>
-<p>We often use two enviroment variables to allow for easy cross machine access to bagfiles and datasets. If you want to use these you can also add these lines to your <em>.bashrc</em> or <em>.zhsrc</em>, adjusting the paths according to your case:</p>
+<p>We often use two environment variables to allow for easy cross machine access to bagfiles and datasets. If you want to use these you can also add these lines to your <em>.bashrc</em> or <em>.zhsrc</em>, adjusting the paths according to your case:</p>
 <pre><code class="language-bash">export ROS_BAGS=&quot;$HOME/bagfiles&quot;
 export ATOM_DATASETS=&quot;$HOME/datasets&quot;
 </code></pre>
