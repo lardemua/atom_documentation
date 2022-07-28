@@ -22,10 +22,14 @@ Clone the atom repository to a directory soemwhere inside your catkin workspace:
 
     git clone https://github.com/lardemua/atom
 
-then install requirements.
+then install requirements:
 
     sudo pip3 install -r requirements.txt
 
+
+Also, you need to install the following packages using apt-get
+
+    sudo apt-get install ros-noetic-ros-numpy
 
 #### Clone RViz fork
 
@@ -47,7 +51,7 @@ If you are interested in using one of these functionalities you have to clone it
 
 #### Set environment variables
 
-We often use two enviroment variables to allow for easy cross machine access to bagfiles and datasets. If you want to use these you can also add these lines to your _.bashrc_ or _.zhsrc_, adjusting the paths according to your case:
+We often use two environment variables to allow for easy cross machine access to bagfiles and datasets. If you want to use these you can also add these lines to your _.bashrc_ or _.zhsrc_, adjusting the paths according to your case:
 
 ```bash
 export ROS_BAGS="$HOME/bagfiles"
