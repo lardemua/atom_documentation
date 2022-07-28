@@ -18,7 +18,7 @@
 
 #### Clone ATOM repository and install dependencies
 
-Clone the atom repository to a directory soemwhere inside your catkin workspace:
+Clone the atom repository to a directory somewhere inside your catkin workspace:
 
     git clone https://github.com/lardemua/atom
 
