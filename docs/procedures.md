@@ -287,9 +287,8 @@ usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-c
 
 ##### Using tfs instead of the xacro file
 
-If you prefer ATOM may use the tra
 Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. 
-To do this use tehe --use_tfs option when configuring your package:
+To do this use the --use_tfs option when configuring your package:
 
 ```bash
 usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
@@ -356,7 +355,7 @@ To collect data, use:
 roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder>
 ```
 
-The script launches a fully configured rviz window. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere in that appears in the scene. 
+The script launches a fully configured rviz window. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere that appears in the scene. 
 
 The number of collections required to accurately calibrate a system vary according to the number, modality and positioning of the sensors. 
 Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
@@ -387,9 +386,8 @@ Below we detail how each of the labelers operate.
 
 #### RGB camera labeling
 
-RGB cameras have a fully automatic pattern detection. It uses off the shelf [chessboard](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a) or [charuco](https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html) calibration pattern detectors.
-ATOM provides an rviz configuration which subscribes annotated images received from the pattern detectors. You can check if the detection is working 
-by observing the overlays of top of the images.
+RGB cameras have a fully automatic pattern detection. ATOM uses off the shelf [chessboard](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a) or [charuco](https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html) calibration pattern detectors.
+Also, it provides an rviz configuration which subscribes annotated images received from the pattern detectors. You can check if the detection is working by observing the overlays of top of the images.
 
 <figure markdown align=center>
   ![](img/ur10e_eye_to_base_collect_data.gif){width="100%" }
@@ -423,7 +421,7 @@ as you can see below:
 
 #### Depth camera labeling
 
-The labeling of depth cameras a semi-automatic procedure. It is done by clicking the depth image in rviz. The user should click somewhere inside the pattern, and then the system carries on the tracking of the pattern even if it moves. The user may reset the procedure by reclicking the image.
+The labeling of depth cameras is a semi-automatic procedure. It is done by clicking the depth image in rviz. The user should click somewhere inside the pattern, and then the system carries on the tracking of the pattern even if it moves. The user may reset the procedure by reclicking the image.
 
 <figure markdown align=center>
   ![](img/ATOMDepthLabeling.gif){width="100%" }
