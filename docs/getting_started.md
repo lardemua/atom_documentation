@@ -80,7 +80,7 @@ To calibrate our systems we purchased charuco calibration patterns from [calib.i
 </figure>
 
 !!! Note
-    Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.
+    Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.
 
 
 
@@ -88,7 +88,7 @@ To calibrate our systems we purchased charuco calibration patterns from [calib.i
 
 Unlike most other calibration approaches, **ATOM** offers tools to address the complete calibration pipeline. These are
 instructions for quick starting your robotic system calibration. If you need more details read through
-the [detailed description](procedures.md) below.
+the [Calibration Procedures](procedures.md).
 
 
 #### Create a calibration package 

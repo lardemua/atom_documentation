@@ -49,7 +49,7 @@ We have divided the calibration procedure into several stages, shown in the sche
   <figcaption align=center>ATOM calibration pipeline.</figcaption>
 </figure>
 
-The <span style="color:gray">greyed out boxes </span> are steps considered to be out of the scope of ATOM, i.e., these are tasks one should do in order to properly configure a robotic system in ROS, even if ATOM is not going to be used. Dashed line boxes represent steps which are optional, i.e., they may improve the calibration but are not essential to the procedure. 
+The <span style="color:gray">greyed out boxes </span> are steps considered to be out of the scope of ATOM, i.e., these are tasks one should do in order to properly configure and run a robotic system in ROS, even if ATOM is not going to be used. Dashed line boxes represent steps which are optional, i.e., they may improve the calibration but are not essential to the procedure. 
 
 Below we describe each of these stages, giving examples for the [MMTBot](examples.md#mmtbot).
 
@@ -183,7 +183,7 @@ A collection is a recording of the data from all the sensors in the system at a 
 
 An ATOM dataset is a folder which contains data used for the calibration of a robotic system. Every ATOM dataset contains a **dataset.json** which provides details about the dataset, such as the defined configuration, the number of sensors, etc. 
 
-Several scripts in the calibration pipeline require an ATOM dataset, but is worth mentioning that the files are also human readable. 
+Several scripts in the calibration pipeline require an ATOM dataset, but it is worth mentioning that the files are also human readable. 
 
 Below you can see the structure of an ATOM dataset. 
 
@@ -211,8 +211,6 @@ Here is an [ATOM dataset example from LARCC](https://jsoneditoronline.org/#left=
 
 ### ROS1 and ROS2
 
-At the moment, ATOM is only supported in ROS1 and
-
-We have tested it running on Ubuntu 20.04 LTS, ROS Noetic.
+At the moment, ATOM is only supported in ROS1 (Noetic), Ubuntu 20.04 LTS.
 
 We have plans to work on a ROS2 version in the near future.
