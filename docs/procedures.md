@@ -242,7 +242,7 @@ Once the verifications signal a correct calibration configuration, a set of file
 ```
 
 The **launch** directory contains automatically created launch files used to launch each of the calibration stages.
-The **rviz** folder contains several rviz configuration files used to launch the visualization of each stage.
+The **rviz** folder contains several rviz configuration files used to setup the visualization of each stage.
 The **urdf** folder contains a symbolic link to the xacro file of <my_robot\> and, after calibration, will contain a calibrated urdf. 
 Finally, the **calibration** folder contains the configuration file (config.yml). 
 
