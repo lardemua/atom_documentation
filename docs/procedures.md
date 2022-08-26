@@ -283,8 +283,6 @@ usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-c
                       Specify if you want to configure the calibration package with a specific configutation file.
                       If this flag is not given, the standard config.yml ill be used.
 ```
-
-
 ##### Using tfs instead of the xacro file
 
 Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. 
@@ -298,7 +296,6 @@ usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-c
 -utf, --use_tfs       Use transformations in the bag file instead of generating new tfs from the xacro,
                       joint_state_msgs and robot state publisher.
 ```
-
 
 ### Set an initial estimate
 
@@ -357,10 +354,33 @@ roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASE
 
 The script launches a fully configured rviz window. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere that appears in the scene. 
 
-The number of collections required to accurately calibrate a system vary according to the number, modality and positioning of the sensors. 
-Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
-That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
-of overlap there is between the sensors.
+!!! Info "How many collections do I need?"
+    The number of collections required to accurately calibrate a system vary according to the number, modality and positioning of the sensors. 
+    Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
+    That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
+    of overlap there is between the sensors.
+
+!!! Info "What is a good bagfile for recording an ATOM dataset?"
+    Each collection in an ATOM dataset will contain data from all the sensors in the system. All this data is assumed to be captured at the reference time stamp of that collection. 
+    In other words, ATOM assumes that the data from the sensors in a collection is synchronized. 
+
+    There are some robotic systems where it is straightforward to implement synchronization mechanisms, e.g., image acquisition hardware triggers in stereo camera systems.  
+    However, these solutions are very specialized and cannot be relied for the general case of multi-sensor, multi-modal systems. For example, it is not so easy to synchronize the acquisition of images from a camera with range data from a LiDAR.
+
+    The solution adopted in ATOM is to transfer the responsibility of selection of these moments when a collection should be recorded to the user. More often than not, sensor data is not synchronized. However, if the sensors are observing a static scene, it is possible to safely assume that the sensor data is "virtually synchronized" because, even if the data is collected at different instants in time, it will observe the same static scenario.
+
+    To ensure this, what we do during the recording of the bagfile for calibration is to plan in advance the moments where we will record collections, and ensure that at those moments the scene has been static for a duration longer than the estimated largest possible sensor data time differential. 
+    
+    In practice, in our bagfiles, we move the pattern from position A to position B (moving the pattern at normal speed), but then hold the pattern static in position B for some time, e.g 2 or 3 seconds, in anticipation that the collection will be recorded once these 2 seconds elapse, a time in which is is safe to assume that the scene has remained static for a _long enough_ duration. 
+    
+    Here is an [example of a calibration bagfile](https://youtu.be/cVhibWXSGsg) where the described motion of the calibration pattern is visible. Having the user holding the pattern static will always results is small displacements of the calibration pattern. Thus, for more complex systems, or when a high accuracy is required, we use a [tripod to hold the pattern still](https://youtu.be/CB22PyhY4g4). 
+    
+!!! Info "Should the pattern be held in a special pose?"
+
+    Short answer: **Yes**, if LiDAR or depth sensors are used the pattern should be held somewhat diagonally.
+
+    Long answer: In order to calibrate LiDAR or depth sensor modalities ATOM uses a cost function which uses the lateral physical boundaries of the pattern as landmarks for guiding the calibration. If the pattern is held in a straight up vertical pose, the lateral alignment will be equally valued regardless of the height at which the pattern is held. This results in redundancy in the estimation of the pattern pose, which pollutes the calibration procedure and often ends up in non-accurate calibrations. ATOM tackles this with a simple solution: [we avoid holding the calibration pattern in a straight up pose](https://www.youtube.com/watch?v=eII_ptyMq5E&list=PLQN09mzV5mbKtqGH1ofy-7GZvbNi-iw8U&index=6), and hold it in one (or more) diagonal pose(s) when recording calibration bagfiles.  
+
 
 It is also possible to add additional parameters to configure several aspects of the script. See below all the options.
 
