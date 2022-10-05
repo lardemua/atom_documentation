@@ -370,7 +370,7 @@ Once the verifications signal a correct calibration configuration, a set of file
 
 </code></pre>
 <p>The <strong>launch</strong> directory contains automatically created launch files used to launch each of the calibration stages.
-The <strong>rviz</strong> folder contains several rviz configuration files used to launch the visualization of each stage.
+The <strong>rviz</strong> folder contains several rviz configuration files used to setup the visualization of each stage.
 The <strong>urdf</strong> folder contains a symbolic link to the xacro file of &lt;my_robot> and, after calibration, will contain a calibrated urdf. 
 Finally, the <strong>calibration</strong> folder contains the configuration file (config.yml). </p>
 <p>This folder also contains an automatically produced schematic of the configuration of the calibration named <a href="../img/summary_example.pdf">summary.pdf</a>.
@@ -451,7 +451,7 @@ The system configures an <a href="http://wiki.ros.org/rviz/Tutorials/Interactive
 <p>The script launches a fully configured rviz window. The user observes the data playback and <strong>decides when a collection should be saved</strong> by clicking a green sphere that appears in the scene. </p>
 <div class="admonition info">
 <p class="admonition-title">How many collections do I need?</p>
-<p>The number of collections required to accurately calibrate a system vary according to the number, modality and positioning of the sensors. 
+<p>The number of collections required to accurately calibrate a system varies according to the number, modality and positioning of the sensors. 
 Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
 That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
 of overlap there is between the sensors.</p>
