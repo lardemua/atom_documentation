@@ -355,8 +355,8 @@ roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASE
 The script launches a fully configured rviz window. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere that appears in the scene. 
 
 !!! Info "How many collections do I need?"
-    The number of collections required to accurately calibrate a system vary according to the number, modality and positioning of the sensors. 
-    Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
+    The number of collections required to accurately calibrate a system varies according to the number, modality and positioning of the sensors. 
+    Empirically we found that a figure around 20 or 30 collections is usually sufficient for estimating an accurate calibration.
     That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
     of overlap there is between the sensors.
 
@@ -365,13 +365,13 @@ The script launches a fully configured rviz window. The user observes the data p
     In other words, ATOM assumes that the data from the sensors in a collection is synchronized. 
 
     There are some robotic systems where it is straightforward to implement synchronization mechanisms, e.g., image acquisition hardware triggers in stereo camera systems.  
-    However, these solutions are very specialized and cannot be relied for the general case of multi-sensor, multi-modal systems. For example, it is not so easy to synchronize the acquisition of images from a camera with range data from a LiDAR.
+    However, these solutions are very specialized and cannot be relied upon for the general case of multi-sensor, multi-modal systems. For example, it is not so easy to synchronize the acquisition of images from a camera with range data from a LiDAR.
 
     The solution adopted in ATOM is to transfer the responsibility of selection of these moments when a collection should be recorded to the user. More often than not, sensor data is not synchronized. However, if the sensors are observing a static scene, it is possible to safely assume that the sensor data is "virtually synchronized" because, even if the data is collected at different instants in time, it will observe the same static scenario.
 
     To ensure this, what we do during the recording of the bagfile for calibration is to plan in advance the moments where we will record collections, and ensure that at those moments the scene has been static for a duration longer than the estimated largest possible sensor data time differential. 
     
-    In practice, in our bagfiles, we move the pattern from position A to position B (moving the pattern at normal speed), but then hold the pattern static in position B for some time, e.g 2 or 3 seconds, in anticipation that the collection will be recorded once these 2 seconds elapse, a time in which is is safe to assume that the scene has remained static for a _long enough_ duration. 
+    In practice, in our bagfiles, we move the pattern from position A to position B (moving the pattern at normal speed), but then hold the pattern static in position B for some time, e.g 3 to 5 seconds, in anticipation that the collection will be recorded once these seconds elapse, a time in which is is safe to assume that the scene has remained static for a _long enough_ duration. 
     
     Here is an [example of a calibration bagfile](https://youtu.be/cVhibWXSGsg) where the described motion of the calibration pattern is visible. Having the user holding the pattern static will always results is small displacements of the calibration pattern. Thus, for more complex systems, or when a high accuracy is required, we use a [tripod to hold the pattern still](https://youtu.be/CB22PyhY4g4). 
     
