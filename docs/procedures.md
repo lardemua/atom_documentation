@@ -1,5 +1,6 @@
 ## Calibration procedures
 
+- [Calibration procedures](#calibration-procedures)
   - [Create a calibration package](#create-a-calibration-package)
   - [Configure a calibration package](#configure-a-calibration-package)
       - [Recording compressed images](#recording-compressed-images)
@@ -7,7 +8,7 @@
       - [Using a different configuration file](#using-a-different-configuration-file)
       - [Using tfs instead of the xacro file](#using-tfs-instead-of-the-xacro-file)
   - [Set an initial estimate](#set-an-initial-estimate)
-    - [Visualizing sensor fustrums](#visualizing-sensor-fustrums)
+    - [Visualizing sensor frustums](#visualizing-sensor-frustums)
   - [Collect data](#collect-data)
     - [RGB camera labeling](#rgb-camera-labeling)
     - [3D Lidar labeling](#3d-lidar-labeling)
@@ -280,7 +281,7 @@ usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-c
 -h, --help            show this help message and exit
 -n NAME, --name NAME  package name
 -cfg CONFIG_FILE, --config_file CONFIG_FILE
-                      Specify if you want to configure the calibration package with a specific configutation file.
+                      Specify if you want to configure the calibration package with a specific configuration file.
                       If this flag is not given, the standard config.yml ill be used.
 ```
 ##### Using tfs instead of the xacro file
@@ -331,15 +332,15 @@ Here are a couple of examples of setting the initial estimate:
   <figcaption align=center>Setting initial estimate of sensor poses in the IRIS UR10e.</figcaption>
 </figure>
 
-#### Visualizing sensor fustrums
+#### Visualizing sensor frustums
 
-ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.
+ATOM provides a way to visualize the frustums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the amount of coverage of a work volume. Below you can see the frustum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its frustum.
 
 This functionality is only available in the set initial estimate stage.
 
 <figure markdown align=center>
   ![](img/MMTBot_fustrum.gif){width="100%" }
-  <figcaption align=center>Visualizing fustrum of RGB sensors in the MMTBot.</figcaption>
+  <figcaption align=center>Visualizing frustum of RGB sensors in the MMTBot.</figcaption>
 </figure>
 
 ### Collect data 
@@ -401,7 +402,7 @@ It is also possible to add additional parameters to configure several aspects of
 When you launch the data collection script, it automatically starts data labeling processes adequate for each sensor in your robotic system.
 As such, the data is being continuously labeled as the bagfile is played.
 
-Depending on the modalidity of the sensors in the system the labeling may be automatic or fully automatic.
+Depending on the modality of the sensors in the system the labeling may be automatic or fully automatic.
 Below we detail how each of the labelers operate.
 
 #### RGB camera labeling
@@ -411,12 +412,12 @@ Also, it provides an rviz configuration which subscribes annotated images receiv
 
 <figure markdown align=center>
   ![](img/ur10e_eye_to_base_collect_data.gif){width="100%" }
-  <figcaption align=center>Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
+  <figcaption align=center>Automatic labeling of RGB images (IrisUA - UR10e).
 </figcaption>
 </figure>
 
 !!! Note "Use charuco boards"
-    Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.
+    Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very useful when the sensors in your system have small overlapping fields of view.
 
 #### 3D Lidar labeling
 
@@ -441,7 +442,7 @@ as you can see below:
 
 #### Depth camera labeling
 
-The labeling of depth cameras is a semi-automatic procedure. It is done by clicking the depth image in rviz. The user should click somewhere inside the pattern, and then the system carries on the tracking of the pattern even if it moves. The user may reset the procedure by reclicking the image.
+The labeling of depth cameras is a semi-automatic procedure. It is done by clicking the depth image in rviz. The user should click somewhere inside the pattern, and then the system carries on the tracking of the pattern even if it moves. The user may reset the procedure by clicking again on the image.
 
 <figure markdown align=center>
   ![](img/ATOMDepthLabeling.gif){width="100%" }
@@ -575,7 +576,7 @@ optional arguments:
                         Publish ros visualization markers.
   -si, --show_images    shows images for each camera
   -oi, --optimize_intrinsics
-                        Adds camera instrinsics to the ptimization
+                        Adds camera intrinsics to the optimization
   -sr SAMPLE_RESIDUALS, --sample_residuals SAMPLE_RESIDUALS
                         Samples residuals
   -ss SAMPLE_SEED, --sample_seed SAMPLE_SEED

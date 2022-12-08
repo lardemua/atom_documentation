@@ -79,7 +79,7 @@ You may record data by [calling rosbag record](http://wiki.ros.org/rosbag/Tutori
 
     rosbag record /topic1 ... /topicN -o output.bag
 
-We tipically have a roslaunch file to record data and produce a bagfile for each robotic system. Here's the example for [MMTBot](https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_bringup/launch/record.launch).
+We typically have a roslaunch file to record data and produce a bagfile for each robotic system. Here's the example for [MMTBot](https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_bringup/launch/record.launch).
 
 A bagfile should contain several topics, namely transformations and joint state messages, as well as messages produced by the sensors in the system. For example, in the case of MMTBot, which has sensors **world_camera**, **hand_camera** and **lidar**, we record the following topics:
 
@@ -97,7 +97,7 @@ A bagfile should contain several topics, namely transformations and joint state 
 #### Initial Positioning of Sensors
 
 The goal of this stage is to allow the user to define interactively the poses of each sensor, so that the optimization starts close to the optimal solution and thus avoids local minima. 
-This stage may be skiped if the transformations from the URDF are believed to be "sufficiently" accurate.
+This stage may be skipped if the transformations from the URDF are believed to be "sufficiently" accurate.
 
 More details [here](procedures.md#set-an-initial-estimate).
 
@@ -130,7 +130,7 @@ More details [here](evaluations.md).
 
 #### Running the calibrated system
 
-After calibration ATOM produces a calibrated URDF file which can be direcly used in ROS.
+After calibration ATOM produces a calibrated URDF file which can be directly used in ROS.
 
 
 If you get here unscathed, <span style="color:orange">you are a very lucky person :-) </span> ... Enjoy!

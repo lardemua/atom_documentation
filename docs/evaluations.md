@@ -1,12 +1,13 @@
 ## Evaluating your calibration
 
-  - [Annotation of rgb images](#annotation-of-rgb-images)
-  - [RGB to RGB camera evaluation](#rgb-to-rgb-camera-evaluation)
-  - [LiDAR to Depth Camera evaluation](#lidar-to-depth-camera-evaluation)
-  - [RGB to Depth camera evaluation](#rgb-to-depth-camera-evaluation)
-  - [LiDAR to LiDAR evaluation](#lidar-to-lidar-evaluation)
-  - [LiDAR to RGB camera evaluation](#lidar-to-rgb-camera-evaluation)
-  - [Point cloud image projection](#point-cloud-image-projection)
+- [Evaluating your calibration](#evaluating-your-calibration)
+    - [Annotation of rgb images](#annotation-of-rgb-images)
+    - [RGB to RGB camera evaluation](#rgb-to-rgb-camera-evaluation)
+    - [LiDAR to Depth Camera evaluation](#lidar-to-depth-camera-evaluation)
+    - [RGB to Depth camera evaluation](#rgb-to-depth-camera-evaluation)
+    - [LiDAR to LiDAR evaluation](#lidar-to-lidar-evaluation)
+    - [LiDAR to RGB camera evaluation](#lidar-to-rgb-camera-evaluation)
+    - [Point cloud image projection](#point-cloud-image-projection)
 
 After the system is calibrated one common concern is to be able to assess the accuracy of the produced calibration. ATOM provides several evaluation scripts for this purpose.
 
@@ -48,9 +49,12 @@ How to annotate:
 The complete list of keys is printed when "h" is pressed. Be sure to label the corners in both intersected edges, ie, each corner should have two different coloured points.
 
 
-The result should be someting like this (for each image):
+The result should be something like this (for each image):
 
-<img align="center" src="docs/annotation_rgb_images.png" width="450"/>
+<figure markdown align=center>
+  ![Image title](img/annotation_rgb_images.png){width="90%" }
+  <figcaption align=center>Annotation of the boundaries of the pattern in RGB images.</figcaption>
+</figure>
 
 Here is a [video tutorial](https://www.youtube.com/watch?v=DSYyKU-nDcs).
 
@@ -82,7 +86,7 @@ optional arguments:
 How to run:
 
 ``` bash
-rosrun atom_evaluation rgb_to_rgb_evalutation.py -train_json <path_to_train_file> -test_json <path_to_test_file> -ss <source_sensor_name> -ts <target_sensor_name>
+rosrun atom_evaluation rgb_to_rgb_evaluation.py -train_json <path_to_train_file> -test_json <path_to_test_file> -ss <source_sensor_name> -ts <target_sensor_name>
 
 ```
 
@@ -176,7 +180,7 @@ optional arguments:
                         Target transformation sensor.
   -si, --show_images    If true the script shows images.
   -ef EVAL_FILE, --eval_file EVAL_FILE
-                        Path to file to read and/or write the evalutation data.
+                        Path to file to read and/or write the evaluation data.
   -ua, --use_annotation
                         If true, the limit points will be manually annotated.
 ```
@@ -229,7 +233,7 @@ optional arguments:
 
 [//]: # ()
 
-[//]: # (The result should be someting like this &#40;for each image&#41;:)
+[//]: # (The result should be something like this &#40;for each image&#41;:)
 
 [//]: # ()
 
