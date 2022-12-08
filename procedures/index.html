@@ -67,7 +67,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#set-an-initial-estimate">Set an initial estimate</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#visualizing-sensor-fustrums">Visualizing sensor fustrums</a>
+    <li class="toctree-l3"><a class="reference internal" href="#visualizing-sensor-frustums">Visualizing sensor frustums</a>
     </li>
         </ul>
     </li>
@@ -143,6 +143,7 @@
               
                 <h2 id="calibration-procedures">Calibration procedures</h2>
 <ul>
+<li><a href="#calibration-procedures">Calibration procedures</a></li>
 <li><a href="#create-a-calibration-package">Create a calibration package</a></li>
 <li><a href="#configure-a-calibration-package">Configure a calibration package</a><ul>
 <li><a href="#recording-compressed-images">Recording compressed images</a></li>
@@ -152,7 +153,7 @@
 </ul>
 </li>
 <li><a href="#set-an-initial-estimate">Set an initial estimate</a><ul>
-<li><a href="#visualizing-sensor-fustrums">Visualizing sensor fustrums</a></li>
+<li><a href="#visualizing-sensor-frustums">Visualizing sensor frustums</a></li>
 </ul>
 </li>
 <li><a href="#collect-data">Collect data</a><ul>
@@ -396,7 +397,7 @@ multiple configurations with multiple config.yml files. There are also other opt
 -h, --help            show this help message and exit
 -n NAME, --name NAME  package name
 -cfg CONFIG_FILE, --config_file CONFIG_FILE
-                      Specify if you want to configure the calibration package with a specific configutation file.
+                      Specify if you want to configure the calibration package with a specific configuration file.
                       If this flag is not given, the standard config.yml ill be used.
 </code></pre>
 <h5 id="using-tfs-instead-of-the-xacro-file">Using tfs instead of the xacro file</h5>
@@ -435,13 +436,13 @@ The system configures an <a href="http://wiki.ros.org/rviz/Tutorials/Interactive
   </p>
 <figcaption align="center">Setting initial estimate of sensor poses in the IRIS UR10e.</figcaption>
 </figure>
-<h4 id="visualizing-sensor-fustrums">Visualizing sensor fustrums</h4>
-<p>ATOM provides a way to visualize the fustrums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the ammount of coverage of a work volume. Below you can see the fustrum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its fustrum.</p>
+<h4 id="visualizing-sensor-frustums">Visualizing sensor frustums</h4>
+<p>ATOM provides a way to visualize the frustums of RGB and Depth cameras. These may be useful to get a clue about the overlap between sensors, or the amount of coverage of a work volume. Below you can see the frustum of two rgb cameras. One of the cameras is positioned on the end-effector of the manipulator, and when it moves, so does its frustum.</p>
 <p>This functionality is only available in the set initial estimate stage.</p>
 <figure align="center">
 <p><img alt="" src="../img/MMTBot_fustrum.gif" width="100%" />
   </p>
-<figcaption align="center">Visualizing fustrum of RGB sensors in the MMTBot.</figcaption>
+<figcaption align="center">Visualizing frustum of RGB sensors in the MMTBot.</figcaption>
 </figure>
 <h3 id="collect-data">Collect data</h3>
 <p>To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as <a href="..#what-is-a-collection">collections</a>, and a set of collections as an <a href="..#what-is-an-atom-dataset">ATOM dataset</a>. </p>
@@ -452,7 +453,7 @@ The system configures an <a href="http://wiki.ros.org/rviz/Tutorials/Interactive
 <div class="admonition info">
 <p class="admonition-title">How many collections do I need?</p>
 <p>The number of collections required to accurately calibrate a system varies according to the number, modality and positioning of the sensors. 
-Empirically we found that a figure around 30 collections is usually sufficient for estimating an accurate calibration.
+Empirically we found that a figure around 20 or 30 collections is usually sufficient for estimating an accurate calibration.
 That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
 of overlap there is between the sensors.</p>
 </div>
@@ -461,10 +462,10 @@ of overlap there is between the sensors.</p>
 <p>Each collection in an ATOM dataset will contain data from all the sensors in the system. All this data is assumed to be captured at the reference time stamp of that collection. 
 In other words, ATOM assumes that the data from the sensors in a collection is synchronized. </p>
 <p>There are some robotic systems where it is straightforward to implement synchronization mechanisms, e.g., image acquisition hardware triggers in stereo camera systems.<br />
-However, these solutions are very specialized and cannot be relied for the general case of multi-sensor, multi-modal systems. For example, it is not so easy to synchronize the acquisition of images from a camera with range data from a LiDAR.</p>
+However, these solutions are very specialized and cannot be relied upon for the general case of multi-sensor, multi-modal systems. For example, it is not so easy to synchronize the acquisition of images from a camera with range data from a LiDAR.</p>
 <p>The solution adopted in ATOM is to transfer the responsibility of selection of these moments when a collection should be recorded to the user. More often than not, sensor data is not synchronized. However, if the sensors are observing a static scene, it is possible to safely assume that the sensor data is "virtually synchronized" because, even if the data is collected at different instants in time, it will observe the same static scenario.</p>
 <p>To ensure this, what we do during the recording of the bagfile for calibration is to plan in advance the moments where we will record collections, and ensure that at those moments the scene has been static for a duration longer than the estimated largest possible sensor data time differential. </p>
-<p>In practice, in our bagfiles, we move the pattern from position A to position B (moving the pattern at normal speed), but then hold the pattern static in position B for some time, e.g 2 or 3 seconds, in anticipation that the collection will be recorded once these 2 seconds elapse, a time in which is is safe to assume that the scene has remained static for a <em>long enough</em> duration. </p>
+<p>In practice, in our bagfiles, we move the pattern from position A to position B (moving the pattern at normal speed), but then hold the pattern static in position B for some time, e.g 3 to 5 seconds, in anticipation that the collection will be recorded once these seconds elapse, a time in which is is safe to assume that the scene has remained static for a <em>long enough</em> duration. </p>
 <p>Here is an <a href="https://youtu.be/cVhibWXSGsg">example of a calibration bagfile</a> where the described motion of the calibration pattern is visible. Having the user holding the pattern static will always results is small displacements of the calibration pattern. Thus, for more complex systems, or when a high accuracy is required, we use a <a href="https://youtu.be/CB22PyhY4g4">tripod to hold the pattern still</a>. </p>
 </div>
 <div class="admonition info">
@@ -511,7 +512,7 @@ However, these solutions are very specialized and cannot be relied for the gener
 </div>
 <p>When you launch the data collection script, it automatically starts data labeling processes adequate for each sensor in your robotic system.
 As such, the data is being continuously labeled as the bagfile is played.</p>
-<p>Depending on the modalidity of the sensors in the system the labeling may be automatic or fully automatic.
+<p>Depending on the modality of the sensors in the system the labeling may be automatic or fully automatic.
 Below we detail how each of the labelers operate.</p>
 <h4 id="rgb-camera-labeling">RGB camera labeling</h4>
 <p>RGB cameras have a fully automatic pattern detection. ATOM uses off the shelf <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html#ga93efa9b0aa890de240ca32b11253dd4a">chessboard</a> or <a href="https://docs.opencv.org/4.x/df/d4a/tutorial_charuco_detection.html">charuco</a> calibration pattern detectors.
@@ -519,12 +520,12 @@ Also, it provides an rviz configuration which subscribes annotated images receiv
 <figure align="center">
 <p><img alt="" src="../img/ur10e_eye_to_base_collect_data.gif" width="100%" />
   </p>
-<figcaption align="center">Setting the seed point in 2D Lidar data for semi-automatic labeling (AtlasCar2).
+<figcaption align="center">Automatic labeling of RGB images (IrisUA - UR10e).
 </figcaption>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Use charuco boards</p>
-<p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very usefull when the sensors in your system have small overlapping fields of view.</p>
+<p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very useful when the sensors in your system have small overlapping fields of view.</p>
 </div>
 <h4 id="3d-lidar-labeling">3D Lidar labeling</h4>
 <p>3D Lidar labeling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  </p>
@@ -545,7 +546,7 @@ as you can see below:</p>
 <p>The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. </p>
 </div>
 <h4 id="depth-camera-labeling">Depth camera labeling</h4>
-<p>The labeling of depth cameras is a semi-automatic procedure. It is done by clicking the depth image in rviz. The user should click somewhere inside the pattern, and then the system carries on the tracking of the pattern even if it moves. The user may reset the procedure by reclicking the image.</p>
+<p>The labeling of depth cameras is a semi-automatic procedure. It is done by clicking the depth image in rviz. The user should click somewhere inside the pattern, and then the system carries on the tracking of the pattern even if it moves. The user may reset the procedure by clicking again on the image.</p>
 <figure align="center">
 <p><img alt="" src="../img/ATOMDepthLabeling.gif" width="100%" />
   </p>
@@ -645,7 +646,7 @@ optional arguments:
                         Publish ros visualization markers.
   -si, --show_images    shows images for each camera
   -oi, --optimize_intrinsics
-                        Adds camera instrinsics to the ptimization
+                        Adds camera intrinsics to the optimization
   -sr SAMPLE_RESIDUALS, --sample_residuals SAMPLE_RESIDUALS
                         Samples residuals
   -ss SAMPLE_SEED, --sample_seed SAMPLE_SEED

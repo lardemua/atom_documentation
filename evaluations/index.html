@@ -109,6 +109,7 @@
               
                 <h2 id="evaluating-your-calibration">Evaluating your calibration</h2>
 <ul>
+<li><a href="#evaluating-your-calibration">Evaluating your calibration</a><ul>
 <li><a href="#annotation-of-rgb-images">Annotation of rgb images</a></li>
 <li><a href="#rgb-to-rgb-camera-evaluation">RGB to RGB camera evaluation</a></li>
 <li><a href="#lidar-to-depth-camera-evaluation">LiDAR to Depth Camera evaluation</a></li>
@@ -116,6 +117,8 @@
 <li><a href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a></li>
 <li><a href="#lidar-to-rgb-camera-evaluation">LiDAR to RGB camera evaluation</a></li>
 <li><a href="#point-cloud-image-projection">Point cloud image projection</a></li>
+</ul>
+</li>
 </ul>
 <p>After the system is calibrated one common concern is to be able to assess the accuracy of the produced calibration. ATOM provides several evaluation scripts for this purpose.</p>
 <p>Unlike ATOM which calibrates all sensors simultaneously, evaluations are performed in pairs of sensors, which facilitates comparisons with other calibration approaches (which are mostly pairwise),
@@ -148,8 +151,12 @@ optional arguments:
 <li>when the four sides are complete move to the next collection image by pressing "."</li>
 </ul>
 <p>The complete list of keys is printed when "h" is pressed. Be sure to label the corners in both intersected edges, ie, each corner should have two different coloured points.</p>
-<p>The result should be someting like this (for each image):</p>
-<p><img align="center" src="docs/annotation_rgb_images.png" width="450"/></p>
+<p>The result should be something like this (for each image):</p>
+<figure align="center">
+<p><img alt="Image title" src="../img/annotation_rgb_images.png" width="90%" />
+  </p>
+<figcaption align="center">Annotation of the boundaries of the pattern in RGB images.</figcaption>
+</figure>
 <p>Here is a <a href="https://www.youtube.com/watch?v=DSYyKU-nDcs">video tutorial</a>.</p>
 <h4 id="rgb-to-rgb-camera-evaluation">RGB to RGB camera evaluation</h4>
 <p>Evaluates de camera-to-camera reprojection error with the following metrics:</p>
@@ -174,7 +181,7 @@ optional arguments:
   -sg, --save_graphics  Save reprojection error graphics.
 </code></pre>
 <p>How to run:</p>
-<pre><code class="language-bash">rosrun atom_evaluation rgb_to_rgb_evalutation.py -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_sensor_name&gt; -ts &lt;target_sensor_name&gt;
+<pre><code class="language-bash">rosrun atom_evaluation rgb_to_rgb_evaluation.py -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_sensor_name&gt; -ts &lt;target_sensor_name&gt;
 
 </code></pre>
 <h4 id="lidar-to-depth-camera-evaluation">LiDAR to Depth Camera evaluation</h4>
@@ -251,7 +258,7 @@ optional arguments:
                         Target transformation sensor.
   -si, --show_images    If true the script shows images.
   -ef EVAL_FILE, --eval_file EVAL_FILE
-                        Path to file to read and/or write the evalutation data.
+                        Path to file to read and/or write the evaluation data.
   -ua, --use_annotation
                         If true, the limit points will be manually annotated.
 </code></pre>
