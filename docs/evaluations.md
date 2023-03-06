@@ -1,6 +1,6 @@
-## Evaluating your calibration
+## Evaluation Procedures
 
-- [Evaluating your calibration](#evaluating-your-calibration)
+- [Evaluation Procedures](#evaluation-procedures)
     - [Annotation of rgb images](#annotation-of-rgb-images)
     - [RGB to RGB camera evaluation](#rgb-to-rgb-camera-evaluation)
     - [LiDAR to Depth Camera evaluation](#lidar-to-depth-camera-evaluation)
@@ -13,6 +13,12 @@ After the system is calibrated one common concern is to be able to assess the ac
 
 Unlike ATOM which calibrates all sensors simultaneously, evaluations are performed in pairs of sensors, which facilitates comparisons with other calibration approaches (which are mostly pairwise),
 e.g. [opencv's stereo calibration](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html). Thus, there is a different evaluation script for each combination of modalities.
+
+The ATOM evaluation scripts often request for a train dataset and a test dataset. 
+The train dataset is the dataset which is used to conduct the calibration, while the test dataset is a dataset which was not used for calibration.
+Results are reported for the test dataset using the geometric transformations estimated during the calibration which were copied to the train dataset json.
+These are meant to be two separate datasets, but if you can also use a single dataset by indicating it both as the train and the test dataset.
+In this case, however, you should be aware that the results are being computed with data that was used for training.
 
 #### Annotation of rgb images
 
