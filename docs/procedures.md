@@ -165,7 +165,9 @@ calibration_pattern:
   parent_link: "world"
 
   # Defines if the pattern link is the same in all collections (i.e. fixed=true),
-  # or each collection will have its own estimative of the link transformation.
+  # or each collection will have its own estimate of the link transformation.
+  # Note: if you plan to have the pattern fixed, while the moving the rigidly attached sensors, 
+  # this is equivalent to having the sensors fixed and the pattern moving, so you should use fixed=false.
   fixed: false
 
   # The type of pattern used for the calibration.
