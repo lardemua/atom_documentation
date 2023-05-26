@@ -278,27 +278,22 @@ It is also possible to configure your calibration package with a different confi
 multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:
 
 ```bash
-usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
-
--h, --help            show this help message and exit
--n NAME, --name NAME  package name
--cfg CONFIG_FILE, --config_file CONFIG_FILE
-                      Specify if you want to configure the calibration package with a specific configuration file.
-                      If this flag is not given, the standard config.yml ill be used.
+usage: rosrun <my_robot_calibration> configure -n NAME -cfg CONFIG_FILE
 ```
 ##### Using tfs instead of the xacro file
 
-Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. 
-To do this use the --use_tfs option when configuring your package:
+Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. To do this use the --use_tfs option when configuring your package:
 
 ```bash
-usage: rosrun atom_calibration configure_calibration_pkg [-h] -n NAME [-utf] [-cfg CONFIG_FILE]
-
--h, --help            show this help message and exit
--n NAME, --name NAME  package name
--utf, --use_tfs       Use transformations in the bag file instead of generating new tfs from the xacro,
-                      joint_state_msgs and robot state publisher.
+usage: rosrun <my_robot_calibration> configure -n NAME -utf
 ```
+
+!!! Note
+    A previous version of the configure script used a bash based script (currently it is python based), which may not have all the options listed. If the <my_robot_calibration> package was created some time ago, you may still have the bash based script. 
+
+    In that case you can update the configure script by running:
+
+         rosrun atom_calibration update_configure_script -n <my_robot_calibration>
 
 ### Set an initial estimate
 
