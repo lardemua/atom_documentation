@@ -278,14 +278,14 @@ It is also possible to configure your calibration package with a different confi
 multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:
 
 ```bash
-usage: rosrun <my_robot_calibration> configure -n NAME -cfg CONFIG_FILE
+usage: rosrun <my_robot_calibration> configure -cfg CONFIG_FILE
 ```
 ##### Using tfs instead of the xacro file
 
 Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. To do this use the --use_tfs option when configuring your package:
 
 ```bash
-usage: rosrun <my_robot_calibration> configure -n NAME -utf
+usage: rosrun <my_robot_calibration> configure -utf
 ```
 
 !!! Note
