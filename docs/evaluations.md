@@ -8,6 +8,7 @@
     - [LiDAR to LiDAR evaluation](#lidar-to-lidar-evaluation)
     - [LiDAR to RGB camera evaluation](#lidar-to-rgb-camera-evaluation)
     - [Point cloud image projection](#point-cloud-image-projection)
+    - [Ground truth frame evaluation](#ground-truth-frame-evalution)
 
 After the system is calibrated one common concern is to be able to assess the accuracy of the produced calibration. ATOM provides several evaluation scripts for this purpose.
 
@@ -274,3 +275,15 @@ How to run:
 ``` bash
 rosrun atom_evaluation point_cloud_to_image.py -json <path_to_test_json> -ls <lidar_sensor_name> -cs <camera_sensor_name>
 ```
+
+#### Ground Truth Frame Evaluation
+
+When using simulation it is possible to know that a given dataset contains "perfect" value for the transformations to be estimated.
+Using this, we can run a comparison between the ground_truth dataset and the calibrated dataset, and assess if the estimated transformations are accurate.
+
+To run use:
+
+rosrun atom_evaluation ground_truth_frame_evaluation -train_json <calibrated_dataset> -test_json <ground_truth_dataset>
+
+The script produces a table where you can inspect the errors.
+It is also possible to configure which frames are analyzed. Use --help to see the options.
