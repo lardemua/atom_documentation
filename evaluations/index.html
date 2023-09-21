@@ -73,6 +73,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#point-cloud-image-projection">Point cloud image projection</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ground-truth-frame-evaluation">Ground Truth Frame Evaluation</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -117,6 +119,7 @@
 <li><a href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a></li>
 <li><a href="#lidar-to-rgb-camera-evaluation">LiDAR to RGB camera evaluation</a></li>
 <li><a href="#point-cloud-image-projection">Point cloud image projection</a></li>
+<li><a href="#ground-truth-frame-evalution">Ground truth frame evaluation</a></li>
 </ul>
 </li>
 </ul>
@@ -282,6 +285,13 @@ optional arguments:
 <p>How to run:</p>
 <pre><code class="language-bash">rosrun atom_evaluation point_cloud_to_image.py -json &lt;path_to_test_json&gt; -ls &lt;lidar_sensor_name&gt; -cs &lt;camera_sensor_name&gt;
 </code></pre>
+<h4 id="ground-truth-frame-evaluation">Ground Truth Frame Evaluation</h4>
+<p>When using simulation it is possible to know that a given dataset contains "perfect" value for the transformations to be estimated.
+Using this, we can run a comparison between the ground_truth dataset and the calibrated dataset, and assess if the estimated transformations are accurate.</p>
+<p>To run use:</p>
+<p>rosrun atom_evaluation ground_truth_frame_evaluation -train_json <calibrated_dataset> -test_json <ground_truth_dataset></p>
+<p>The script produces a table where you can inspect the errors.
+It is also possible to configure which frames are analyzed. Use --help to see the options.</p>
               
             </div>
           </div><footer>
