@@ -283,7 +283,7 @@ Using this, we can run a comparison between the ground_truth dataset and the cal
 
 To run use:
 
-rosrun atom_evaluation ground_truth_frame_evaluation -train_json <calibrated_dataset> -test_json <ground_truth_dataset>
+  rosrun atom_evaluation ground_truth_frame_evaluation -train_json <calibrated_dataset> -test_json <ground_truth_dataset>
 
 The script produces a table where you can inspect the errors.
 It is also possible to configure which frames are analyzed. Use --help to see the options.
