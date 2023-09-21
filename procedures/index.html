@@ -394,11 +394,11 @@ For that just add a field <strong>throttle</strong> to the section of the corres
 <h5 id="using-a-different-configuration-file">Using a different configuration file</h5>
 <p>It is also possible to configure your calibration package with a different configuration file, in the case you have
 multiple configurations with multiple config.yml files. There are also other options to run a custom configuration, i.e.:</p>
-<pre><code class="language-bash">usage: rosrun &lt;my_robot_calibration&gt; configure -n NAME -cfg CONFIG_FILE
+<pre><code class="language-bash">usage: rosrun &lt;my_robot_calibration&gt; configure -cfg CONFIG_FILE
 </code></pre>
 <h5 id="using-tfs-instead-of-the-xacro-file">Using tfs instead of the xacro file</h5>
 <p>Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. To do this use the --use_tfs option when configuring your package:</p>
-<pre><code class="language-bash">usage: rosrun &lt;my_robot_calibration&gt; configure -n NAME -utf
+<pre><code class="language-bash">usage: rosrun &lt;my_robot_calibration&gt; configure -utf
 </code></pre>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
