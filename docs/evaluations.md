@@ -118,25 +118,26 @@ optional arguments:
 
 ```
 
-#### RGB to Depth camera evaluation
+#### Depth to RGB camera evaluation
 
 How to run:
 
 ``` bash
-rosrun atom_evaluation depth_sensor_to_camera_evaluation.py -train_json <path_to_train_file> -test_json <path_to_test_file> -cs <camera_sensor_name> -ds <depth_sensor_name>
+rosrun atom_evaluation depth_to_rgb_evaluation [-h] -train_json <path_to_train_file> -test_json <path_to_test_file> -ds <depth_sensor_name> -cs <rgb_sensor_name> 
 
 optional arguments:
   -h, --help            show this help message and exit
   -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
-                        Json file containing train input dataset.
+                        Json file containing input training dataset.
   -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
-                        Json file containing test input dataset.
-  -cs SOURCE_SENSOR, --camera_sensor SOURCE_SENSOR
+                        Json file containing input testing dataset.
+  -ds DEPTH_SENSOR, --depth_sensor DEPTH_SENSOR
                         Source transformation sensor.
-  -ds TARGET_SENSOR, --depth_sensor TARGET_SENSOR
+  -cs RGB_SENSOR, --rgb_sensor RGB_SENSOR
                         Target transformation sensor.
   -si, --show_images    If true the script shows images.
-
+  -sfr SAVE_FILE_RESULTS, --save_file_results SAVE_FILE_RESULTS
+                        Output folder to where the results will be stored.
 ```
 
 #### LiDAR to LiDAR evaluation
@@ -156,7 +157,6 @@ optional arguments:
                         Source transformation sensor.
   -ld2 TARGET_SENSOR, --lidar_sensor_2 TARGET_SENSOR
                         Target transformation sensor.
-
 ```
 
 #### LiDAR to RGB camera evaluation
