@@ -2,11 +2,11 @@
 
 - [Evaluation Procedures](#evaluation-procedures)
     - [Annotation of rgb images](#annotation-of-rgb-images)
-    - [RGB to RGB camera evaluation](#rgb-to-rgb-camera-evaluation)
-    - [LiDAR to Depth Camera evaluation](#lidar-to-depth-camera-evaluation)
+    - [RGB to RGB evaluation](#rgb-to-rgb-evaluation)
+    - [LiDAR to Depth evaluation](#lidar-to-depth-evaluation)
     - [Depth to RGB evaluation](#depth-to-rgb-evaluation)
     - [LiDAR to LiDAR evaluation](#lidar-to-lidar-evaluation)
-    - [LiDAR to RGB camera evaluation](#lidar-to-rgb-camera-evaluation)
+    - [LiDAR to RGB camera evaluation](#lidar-to-rgb-evaluation)
     - [Point cloud image projection](#point-cloud-image-projection)
     - [Ground truth frame evaluation](#ground-truth-frame-evaluation)
 
@@ -65,7 +65,7 @@ The result should be something like this (for each image):
 
 Here is a [video tutorial](https://www.youtube.com/watch?v=DSYyKU-nDcs).
 
-#### RGB to RGB camera evaluation
+#### RGB to RGB evaluation
 
 Evaluates de camera-to-camera reprojection error with the following metrics:
 
@@ -97,7 +97,7 @@ rosrun atom_evaluation rgb_to_rgb_evaluation.py -train_json <path_to_train_file>
 
 ```
 
-#### LiDAR to Depth Camera evaluation
+#### LiDAR to Depth evaluation
 
 How to run:
 
@@ -159,7 +159,7 @@ optional arguments:
                         Target transformation sensor.
 ```
 
-#### LiDAR to RGB camera evaluation
+#### LiDAR to RGB evaluation
 
 Evaluates the LiDAR-to-Camera calibration through the reprojection of the pattern limit 3D points into the image using
 the following metrics:
