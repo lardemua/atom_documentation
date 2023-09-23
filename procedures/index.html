@@ -89,6 +89,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#correcting-depth-labels">Correcting Depth labels</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#inspect-dataset">Inspect Dataset</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#calibrate">Calibrate</a>
@@ -166,6 +168,7 @@
 <li><a href="#dataset-playback">Dataset playback</a><ul>
 <li><a href="#correcting-3d-lidar-labels">Correcting 3D Lidar labels</a></li>
 <li><a href="#correcting-depth-labels">Correcting Depth labels</a></li>
+<li><a href="#inspect-dataset">Inspect dataset</a></li>
 </ul>
 </li>
 <li><a href="#calibrate">Calibrate</a><ul>
@@ -615,6 +618,20 @@ optional arguments:
 <p class="admonition-title">RViz fork required</p>
 <p>Learn about this <a href="../getting_started/#clone-rviz-fork">here</a>.</p>
 </div>
+<h4 id="inspect-dataset">Inspect Dataset</h4>
+<p>There is a script that looks into an ATOM dataset and outputs some relevant statistics. It is sometimes helpful for debugging.</p>
+<pre><code class="language-bash">rosrun atom_calibration inspect_atom_dataset -json &lt;dataset.json&gt;
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -json JSON_FILE, --json_file JSON_FILE
+                        Json file containing input dataset.
+</code></pre>
+<figure align="center">
+<p><img alt="" src="../img/inspect_dataset.png" width="100%" />
+  </p>
+<figcaption align="center">Output of script to inspect an ATOM dataset.</figcaption>
+</figure>
 <h3 id="calibrate">Calibrate</h3>
 <p>Finally, a system calibration is called through:</p>
 <pre><code class="language-bash">roslaunch &lt;my_robot_calibration&gt; calibrate.launch 
