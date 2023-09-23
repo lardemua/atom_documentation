@@ -61,15 +61,15 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#annotation-of-rgb-images">Annotation of rgb images</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#rgb-to-rgb-camera-evaluation">RGB to RGB camera evaluation</a>
+    <li class="toctree-l2"><a class="reference internal" href="#rgb-to-rgb-evaluation">RGB to RGB evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#lidar-to-depth-camera-evaluation">LiDAR to Depth Camera evaluation</a>
+    <li class="toctree-l2"><a class="reference internal" href="#lidar-to-depth-evaluation">LiDAR to Depth evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#depth-to-rgb-camera-evaluation">Depth to RGB camera evaluation</a>
+    <li class="toctree-l2"><a class="reference internal" href="#depth-to-rgb-evaluation">Depth to RGB evaluation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#lidar-to-rgb-camera-evaluation">LiDAR to RGB camera evaluation</a>
+    <li class="toctree-l2"><a class="reference internal" href="#lidar-to-rgb-evaluation">LiDAR to RGB evaluation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#point-cloud-image-projection">Point cloud image projection</a>
     </li>
@@ -113,11 +113,11 @@
 <ul>
 <li><a href="#evaluation-procedures">Evaluation Procedures</a><ul>
 <li><a href="#annotation-of-rgb-images">Annotation of rgb images</a></li>
-<li><a href="#rgb-to-rgb-camera-evaluation">RGB to RGB camera evaluation</a></li>
-<li><a href="#lidar-to-depth-camera-evaluation">LiDAR to Depth Camera evaluation</a></li>
-<li><a href="#rgb-to-depth-camera-evaluation">RGB to Depth camera evaluation</a></li>
+<li><a href="#rgb-to-rgb-evaluation">RGB to RGB evaluation</a></li>
+<li><a href="#lidar-to-depth-evaluation">LiDAR to Depth evaluation</a></li>
+<li><a href="#depth-to-rgb-evaluation">Depth to RGB evaluation</a></li>
 <li><a href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a></li>
-<li><a href="#lidar-to-rgb-camera-evaluation">LiDAR to RGB camera evaluation</a></li>
+<li><a href="#lidar-to-rgb-evaluation">LiDAR to RGB camera evaluation</a></li>
 <li><a href="#point-cloud-image-projection">Point cloud image projection</a></li>
 <li><a href="#ground-truth-frame-evaluation">Ground truth frame evaluation</a></li>
 </ul>
@@ -166,7 +166,7 @@ optional arguments:
 <figcaption align="center">Annotation of the boundaries of the pattern in RGB images.</figcaption>
 </figure>
 <p>Here is a <a href="https://www.youtube.com/watch?v=DSYyKU-nDcs">video tutorial</a>.</p>
-<h4 id="rgb-to-rgb-camera-evaluation">RGB to RGB camera evaluation</h4>
+<h4 id="rgb-to-rgb-evaluation">RGB to RGB evaluation</h4>
 <p>Evaluates de camera-to-camera reprojection error with the following metrics:</p>
 <ul>
 <li>X and Y errors</li>
@@ -192,7 +192,7 @@ optional arguments:
 <pre><code class="language-bash">rosrun atom_evaluation rgb_to_rgb_evaluation.py -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_sensor_name&gt; -ts &lt;target_sensor_name&gt;
 
 </code></pre>
-<h4 id="lidar-to-depth-camera-evaluation">LiDAR to Depth Camera evaluation</h4>
+<h4 id="lidar-to-depth-evaluation">LiDAR to Depth evaluation</h4>
 <p>How to run:</p>
 <pre><code class="language-bash">rosrun atom_evaluation lidar_to_depth_evaluation.py -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -cs &lt;camera_sensor_name&gt; -rs &lt;lidar_sensor_name&gt; -si
 
@@ -209,7 +209,7 @@ optional arguments:
   -si, --show_images    If true the script shows images.
 
 </code></pre>
-<h4 id="depth-to-rgb-camera-evaluation">Depth to RGB camera evaluation</h4>
+<h4 id="depth-to-rgb-evaluation">Depth to RGB evaluation</h4>
 <p>How to run:</p>
 <pre><code class="language-bash">rosrun atom_evaluation depth_to_rgb_evaluation [-h] -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ds &lt;depth_sensor_name&gt; -cs &lt;rgb_sensor_name&gt; 
 
@@ -242,7 +242,7 @@ optional arguments:
   -ld2 TARGET_SENSOR, --lidar_sensor_2 TARGET_SENSOR
                         Target transformation sensor.
 </code></pre>
-<h4 id="lidar-to-rgb-camera-evaluation">LiDAR to RGB camera evaluation</h4>
+<h4 id="lidar-to-rgb-evaluation">LiDAR to RGB evaluation</h4>
 <p>Evaluates the LiDAR-to-Camera calibration through the reprojection of the pattern limit 3D points into the image using
 the following metrics:</p>
 <ul>
