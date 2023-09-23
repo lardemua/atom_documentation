@@ -4,7 +4,7 @@
     - [Annotation of rgb images](#annotation-of-rgb-images)
     - [RGB to RGB camera evaluation](#rgb-to-rgb-camera-evaluation)
     - [LiDAR to Depth Camera evaluation](#lidar-to-depth-camera-evaluation)
-    - [RGB to Depth camera evaluation](#rgb-to-depth-camera-evaluation)
+    - [Depth to RGB evaluation](#depth-to-rgb-evaluation)
     - [LiDAR to LiDAR evaluation](#lidar-to-lidar-evaluation)
     - [LiDAR to RGB camera evaluation](#lidar-to-rgb-camera-evaluation)
     - [Point cloud image projection](#point-cloud-image-projection)
@@ -118,7 +118,7 @@ optional arguments:
 
 ```
 
-#### Depth to RGB camera evaluation
+#### Depth to RGB evaluation
 
 How to run:
 
