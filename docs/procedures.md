@@ -656,7 +656,7 @@ We compute a first guess using the [ROS monocular camera calibration](http://wik
 
 #### Two stage calibration for robotic systems with an anchored sensor
 
-When one sensor is set to be anchored in the calibration/config.yml file, i.e. this [file](https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99) for the AtlaCar2, we recommend a two stage procedure to achieve a more accurate calibration:
+When one sensor is set to be anchored in the calibration/config.yml file, i.e. this [file](https://github.com/lardemua/atlascar2/blob/6850dfe2209e3f5e9c7a3ca66a2b98054ebed256/atlascar2_calibration/calibration/config.yml#L99) for the AtlasCar2, we recommend a two stage procedure to achieve a more accurate calibration:
 
 First, run a calibration using parameter **--only_anchored_sensor** (**-oas**) which will exclude from the optimization all sensors which are not the anchored one. This optimization will position the patterns correctly w.r.t. the anchored sensor. For example:
 
