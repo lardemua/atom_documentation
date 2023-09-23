@@ -65,7 +65,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#lidar-to-depth-camera-evaluation">LiDAR to Depth Camera evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#rgb-to-depth-camera-evaluation">RGB to Depth camera evaluation</a>
+    <li class="toctree-l2"><a class="reference internal" href="#depth-to-rgb-camera-evaluation">Depth to RGB camera evaluation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a>
     </li>
@@ -209,22 +209,23 @@ optional arguments:
   -si, --show_images    If true the script shows images.
 
 </code></pre>
-<h4 id="rgb-to-depth-camera-evaluation">RGB to Depth camera evaluation</h4>
+<h4 id="depth-to-rgb-camera-evaluation">Depth to RGB camera evaluation</h4>
 <p>How to run:</p>
-<pre><code class="language-bash">rosrun atom_evaluation depth_sensor_to_camera_evaluation.py -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -cs &lt;camera_sensor_name&gt; -ds &lt;depth_sensor_name&gt;
+<pre><code class="language-bash">rosrun atom_evaluation depth_to_rgb_evaluation [-h] -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ds &lt;depth_sensor_name&gt; -cs &lt;rgb_sensor_name&gt; 
 
 optional arguments:
   -h, --help            show this help message and exit
   -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
-                        Json file containing train input dataset.
+                        Json file containing input training dataset.
   -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
-                        Json file containing test input dataset.
-  -cs SOURCE_SENSOR, --camera_sensor SOURCE_SENSOR
+                        Json file containing input testing dataset.
+  -ds DEPTH_SENSOR, --depth_sensor DEPTH_SENSOR
                         Source transformation sensor.
-  -ds TARGET_SENSOR, --depth_sensor TARGET_SENSOR
+  -cs RGB_SENSOR, --rgb_sensor RGB_SENSOR
                         Target transformation sensor.
   -si, --show_images    If true the script shows images.
-
+  -sfr SAVE_FILE_RESULTS, --save_file_results SAVE_FILE_RESULTS
+                        Output folder to where the results will be stored.
 </code></pre>
 <h4 id="lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</h4>
 <p>How to run:</p>
@@ -240,7 +241,6 @@ optional arguments:
                         Source transformation sensor.
   -ld2 TARGET_SENSOR, --lidar_sensor_2 TARGET_SENSOR
                         Target transformation sensor.
-
 </code></pre>
 <h4 id="lidar-to-rgb-camera-evaluation">LiDAR to RGB camera evaluation</h4>
 <p>Evaluates the LiDAR-to-Camera calibration through the reprojection of the pattern limit 3D points into the image using
