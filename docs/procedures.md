@@ -17,6 +17,7 @@
   - [Dataset playback](#dataset-playback)
     - [Correcting 3D Lidar labels](#correcting-3d-lidar-labels)
     - [Correcting Depth labels](#correcting-depth-labels)
+    - [Inspect dataset](#inspect-dataset)
   - [Calibrate](#calibrate)
     - [Calibrating intrinsic parameters](#calibrating-intrinsic-parameters)
     - [Two stage calibration for robotic systems with an anchored sensor](#two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
@@ -531,6 +532,23 @@ Check the [video tutorial](multimedia.md#correcting-depth-labels).
 
     Learn about this [here](getting_started.md#clone-rviz-fork).
 
+#### Inspect Dataset
+
+There is a script that looks into an ATOM dataset and outputs some relevant statistics. It is sometimes helpful for debugging.
+
+```bash
+rosrun atom_calibration inspect_atom_dataset -json <dataset.json>
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -json JSON_FILE, --json_file JSON_FILE
+                        Json file containing input dataset.
+```
+
+<figure markdown align=center>
+  ![](img/inspect_dataset.png){width="100%" }
+  <figcaption align=center>Output of script to inspect an ATOM dataset.</figcaption>
+</figure>
 
 ### Calibrate 
 
@@ -617,32 +635,10 @@ optional arguments:
 
 If you use the --verbose option, the script will periodically print a table containing information about the errors per sensor and per collection, e.g.:
 
-```bash
-Errors per collection (anchored sensor,  max error per sensor, not detected as "---")
-+------------+----------+----------+----------+----------------+---------+---------+---------+
-| Collection | camera_2 | camera_3 | camera_4 | depth_camera_1 | lidar_1 | lidar_2 | lidar_3 |
-+------------+----------+----------+----------+----------------+---------+---------+---------+
-|     11     | 191.1838 |   ---    |  0.3000  |     0.1321     |  0.2606 |  0.1153 |  1.4850 |
-|     12     | 194.3039 | 98.7729  |  0.4031  |     0.1591     |  0.1043 |  0.0924 |  0.5050 |
-|     13     |   ---    | 94.6346  |  0.3795  |     0.1942     |  0.1657 |  0.1191 |  0.4210 |
-|     14     | 199.6314 |   ---    |  0.4001  |     0.1569     |  0.1897 |  0.0685 |  0.7067 |
-|     15     | 199.8989 |   ---    |  0.5995  |     0.1561     |  0.1956 |  0.0670 |  0.7074 |
-|     16     |   ---    | 146.3350 |  0.2370  |     0.1516     |  0.4412 |  0.1316 |  0.3175 |
-|     17     |   ---    | 150.6509 |  0.2204  |     0.1924     |  0.1747 |  0.0298 |  0.4698 |
-|     18     | 202.8877 |   ---    |  0.5371  |     0.0978     |  0.2200 |  0.1526 |  0.8007 |
-|     19     | 211.7066 | 133.3410 |  0.3598  |     0.2179     |  0.0909 |  0.0367 |  0.6065 |
-|     20     | 213.7645 |   ---    |  0.5272  |     0.2152     |  0.2647 |  0.2008 |  0.7670 |
-|     21     | 212.6482 |   ---    |  0.6358  |     0.2444     |  0.3512 |  0.0518 |  1.7215 |
-|     22     | 212.3743 |   ---    |  0.5967  |     0.2321     |  0.3342 |  0.0591 |  0.7347 |
-|     23     | 209.1305 |   ---    |  0.4488  |     0.1161     |  0.1601 |  0.0431 |  0.7198 |
-|     24     | 201.1378 | 139.1949 |  0.2539  |     0.1802     |  0.1114 |  0.0517 |  0.5524 |
-|     25     |   ---    | 139.2066 |  0.2994  |     0.0869     |  0.4260 |  0.1768 |  0.1162 |
-|     26     | 209.7005 |   ---    |  0.4192  |     0.1315     |  0.1400 |  0.0443 |  0.6932 |
-|     27     | 210.5517 |   ---    |  0.4042  |     0.2189     |  0.2926 |  0.0495 |  0.7068 |
-|     28     |   ---    | 142.4085 |  0.2628  |     0.1500     |  0.2662 |  0.1419 |  0.3405 |
-|  Averages  | 205.3015 | 130.5680 |  0.4047  |     0.1685     |  0.2327 |  0.0907 |  0.6873 |
-+------------+----------+----------+----------+----------------+---------+---------+---------+
-```
+<figure markdown align=center>
+  ![](img/calibrate_output.png){width="100%" }
+  <figcaption align=center>Calibration of AgrobV2.</figcaption>
+</figure>
 
 Here's an example of a system being calibrated.
 
