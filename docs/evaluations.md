@@ -2,7 +2,8 @@
 
 - [Evaluation Procedures](#evaluation-procedures)
     - [Annotation of rgb images](#annotation-of-rgb-images)
-    - [Full evaluation](#full-evaluation)
+  - [Full Evaluation](#full-evaluation)
+  - [Individual Evaluation](#individual-evaluation)
     - [LiDAR to Depth evaluation](#lidar-to-depth-evaluation)
     - [LiDAR to LiDAR evaluation](#lidar-to-lidar-evaluation)
     - [LiDAR to RGB evaluation](#lidar-to-rgb-evaluation)
@@ -29,6 +30,13 @@ Results are reported for the test dataset using the geometric transformations es
 These are meant to be two separate datasets, but if you can also use a single dataset by indicating it both as the train and the test dataset.
 In this case, however, you should be aware that the results are being computed with data that was used for training.
 
+The ATOM evaluation produces results presented in tabular format. This table displays the evaluation outcomes for each collection or collection pair, along with detailed error metrics. The ATOM evaluation output can be displayed in two distinct formats:
+
+- Terminal Table: The results are printed directly to the terminal, providing an immediate overview of the evaluation outcomes
+
+- CSV File: You can save the evaluation results as a CSV file by using the `-sfr` flag when running the evaluations. This allows for easy storage and further analysis of the evaluation data. 
+These files are saved by default in the subdirectory `results` in the test dataset folder.
+To change this default, use the `-sfrn` flag
 
 #### Annotation of rgb images
 
@@ -74,14 +82,23 @@ The result should be something like this (for each image):
 
 Here is a [video tutorial](https://www.youtube.com/watch?v=DSYyKU-nDcs).
 
-#### Full evaluation
+### Full Evaluation
 
-During its configuration, ATOM generates a launch file named `full_evaluation.launch`.
-This file configures every possible evaluation the system might have and carries it on. 
-To run it:
+ATOM streamlines the evaluation process by generating a launch file called `full_evaluation.launch` during its configuration. 
+This file automates the execution of all necessary evaluations to comprehensively assess the user's system. 
+It is designed to configure and execute every possible evaluation the system may require. 
+To run the full system evaluation, use the following command:
+
 ```bash
 roslaunch softbot2_calibration full_evaluation.launch train_json:=<path_to_train_file> test_json:=<path_to_test_file>
 ```
+
+The `-sfr` flag is used in this command, resulting in the presentation of evaluation results in CSV files located in the `results` subdirectory of the test dataset directory.
+
+
+### Individual Evaluation
+For users who prefer to run evaluations separately, ATOM provides the option to run each evaluation individually. 
+To do so, determine the modalities of the sensors to be assessed and choose one of the following scripts that align with your sensor modalities:
 
 #### LiDAR to Depth evaluation
 
