@@ -17,7 +17,7 @@
   - [Dataset playback](#dataset-playback)
     - [Correcting 3D Lidar labels](#correcting-3d-lidar-labels)
     - [Correcting Depth labels](#correcting-depth-labels)
-    - [Inspect dataset](#inspect-dataset)
+    - [Inspect Dataset](#inspect-dataset)
   - [Calibrate](#calibrate)
     - [Calibrating intrinsic parameters](#calibrating-intrinsic-parameters)
     - [Two stage calibration for robotic systems with an anchored sensor](#two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
@@ -228,6 +228,7 @@ Once the verifications signal a correct calibration configuration, a set of file
 │   ├── calibrate.launch
 │   ├── collect_data.launch
 │   ├── dataset_playback.launch
+│   ├── full_evaluation.launch
 │   ├── playbag.launch
 │   └── set_initial_estimate.launch
 ├── rviz

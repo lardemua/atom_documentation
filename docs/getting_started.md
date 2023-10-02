@@ -1,6 +1,7 @@
 
 ## Getting started
 
+- [Getting started](#getting-started)
   - [Installation](#installation)
     - [Clone ATOM repository and install dependencies](#clone-atom-repository-and-install-dependencies)
     - [Clone RViz fork](#clone-rviz-fork)
@@ -29,7 +30,7 @@ then install requirements:
 
 Also, you need to install the following packages using apt-get
 
-    sudo apt-get install ros-noetic-ros-numpy
+    sudo apt-get install ros-noetic-ros-numpy qt5-default
 
 #### Clone RViz fork
 
