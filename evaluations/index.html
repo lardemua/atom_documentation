@@ -60,23 +60,27 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#annotation-of-rgb-images">Annotation of rgb images</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#full-evaluation">Full evaluation</a>
+    <li class="toctree-l2"><a class="reference internal" href="#full-evaluation">Full Evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#lidar-to-depth-evaluation">LiDAR to Depth evaluation</a>
+    <li class="toctree-l2"><a class="reference internal" href="#individual-evaluation">Individual Evaluation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#lidar-to-depth-evaluation">LiDAR to Depth evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a>
+    <li class="toctree-l3"><a class="reference internal" href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#lidar-to-rgb-evaluation">LiDAR to RGB evaluation</a>
+    <li class="toctree-l3"><a class="reference internal" href="#lidar-to-rgb-evaluation">LiDAR to RGB evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#depth-to-depth-evaluation">Depth to Depth evaluation</a>
+    <li class="toctree-l3"><a class="reference internal" href="#depth-to-depth-evaluation">Depth to Depth evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#depth-to-rgb-evaluation">Depth to RGB evaluation</a>
+    <li class="toctree-l3"><a class="reference internal" href="#depth-to-rgb-evaluation">Depth to RGB evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#rgb-to-rgb-evaluation">RGB to RGB evaluation</a>
+    <li class="toctree-l3"><a class="reference internal" href="#rgb-to-rgb-evaluation">RGB to RGB evaluation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#point-cloud-image-projection">Point cloud image projection</a>
+    <li class="toctree-l3"><a class="reference internal" href="#point-cloud-image-projection">Point cloud image projection</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#ground-truth-frame-evaluation">Ground truth frame evaluation</a>
+    <li class="toctree-l3"><a class="reference internal" href="#ground-truth-frame-evaluation">Ground truth frame evaluation</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
@@ -116,7 +120,10 @@
 <ul>
 <li><a href="#evaluation-procedures">Evaluation Procedures</a><ul>
 <li><a href="#annotation-of-rgb-images">Annotation of rgb images</a></li>
-<li><a href="#full-evaluation">Full evaluation</a></li>
+</ul>
+</li>
+<li><a href="#full-evaluation">Full Evaluation</a></li>
+<li><a href="#individual-evaluation">Individual Evaluation</a><ul>
 <li><a href="#lidar-to-depth-evaluation">LiDAR to Depth evaluation</a></li>
 <li><a href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a></li>
 <li><a href="#lidar-to-rgb-evaluation">LiDAR to RGB evaluation</a></li>
@@ -145,6 +152,17 @@ The train dataset is the dataset which is used to conduct the calibration, while
 Results are reported for the test dataset using the geometric transformations estimated during the calibration which were copied to the train dataset json.
 These are meant to be two separate datasets, but if you can also use a single dataset by indicating it both as the train and the test dataset.
 In this case, however, you should be aware that the results are being computed with data that was used for training.</p>
+<p>The ATOM evaluation produces results presented in tabular format. This table displays the evaluation outcomes for each collection or collection pair, along with detailed error metrics. The ATOM evaluation output can be displayed in two distinct formats:</p>
+<ul>
+<li>
+<p>Terminal Table: The results are printed directly to the terminal, providing an immediate overview of the evaluation outcomes</p>
+</li>
+<li>
+<p>CSV File: You can save the evaluation results as a CSV file by using the <code>-sfr</code> flag when running the evaluations. This allows for easy storage and further analysis of the evaluation data. 
+These files are saved by default in the subdirectory <code>results</code> in the test dataset folder.
+To change this default, use the <code>-sfrn</code> flag</p>
+</li>
+</ul>
 <h4 id="annotation-of-rgb-images">Annotation of rgb images</h4>
 <p>To evaluate calibration between range sensors and cameras, it is necessary to annotate the physical limits on the calibration pattern in the images of the collection, to allow a comparison with physical labelings as measured by range sensors .</p>
 <pre><code class="language-bash">rosrun atom_evaluation  annotate_pattern_borders_in_rgb -d &lt;path_to_train_file&gt; -cs &lt;rgb_sensor_name&gt; 
@@ -180,12 +198,17 @@ optional arguments:
 <figcaption align="center">Annotation of the boundaries of the pattern in RGB images.</figcaption>
 </figure>
 <p>Here is a <a href="https://www.youtube.com/watch?v=DSYyKU-nDcs">video tutorial</a>.</p>
-<h4 id="full-evaluation">Full evaluation</h4>
-<p>During its configuration, ATOM generates a launch file named <code>full_evaluation.launch</code>.
-This file configures every possible evaluation the system might have and carries it on. 
-To run it:</p>
+<h3 id="full-evaluation">Full Evaluation</h3>
+<p>ATOM streamlines the evaluation process by generating a launch file called <code>full_evaluation.launch</code> during its configuration. 
+This file automates the execution of all necessary evaluations to comprehensively assess the user's system. 
+It is designed to configure and execute every possible evaluation the system may require. 
+To run the full system evaluation, use the following command:</p>
 <pre><code class="language-bash">roslaunch softbot2_calibration full_evaluation.launch train_json:=&lt;path_to_train_file&gt; test_json:=&lt;path_to_test_file&gt;
 </code></pre>
+<p>The <code>-sfr</code> flag is used in this command, resulting in the presentation of evaluation results in CSV files located in the <code>results</code> subdirectory of the test dataset directory.</p>
+<h3 id="individual-evaluation">Individual Evaluation</h3>
+<p>For users who prefer to run evaluations separately, ATOM provides the option to run each evaluation individually. 
+To do so, determine the modalities of the sensors to be assessed and choose one of the following scripts that align with your sensor modalities:</p>
 <h4 id="lidar-to-depth-evaluation">LiDAR to Depth evaluation</h4>
 <p>How to run:</p>
 <ul>
