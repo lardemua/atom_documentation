@@ -8,7 +8,7 @@
     <title>Calibration Procedures - ATOM Calibration Framework</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
@@ -17,12 +17,11 @@
         var mkdocs_page_url = "/atom_documentation/procedures/";
       </script>
     
-    <script src="../js/jquery-3.6.0.min.js" defer></script>
     <!--[if lt IE 9]>
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -133,8 +132,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-      <li>Calibration Procedures</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Calibration Procedures</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -168,7 +167,7 @@
 <li><a href="#dataset-playback">Dataset playback</a><ul>
 <li><a href="#correcting-3d-lidar-labels">Correcting 3D Lidar labels</a></li>
 <li><a href="#correcting-depth-labels">Correcting Depth labels</a></li>
-<li><a href="#inspect-dataset">Inspect dataset</a></li>
+<li><a href="#inspect-dataset">Inspect Dataset</a></li>
 </ul>
 </li>
 <li><a href="#calibrate">Calibrate</a><ul>
@@ -177,8 +176,8 @@
 </ul>
 </li>
 </ul>
-<p>To calibrate your robot you must define your robotic system, (e.g. &lt;my_robot>). You should also have a <strong>system
-description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file(s). This is normally stored in a ros package named <strong>&lt;my_robot>_description</strong>.
+<p>To calibrate your robot you must define your robotic system, (e.g. &lt;my_robot&gt;). You should also have a <strong>system
+description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file(s). This is normally stored in a ros package named <strong>&lt;my_robot&gt;_description</strong>.
 In addition to this, <strong>ATOM</strong> requires a bagfile with a recording of the data from the sensors you wish to calibrate.
 This was covered in detail in <a href="../#calibration-pipeline">here</a>.</p>
 <p>Transformations in the bagfile (i.e. topics /tf and /tf_static) will be ignored, so that they do not collide with the
@@ -353,12 +352,13 @@ max_duration_between_msgs: 1000
 </code></pre>
 <p>This will go through a series of verifications to check if the configuration is valid, if the bagfile exists and contains the necessary transformations, among many others.
 Once the verifications signal a correct calibration configuration, a set of files is automatically created inside your 
-<strong>&lt;my_robot>_calibration</strong> ros package, as shown below:</p>
+<strong>&lt;my_robot&gt;_calibration</strong> ros package, as shown below:</p>
 <pre><code class="language-bash">├&lt;my_robot&gt;_calibration
 ├── launch
 │   ├── calibrate.launch
 │   ├── collect_data.launch
 │   ├── dataset_playback.launch
+│   ├── full_evaluation.launch
 │   ├── playbag.launch
 │   └── set_initial_estimate.launch
 ├── rviz
@@ -377,7 +377,7 @@ Once the verifications signal a correct calibration configuration, a set of file
 </code></pre>
 <p>The <strong>launch</strong> directory contains automatically created launch files used to launch each of the calibration stages.
 The <strong>rviz</strong> folder contains several rviz configuration files used to setup the visualization of each stage.
-The <strong>urdf</strong> folder contains a symbolic link to the xacro file of &lt;my_robot> and, after calibration, will contain a calibrated urdf. 
+The <strong>urdf</strong> folder contains a symbolic link to the xacro file of &lt;my_robot&gt; and, after calibration, will contain a calibrated urdf. 
 Finally, the <strong>calibration</strong> folder contains the configuration file (config.yml). </p>
 <p>This folder also contains an automatically produced schematic of the configuration of the calibration named <a href="../img/summary_example.pdf">summary.pdf</a>.
 It is used to inspect the configuration of the calibration and assess if the configuration is doing what we intended.
@@ -479,30 +479,30 @@ However, these solutions are very specialized and cannot be relied upon for the 
 <table>
 <thead>
 <tr>
-<th align="center">Argument</th>
-<th align="center">Function</th>
+<th style="text-align: center;">Argument</th>
+<th style="text-align: center;">Function</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">overwrite</td>
-<td align="center">overwrites previous dataset without asking for confirmation</td>
+<td style="text-align: center;">overwrite</td>
+<td style="text-align: center;">overwrites previous dataset without asking for confirmation</td>
 </tr>
 <tr>
-<td align="center">bag_rate</td>
-<td align="center">Defines the playback rate of the bagfile</td>
+<td style="text-align: center;">bag_rate</td>
+<td style="text-align: center;">Defines the playback rate of the bagfile</td>
 </tr>
 <tr>
-<td align="center">bag_start</td>
-<td align="center">Start time for playback</td>
+<td style="text-align: center;">bag_start</td>
+<td style="text-align: center;">Start time for playback</td>
 </tr>
 <tr>
-<td align="center">bag_file</td>
-<td align="center">Name of bagfile to playback</td>
+<td style="text-align: center;">bag_file</td>
+<td style="text-align: center;">Name of bagfile to playback</td>
 </tr>
 <tr>
-<td align="center">ssl</td>
-<td align="center">A string to be evaluated that indicates if a sensor should be labelled.</td>
+<td style="text-align: center;">ssl</td>
+<td style="text-align: center;">A string to be evaluated that indicates if a sensor should be labelled.</td>
 </tr>
 </tbody>
 </table>
@@ -759,14 +759,15 @@ optional arguments:
     
   </span>
 </div>
-    <script>var base_url = '..';</script>
-    <script src="../js/theme_extra.js" defer></script>
-    <script src="../js/theme.js" defer></script>
-      <script src="../search/main.js" defer></script>
-    <script defer>
-        window.onload = function () {
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);
-        };
+        });
     </script>
 
 </body>

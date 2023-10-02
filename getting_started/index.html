@@ -8,7 +8,7 @@
     <title>Getting Started - ATOM Calibration Framework</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
@@ -17,12 +17,11 @@
         var mkdocs_page_url = "/atom_documentation/getting_started/";
       </script>
     
-    <script src="../js/jquery-3.6.0.min.js" defer></script>
     <!--[if lt IE 9]>
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -111,8 +110,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-      <li>Getting Started</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -123,6 +122,7 @@
               
                 <h2 id="getting-started">Getting started</h2>
 <ul>
+<li><a href="#getting-started">Getting started</a></li>
 <li><a href="#installation">Installation</a><ul>
 <li><a href="#clone-atom-repository-and-install-dependencies">Clone ATOM repository and install dependencies</a></li>
 <li><a href="#clone-rviz-fork">Clone RViz fork</a></li>
@@ -149,7 +149,7 @@
 <pre><code>sudo pip3 install -r requirements.txt
 </code></pre>
 <p>Also, you need to install the following packages using apt-get</p>
-<pre><code>sudo apt-get install ros-noetic-ros-numpy
+<pre><code>sudo apt-get install ros-noetic-ros-numpy qt5-default
 </code></pre>
 <h4 id="clone-rviz-fork">Clone RViz fork</h4>
 <p>Some of the functionalities in ATOM, i.e., depth semi-automatic labeling and depth manual labeling, make use of a 
@@ -194,7 +194,7 @@ the <a href="../procedures/">Calibration Procedures</a>.</p>
 </code></pre>
 <h4 id="configure-a-calibration-package">Configure a calibration package</h4>
 <p>Edit the file:</p>
-<p>&lt;my_robot_calibration>/calibration/config.yml_ with your system information.</p>
+<p>&lt;my_robot_calibration&gt;/calibration/config.yml_ with your system information.</p>
 <p>and then run:</p>
 <pre><code class="language-bash">rosrun &lt;my_robot_calibration&gt; configure 
 </code></pre>
@@ -266,14 +266,15 @@ the <a href="../procedures/">Calibration Procedures</a>.</p>
     
   </span>
 </div>
-    <script>var base_url = '..';</script>
-    <script src="../js/theme_extra.js" defer></script>
-    <script src="../js/theme.js" defer></script>
-      <script src="../search/main.js" defer></script>
-    <script defer>
-        window.onload = function () {
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);
-        };
+        });
     </script>
 
 </body>

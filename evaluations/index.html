@@ -8,7 +8,7 @@
     <title>Evaluation Procedures - ATOM Calibration Framework</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
@@ -17,12 +17,11 @@
         var mkdocs_page_url = "/atom_documentation/evaluations/";
       </script>
     
-    <script src="../js/jquery-3.6.0.min.js" defer></script>
     <!--[if lt IE 9]>
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -61,15 +60,19 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#annotation-of-rgb-images">Annotation of rgb images</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#rgb-to-rgb-evaluation">RGB to RGB evaluation</a>
+    <li class="toctree-l2"><a class="reference internal" href="#full-evaluation">Full evaluation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#lidar-to-depth-evaluation">LiDAR to Depth evaluation</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#depth-to-rgb-evaluation">Depth to RGB evaluation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#lidar-to-rgb-evaluation">LiDAR to RGB evaluation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#depth-to-depth-evaluation">Depth to Depth evaluation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#depth-to-rgb-evaluation">Depth to RGB evaluation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rgb-to-rgb-evaluation">RGB to RGB evaluation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#point-cloud-image-projection">Point cloud image projection</a>
     </li>
@@ -99,8 +102,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-      <li>Evaluation Procedures</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Evaluation Procedures</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -113,11 +116,13 @@
 <ul>
 <li><a href="#evaluation-procedures">Evaluation Procedures</a><ul>
 <li><a href="#annotation-of-rgb-images">Annotation of rgb images</a></li>
-<li><a href="#rgb-to-rgb-evaluation">RGB to RGB evaluation</a></li>
+<li><a href="#full-evaluation">Full evaluation</a></li>
 <li><a href="#lidar-to-depth-evaluation">LiDAR to Depth evaluation</a></li>
-<li><a href="#depth-to-rgb-evaluation">Depth to RGB evaluation</a></li>
 <li><a href="#lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</a></li>
-<li><a href="#lidar-to-rgb-evaluation">LiDAR to RGB camera evaluation</a></li>
+<li><a href="#lidar-to-rgb-evaluation">LiDAR to RGB evaluation</a></li>
+<li><a href="#depth-to-depth-evaluation">Depth to Depth evaluation</a></li>
+<li><a href="#depth-to-rgb-evaluation">Depth to RGB evaluation</a></li>
+<li><a href="#rgb-to-rgb-evaluation">RGB to RGB evaluation</a></li>
 <li><a href="#point-cloud-image-projection">Point cloud image projection</a></li>
 <li><a href="#ground-truth-frame-evaluation">Ground truth frame evaluation</a></li>
 </ul>
@@ -126,6 +131,15 @@
 <p>After the system is calibrated one common concern is to be able to assess the accuracy of the produced calibration. ATOM provides several evaluation scripts for this purpose.</p>
 <p>Unlike ATOM which calibrates all sensors simultaneously, evaluations are performed in pairs of sensors, which facilitates comparisons with other calibration approaches (which are mostly pairwise),
 e.g. <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html">opencv's stereo calibration</a>. Thus, there is a different evaluation script for each combination of modalities.</p>
+<p>Every sensor evaluation script has two different variations: </p>
+<ul>
+<li>
+<p>Intra-collection evaluation: This type of evaluation involves comparing the detections made by a pair of sensors within the same collection. It is utilized to assess the performance of sensor to sensor calibration.</p>
+</li>
+<li>
+<p>Inter-collection evaluation: In this type of evaluation, we compare the detections made by a pair of sensors in different collections. To do this, we project the detections from the source sensor's frame to the world frame of the source collection and then project them to the target sensor's frame in the target collection. It evaluates not only the sensor to sensor calibration but also the sensor to frame calibration.</p>
+</li>
+</ul>
 <p>The ATOM evaluation scripts often request for a train dataset and a test dataset. 
 The train dataset is the dataset which is used to conduct the calibration, while the test dataset is a dataset which was not used for calibration.
 Results are reported for the test dataset using the geometric transformations estimated during the calibration which were copied to the train dataset json.
@@ -133,13 +147,13 @@ These are meant to be two separate datasets, but if you can also use a single da
 In this case, however, you should be aware that the results are being computed with data that was used for training.</p>
 <h4 id="annotation-of-rgb-images">Annotation of rgb images</h4>
 <p>To evaluate calibration between range sensors and cameras, it is necessary to annotate the physical limits on the calibration pattern in the images of the collection, to allow a comparison with physical labelings as measured by range sensors .</p>
-<pre><code class="language-bash">rosrun atom_evaluation  annotate_pattern_borders_in_rgb.py [-h] -d DATASET_FILE -cs CAMERA_SENSOR [-si] [-ww WINDOW_WIDTH] [-ps POINT_SIZE] [-ppp POINTS_PER_PIXEL]
+<pre><code class="language-bash">rosrun atom_evaluation  annotate_pattern_borders_in_rgb -d &lt;path_to_train_file&gt; -cs &lt;rgb_sensor_name&gt; 
 
 optional arguments:
   -h, --help            show this help message and exit
   -d DATASET_FILE, --dataset_file DATASET_FILE
                         Json file containing input dataset.
-  -cs CAMERA_SENSOR, --camera_sensor CAMERA_SENSOR
+  -cs RGB_SENSOR, --rgb_sensor RGB_SENSOR
                         Source transformation sensor.
   -si, --show_images    If true the script shows images.
   -ww WINDOW_WIDTH, --window_width WINDOW_WIDTH
@@ -166,6 +180,365 @@ optional arguments:
 <figcaption align="center">Annotation of the boundaries of the pattern in RGB images.</figcaption>
 </figure>
 <p>Here is a <a href="https://www.youtube.com/watch?v=DSYyKU-nDcs">video tutorial</a>.</p>
+<h4 id="full-evaluation">Full evaluation</h4>
+<p>During its configuration, ATOM generates a launch file named <code>full_evaluation.launch</code>.
+This file configures every possible evaluation the system might have and carries it on. 
+To run it:</p>
+<pre><code class="language-bash">roslaunch softbot2_calibration full_evaluation.launch train_json:=&lt;path_to_train_file&gt; test_json:=&lt;path_to_test_file&gt;
+</code></pre>
+<h4 id="lidar-to-depth-evaluation">LiDAR to Depth evaluation</h4>
+<p>How to run:</p>
+<ul>
+<li>Intra-collection</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation lidar_to_depth_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ds &lt;depth_sensor_name&gt; -rs &lt;lidar_sensor_name&gt; -sfr
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -rs RANGE_SENSOR, --range_sensor RANGE_SENSOR
+                        Source transformation sensor.
+  -ds DEPTH_SENSOR, --depth_sensor DEPTH_SENSOR
+                        Target transformation sensor.
+  -si, --show_images    If true the script shows images.
+  -bt BORDER_TOLERANCE, --border_tolerance BORDER_TOLERANCE
+                        Define the percentage of pixels to use to create a
+                        border. Lidar points outside that border will not
+                        count for the error calculations
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that
+                        receives a collection name as input and returns True
+                        or False to indicate if the collection should be
+                        loaded (and used in the optimization). The Syntax is
+                        lambda name: f(x), where f(x) is the function in
+                        python language. Example: lambda name: int(name) &gt; 5
+                        , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection
+                        for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or
+                        the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_
+                        json/results/{name_of_dataset}_{sensor_source}_to_{se
+                        nsor_target}_results.csv
+</code></pre>
+<ul>
+<li>Inter-collection</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation inter_collection_lidar_to_depth_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ds &lt;depth_sensor_name&gt; -rs &lt;lidar_sensor_name&gt; -wf &lt;world_frame&gt; -sfr
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -rs RANGE_SENSOR, --range_sensor RANGE_SENSOR
+                        Source transformation sensor.
+  -ds DEPTH_SENSOR, --depth_sensor DEPTH_SENSOR
+                        Target transformation sensor.
+  -si, --show_images    If true the script shows images.
+  -wf WORLD_FRAME, --world_frame WORLD_FRAME
+                        Fixed frame between collections.
+  -bt BORDER_TOLERANCE, --border_tolerance BORDER_TOLERANCE
+                        Define the percentage of pixels to use to create a
+                        border. Lidar points outside that border will not
+                        count for the error calculations
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that
+                        receives a collection name as input and returns True
+                        or False to indicate if the collection should be
+                        loaded (and used in the optimization). The Syntax is
+                        lambda name: f(x), where f(x) is the function in
+                        python language. Example: lambda name: int(name) &gt; 5
+                        , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection
+                        for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or
+                        the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_
+                        json/results/{name_of_dataset}_inter_collection_{sensor_source}_to_{se
+                        nsor_target}_results.csv
+</code></pre>
+<h4 id="lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</h4>
+<p>How to run:</p>
+<ul>
+<li>Intra-collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation lidar_to_lidar_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_lidar_sensor_name&gt; -st &lt;target_lidar_sensor_name&gt; -sfr
+
+optional arguments:
+ -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -ss SENSOR_SOURCE, --sensor_source SENSOR_SOURCE
+                        Source transformation sensor.
+  -st SENSOR_TARGET, --sensor_target SENSOR_TARGET
+                        Target transformation sensor.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_
+                        json/results/{name_of_dataset}_{sensor_source}_to_{se
+                        nsor_target}_results.csv
+
+</code></pre>
+<ul>
+<li>Inter-collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation inter_collection_lidar_to_lidar_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_lidar_sensor_name&gt; -st &lt;target_lidar_sensor_name&gt; -wf &lt;world_frame&gt; -sfr
+
+optional arguments:
+ -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -ss SENSOR_SOURCE, --sensor_source SENSOR_SOURCE
+                        Source transformation sensor.
+  -st SENSOR_TARGET, --sensor_target SENSOR_TARGET
+                        Target transformation sensor.
+  -wf WORLD_FRAME, --world_frame WORLD_FRAME
+                        Fixed frame between collections.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_
+                        json/results/{name_of_dataset}_inter_collection{sensor_source}_to_{se
+                        nsor_target}_results.csv
+
+</code></pre>
+<h4 id="lidar-to-rgb-evaluation">LiDAR to RGB evaluation</h4>
+<p>Evaluates the LiDAR-to-Camera calibration through the reprojection of the pattern limit 3D points into the image using
+the following metrics:</p>
+<ul>
+<li>X and Y errors</li>
+<li>Root mean squared error</li>
+</ul>
+<p>This process requires the annotation of the pattern limit points in the image.</p>
+<p>How to run:</p>
+<ul>
+<li>Intra-collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation lidar_to_rgb_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -rs &lt;lidar_sensor_name&gt; -cs &lt;rgb_sensor_name&gt; -sfr
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -rs RANGE_SENSOR, --range_sensor RANGE_SENSOR
+                        Source transformation sensor.
+  -cs CAMERA_SENSOR, --camera_sensor CAMERA_SENSOR
+                        Target transformation sensor.
+  -si, --show_images    If true the script shows images.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_json/results/{name_of_dataset}_{sensor_source}_to_{sensor_target}_results.csv
+
+</code></pre>
+<ul>
+<li>Inter-collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation inter_collection_lidar_to_rgb_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -rs &lt;lidar_sensor_name&gt; -cs &lt;rgb_sensor_name&gt; -wf &lt;world_frame&gt; -sfr
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -rs RANGE_SENSOR, --range_sensor RANGE_SENSOR
+                        Source transformation sensor.
+  -cs CAMERA_SENSOR, --camera_sensor CAMERA_SENSOR
+                        Target transformation sensor.
+  -si, --show_images    If true the script shows images.
+  -wf WORLD_FRAME, --world_frame WORLD_FRAME
+                        Fixed frame between collections.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_json/results/{name_of_dataset}_inter_collection_{sensor_source}_to_{sensor_target}_results.csv
+
+</code></pre>
+<h4 id="depth-to-depth-evaluation">Depth to Depth evaluation</h4>
+<p>How to run:</p>
+<ul>
+<li>Intra-collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation depth_to_depth_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_depth_sensor_name&gt; -st &lt;target_depth_sensor_name&gt; -sfr
+
+  -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -ss SENSOR_SOURCE, --sensor_source SENSOR_SOURCE
+                        Source transformation sensor.
+  -st SENSOR_TARGET, --sensor_target SENSOR_TARGET
+                        Target transformation sensor.
+  -si, --show_images    If true the script shows images.
+  -bt BORDER_TOLERANCE, --border_tolerance BORDER_TOLERANCE
+                        Define the percentage of pixels to use to create a border. Lidar points outside that border will not count for the error calculations
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_json/results/{name_of_dataset}_{sensor_source}_to_{sensor_target}_results.csv
+
+</code></pre>
+<ul>
+<li>Inter-collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation inter_collection_depth_to_depth_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_depth_sensor_name&gt; -st &lt;target_depth_sensor_name&gt; -wf &lt;world_frame&gt; -sfr
+
+  -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -ss SENSOR_SOURCE, --sensor_source SENSOR_SOURCE
+                        Source transformation sensor.
+  -st SENSOR_TARGET, --sensor_target SENSOR_TARGET
+                        Target transformation sensor.
+  -si, --show_images    If true the script shows images.
+  -wf WORLD_FRAME, --world_frame WORLD_FRAME
+                        Fixed frame between collections.
+  -bt BORDER_TOLERANCE, --border_tolerance BORDER_TOLERANCE
+                        Define the percentage of pixels to use to create a border. Lidar points outside that border will not count for the error calculations
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_json/results/{name_of_dataset}_inter_collection_{sensor_source}_to_{sensor_target}_results.csv
+
+</code></pre>
+<h4 id="depth-to-rgb-evaluation">Depth to RGB evaluation</h4>
+<p>How to run:</p>
+<ul>
+<li>Intra-collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation depth_to_rgb_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ds &lt;depth_sensor_name&gt; -cs &lt;rgb_sensor_name&gt; -sfr 
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -ds DEPTH_SENSOR, --depth_sensor DEPTH_SENSOR
+                        Source transformation sensor.
+  -cs CAMERA_SENSOR, --camera_sensor CAMERA_SENSOR
+                        Target transformation sensor.
+  -si, --show_images    If true the script shows images.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_json/results/{name_of_dataset}_{sensor_source}_to_{sensor_target}_results.csv
+
+</code></pre>
+<ul>
+<li>Inter-collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation inter_collection_depth_to_rgb_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ds &lt;depth_sensor_name&gt; -cs &lt;rgb_sensor_name&gt; -wf &lt;world_frame&gt; -sfr 
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
+                        Json file containing input training dataset.
+  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
+                        Json file containing input testing dataset.
+  -ds DEPTH_SENSOR, --depth_sensor DEPTH_SENSOR
+                        Source transformation sensor.
+  -cs CAMERA_SENSOR, --camera_sensor CAMERA_SENSOR
+                        Target transformation sensor.
+  -si, --show_images    If true the script shows images.
+  -wf WORLD_FRAME, --world_frame WORLD_FRAME
+                        Fixed frame between collections.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_json/results/{name_of_dataset}_inter_collection_{sensor_source}_to_{sensor_target}_results.csv
+
+</code></pre>
 <h4 id="rgb-to-rgb-evaluation">RGB to RGB evaluation</h4>
 <p>Evaluates de camera-to-camera reprojection error with the following metrics:</p>
 <ul>
@@ -173,7 +546,11 @@ optional arguments:
 <li>Root mean squared error</li>
 <li>Translation and rotation errors</li>
 </ul>
-<pre><code>usage: rgb_to_rgb_evaluation [-h] -train_json TRAIN_JSON_FILE -test_json TEST_JSON_FILE -ss SENSOR_SOURCE -st SENSOR_TARGET [-si] [-sg]
+<p>How to run:</p>
+<ul>
+<li>Intra collection:</li>
+</ul>
+<pre><code class="language-bash">rosrun atom_evaluation rgb_to_rgb_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_rgb_sensor_name&gt; -st &lt;target_rgb_sensor_name&gt; -sfr
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -186,89 +563,49 @@ optional arguments:
   -st SENSOR_TARGET, --sensor_target SENSOR_TARGET
                         Target transformation sensor.
   -si, --show_images    If true the script shows images.
-  -sg, --save_graphics  Save reprojection error graphics.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_json/results/{name_of_dataset}_{sensor_source}_to_{sensor_target}_results.csv
 </code></pre>
-<p>How to run:</p>
-<pre><code class="language-bash">rosrun atom_evaluation rgb_to_rgb_evaluation.py -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_sensor_name&gt; -ts &lt;target_sensor_name&gt;
-
-</code></pre>
-<h4 id="lidar-to-depth-evaluation">LiDAR to Depth evaluation</h4>
-<p>How to run:</p>
-<pre><code class="language-bash">rosrun atom_evaluation lidar_to_depth_evaluation.py -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -cs &lt;camera_sensor_name&gt; -rs &lt;lidar_sensor_name&gt; -si
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
-                        Json file containing train input dataset.
-  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
-                        Json file containing test input dataset.
-  -ld SOURCE_SENSOR, --lidar_sensor SOURCE_SENSOR
-                        Source transformation sensor.
-  -ds TARGET_SENSOR, --depth_sensor TARGET_SENSOR
-                        Target transformation sensor.
-  -si, --show_images    If true the script shows images.
-
-</code></pre>
-<h4 id="depth-to-rgb-evaluation">Depth to RGB evaluation</h4>
-<p>How to run:</p>
-<pre><code class="language-bash">rosrun atom_evaluation depth_to_rgb_evaluation [-h] -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ds &lt;depth_sensor_name&gt; -cs &lt;rgb_sensor_name&gt; 
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
-                        Json file containing input training dataset.
-  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
-                        Json file containing input testing dataset.
-  -ds DEPTH_SENSOR, --depth_sensor DEPTH_SENSOR
-                        Source transformation sensor.
-  -cs RGB_SENSOR, --rgb_sensor RGB_SENSOR
-                        Target transformation sensor.
-  -si, --show_images    If true the script shows images.
-  -sfr SAVE_FILE_RESULTS, --save_file_results SAVE_FILE_RESULTS
-                        Output folder to where the results will be stored.
-</code></pre>
-<h4 id="lidar-to-lidar-evaluation">LiDAR to LiDAR evaluation</h4>
-<p>How to run:</p>
-<pre><code class="language-bash">rosrun atom_evaluation lidar_to_lidar.py -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ld1 &lt;source_lidar_sensor_name&gt; -ld2 &lt;target_lidar_sensor_name&gt;
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
-                        Json file containing train input dataset.
-  -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
-                        Json file containing test input dataset.
-  -ld1 SOURCE_SENSOR, --lidar_sensor_1 SOURCE_SENSOR
-                        Source transformation sensor.
-  -ld2 TARGET_SENSOR, --lidar_sensor_2 TARGET_SENSOR
-                        Target transformation sensor.
-</code></pre>
-<h4 id="lidar-to-rgb-evaluation">LiDAR to RGB evaluation</h4>
-<p>Evaluates the LiDAR-to-Camera calibration through the reprojection of the pattern limit 3D points into the image using
-the following metrics:</p>
 <ul>
-<li>X and Y errors</li>
-<li>Root mean squared error</li>
+<li>Inter collection:</li>
 </ul>
-<p>This process requires the annotation of the pattern limit points in the image.</p>
-<p>After annotating once, if the user wish to repeat the process, the saved json file with the annotations can be loaded.
-For that the <code>-ua</code> flag has to be disabled.</p>
-<pre><code>usage: range_sensor_to_camera_evaluation.py [-h] -train_json TRAIN_JSON_FILE -test_json TEST_JSON_FILE -ss SOURCE_SENSOR -ts TARGET_SENSOR [-si] -ef EVAL_FILE [-ua]
+<pre><code class="language-bash">rosrun atom_evaluation inter_collection_rgb_to_rgb_evaluation -train_json &lt;path_to_train_file&gt; -test_json &lt;path_to_test_file&gt; -ss &lt;source_rgb_sensor_name&gt; -st &lt;target_rgb_sensor_name&gt; -wf &lt;world_frame&gt; -sfr
 
 optional arguments:
   -h, --help            show this help message and exit
   -train_json TRAIN_JSON_FILE, --train_json_file TRAIN_JSON_FILE
-                        Json file containing input training dataset.
+                        Json file containing train input dataset.
   -test_json TEST_JSON_FILE, --test_json_file TEST_JSON_FILE
-                        Json file containing input testing dataset.
-  -ss SOURCE_SENSOR, --source_sensor SOURCE_SENSOR
+                        Json file containing test input dataset.
+  -ss SENSOR_SOURCE, --sensor_source SENSOR_SOURCE
                         Source transformation sensor.
-  -ts TARGET_SENSOR, --target_sensor TARGET_SENSOR
+  -st SENSOR_TARGET, --sensor_target SENSOR_TARGET
                         Target transformation sensor.
   -si, --show_images    If true the script shows images.
-  -ef EVAL_FILE, --eval_file EVAL_FILE
-                        Path to file to read and/or write the evaluation data.
-  -ua, --use_annotation
-                        If true, the limit points will be manually annotated.
+  -wf WORLD_FRAME, --world_frame WORLD_FRAME
+                        Fixed frame between collections.
+  -csf COLLECTION_SELECTION_FUNCTION, --collection_selection_function COLLECTION_SELECTION_FUNCTION
+                        A string to be evaluated into a lambda function that receives a collection name as input and returns True or False to indicate if the
+                        collection should be loaded (and used in the optimization). The Syntax is lambda name: f(x), where f(x) is the function in python
+                        language. Example: lambda name: int(name) &gt; 5 , to load only collections 6, 7, and onward.
+  -uic, --use_incomplete_collections
+                        Remove any collection which does not have a detection for all sensors.
+  -rpd, --remove_partial_detections
+                        Remove detected labels which are only partial.Used or the Charuco.
+  -sfr, --save_file_results
+                        Store the results
+  -sfrn SAVE_FILE_RESULTS_NAME, --save_file_results_name SAVE_FILE_RESULTS_NAME
+                        Name of csv file to save the results. Default: -test_json/results/{name_of_dataset}_inter_collection_{sensor_source}_to_{sensor_target}_results.csv
 </code></pre>
 <h4 id="point-cloud-image-projection">Point cloud image projection</h4>
 <p><code>atom_evaluation</code> also allows the user to visualize the point cloud projected into an image to check the calibration.</p>
@@ -328,14 +665,15 @@ It is also possible to configure which frames are analyzed. Use --help to see th
     
   </span>
 </div>
-    <script>var base_url = '..';</script>
-    <script src="../js/theme_extra.js" defer></script>
-    <script src="../js/theme.js" defer></script>
-      <script src="../search/main.js" defer></script>
-    <script defer>
-        window.onload = function () {
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);
-        };
+        });
     </script>
 
 </body>
