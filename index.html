@@ -8,7 +8,7 @@
     <title>ATOM Calibration Framework</title>
     <link rel="stylesheet" href="css/theme.css" />
     <link rel="stylesheet" href="css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
@@ -17,11 +17,12 @@
         var mkdocs_page_url = "/atom_documentation/";
       </script>
     
+    <script src="js/jquery-3.6.0.min.js" defer></script>
     <!--[if lt IE 9]>
       <script src="js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -112,8 +113,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Introduction</li>
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li>Introduction</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -178,8 +179,8 @@ If you are not familiar with this there are ROS tutorials to <a href="http://wik
 </div>
 <p>This stage may also include de configuration of a simulation of your system in <a href="https://gazebosim.org/home">Gazebo</a>.</p>
 <p>Typically one creates a couple of ros packages for our robot, as described below.</p>
-<p><strong>&lt;my_robot&gt;_description</strong> ros package contains the xacro files that describe your robot. It sometimes also contains cad models inside a models folder. An example from <a href="https://github.com/miguelriemoliveira/mmtbot/tree/main/mmtbot_description">MMTBot is here</a>.</p>
-<p><strong>&lt;my_robot&gt;_bringup</strong> ros package contains the launch files used to bringup your robotic system. Tipically there is a <strong>bringup.launch</strong> that starts the complete system.
+<p><strong>&lt;my_robot>_description</strong> ros package contains the xacro files that describe your robot. It sometimes also contains cad models inside a models folder. An example from <a href="https://github.com/miguelriemoliveira/mmtbot/tree/main/mmtbot_description">MMTBot is here</a>.</p>
+<p><strong>&lt;my_robot>_bringup</strong> ros package contains the launch files used to bringup your robotic system. Tipically there is a <strong>bringup.launch</strong> that starts the complete system.
 An example from the <a href="https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_bringup/launch/bringup.launch">MMTBot</a>.</p>
 <h4 id="data-logging">Data Logging</h4>
 <p>Data Logging is the procedure by which a <a href="http://wiki.ros.org/Bags">ros bagfile</a> is recorded to be used in the calibration later on.</p>
@@ -209,7 +210,7 @@ This stage may be skipped if the transformations from the URDF are believed to b
 <p>This stage is used to review ATOM datasets. The reviewing may identify incorrect labels, which can be corrected through manual annotation. It produces a corrected <a href="#what-is-an-atom-dataset">ATOM dataset</a>.</p>
 <p>More details <a href="procedures/#dataset-playback">here</a>.</p>
 <h4 id="calibration">Calibration</h4>
-<p>This is were finally the system is calibrated. ATOM provides extensive visualization functionalities so that it is possible to observe how the calibration is performing.</p>
+<p>This is where finally the system is calibrated. ATOM provides extensive visualization functionalities so that it is possible to observe how the calibration is performing.</p>
 <p>More details <a href="procedures/#calibrate">here</a>.</p>
 <h4 id="calibration-evaluation">Calibration Evaluation</h4>
 <p>ATOM provides several scripts designed to measure the accuracy of the calibration. 
@@ -306,21 +307,20 @@ ATOM then provides visualization functionalities to display all collections at o
     
   </span>
 </div>
-    <script src="js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = ".";</script>
-    <script src="js/theme_extra.js"></script>
-    <script src="js/theme.js"></script>
-      <script src="search/main.js"></script>
-    <script>
-        jQuery(function () {
+    <script>var base_url = '.';</script>
+    <script src="js/theme_extra.js" defer></script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
-        });
+        };
     </script>
 
 </body>
 </html>
 
 <!--
-MkDocs version : 1.5.3
-Build Date UTC : 2023-10-02 15:41:39.628364+00:00
+MkDocs version : 1.4.3
+Build Date UTC : 2023-10-05 20:09:08.600549+00:00
 -->

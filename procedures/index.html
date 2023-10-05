@@ -8,7 +8,7 @@
     <title>Calibration Procedures - ATOM Calibration Framework</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
@@ -17,11 +17,12 @@
         var mkdocs_page_url = "/atom_documentation/procedures/";
       </script>
     
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
     <!--[if lt IE 9]>
       <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -132,8 +133,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Calibration Procedures</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li>Calibration Procedures</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -176,8 +177,8 @@
 </ul>
 </li>
 </ul>
-<p>To calibrate your robot you must define your robotic system, (e.g. &lt;my_robot&gt;). You should also have a <strong>system
-description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file(s). This is normally stored in a ros package named <strong>&lt;my_robot&gt;_description</strong>.
+<p>To calibrate your robot you must define your robotic system, (e.g. &lt;my_robot>). You should also have a <strong>system
+description</strong> in the form of an <a href="http://wiki.ros.org/urdf">urdf</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file(s). This is normally stored in a ros package named <strong>&lt;my_robot>_description</strong>.
 In addition to this, <strong>ATOM</strong> requires a bagfile with a recording of the data from the sensors you wish to calibrate.
 This was covered in detail in <a href="../#calibration-pipeline">here</a>.</p>
 <p>Transformations in the bagfile (i.e. topics /tf and /tf_static) will be ignored, so that they do not collide with the
@@ -241,7 +242,6 @@ and for <a href="https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_c
 #       Example: package://your_package/urdf/description.urdf.xacro
 #
 description_file: &quot;package://mmtbot_gazebo/urdf/mmtbot.urdf.xacro&quot;
-#description_file: &quot;package://mmtbot_gazebo/urdf/mmtbot.urdf.xacro&quot;
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
 bag_file: &quot;$ROS_BAGS/mmtbot/test_depth2.bag&quot;
@@ -352,7 +352,7 @@ max_duration_between_msgs: 1000
 </code></pre>
 <p>This will go through a series of verifications to check if the configuration is valid, if the bagfile exists and contains the necessary transformations, among many others.
 Once the verifications signal a correct calibration configuration, a set of files is automatically created inside your 
-<strong>&lt;my_robot&gt;_calibration</strong> ros package, as shown below:</p>
+<strong>&lt;my_robot>_calibration</strong> ros package, as shown below:</p>
 <pre><code class="language-bash">├&lt;my_robot&gt;_calibration
 ├── launch
 │   ├── calibrate.launch
@@ -377,7 +377,7 @@ Once the verifications signal a correct calibration configuration, a set of file
 </code></pre>
 <p>The <strong>launch</strong> directory contains automatically created launch files used to launch each of the calibration stages.
 The <strong>rviz</strong> folder contains several rviz configuration files used to setup the visualization of each stage.
-The <strong>urdf</strong> folder contains a symbolic link to the xacro file of &lt;my_robot&gt; and, after calibration, will contain a calibrated urdf. 
+The <strong>urdf</strong> folder contains a symbolic link to the xacro file of &lt;my_robot> and, after calibration, will contain a calibrated urdf. 
 Finally, the <strong>calibration</strong> folder contains the configuration file (config.yml). </p>
 <p>This folder also contains an automatically produced schematic of the configuration of the calibration named <a href="../img/summary_example.pdf">summary.pdf</a>.
 It is used to inspect the configuration of the calibration and assess if the configuration is doing what we intended.
@@ -400,7 +400,7 @@ multiple configurations with multiple config.yml files. There are also other opt
 <pre><code class="language-bash">usage: rosrun &lt;my_robot_calibration&gt; configure -cfg CONFIG_FILE
 </code></pre>
 <h5 id="using-tfs-instead-of-the-xacro-file">Using tfs instead of the xacro file</h5>
-<p>Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. To do this use the --use_tfs option when configuring your package:</p>
+<p>Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. To do this use the --use_tfs (or -utf) option when configuring your package:</p>
 <pre><code class="language-bash">usage: rosrun &lt;my_robot_calibration&gt; configure -utf
 </code></pre>
 <div class="admonition note">
@@ -412,7 +412,7 @@ multiple configurations with multiple config.yml files. There are also other opt
 </div>
 <h3 id="set-an-initial-estimate">Set an initial estimate</h3>
 <p>Iterative optimization methods such as ATOM are sensitive to the initial parameter configuration. 
-ATOM uses several groups of optimization parameters and uses distinct strategies to initialize each class. 
+ATOM uses several groups of optimization parameters and resorts to distinct strategies to initialize each class. 
 The most important group, sensor poses, may be manually initialized to ensure that the initial estimate is plausible and thus reduce the likelihood of encountering a local minima.</p>
 <p>ATOM provides an interactive framework based on rviz which allows the user to set the pose of the sensors while having immediate visual feedback.
 The system configures an <a href="http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Getting%20Started">RViz interactive marker</a> for each sensor to be calibrated, so that it is possible to move the sensor in RViz.</p>
@@ -479,30 +479,30 @@ However, these solutions are very specialized and cannot be relied upon for the 
 <table>
 <thead>
 <tr>
-<th style="text-align: center;">Argument</th>
-<th style="text-align: center;">Function</th>
+<th align="center">Argument</th>
+<th align="center">Function</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;">overwrite</td>
-<td style="text-align: center;">overwrites previous dataset without asking for confirmation</td>
+<td align="center">overwrite</td>
+<td align="center">overwrites previous dataset without asking for confirmation</td>
 </tr>
 <tr>
-<td style="text-align: center;">bag_rate</td>
-<td style="text-align: center;">Defines the playback rate of the bagfile</td>
+<td align="center">bag_rate</td>
+<td align="center">Defines the playback rate of the bagfile</td>
 </tr>
 <tr>
-<td style="text-align: center;">bag_start</td>
-<td style="text-align: center;">Start time for playback</td>
+<td align="center">bag_start</td>
+<td align="center">Start time for playback</td>
 </tr>
 <tr>
-<td style="text-align: center;">bag_file</td>
-<td style="text-align: center;">Name of bagfile to playback</td>
+<td align="center">bag_file</td>
+<td align="center">Name of bagfile to playback</td>
 </tr>
 <tr>
-<td style="text-align: center;">ssl</td>
-<td style="text-align: center;">A string to be evaluated that indicates if a sensor should be labelled.</td>
+<td align="center">ssl</td>
+<td align="center">A string to be evaluated that indicates if a sensor should be labelled.</td>
 </tr>
 </tbody>
 </table>
@@ -525,7 +525,7 @@ Also, it provides an rviz configuration which subscribes annotated images receiv
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Use charuco boards</p>
-<p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very useful when the sensors in your system have small overlapping fields of view.</p>
+<p>Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is much more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very useful when the sensors in your system have small overlapping fields of view.</p>
 </div>
 <h4 id="3d-lidar-labeling">3D Lidar labeling</h4>
 <p>3D Lidar labeling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  </p>
@@ -534,7 +534,7 @@ Also, it provides an rviz configuration which subscribes annotated images receiv
   </p>
 <figcaption align="center">Setting the seed point in 3D Lidar data for semi-automatic labeling (MMTBot).</figcaption>
 </figure>
-<p>After setting this seed position, the system continues to track the patterns pose over the next frames, even if it moves,
+<p>After setting this seed position, the system continues to track the pose of the pattern pose over the next frames, even if it moves,
 as you can see below:</p>
 <figure align="center">
 <p><img alt="" src="../img/agrob_data_collection.gif" width="100%" />
@@ -759,15 +759,14 @@ optional arguments:
     
   </span>
 </div>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "..";</script>
-    <script src="../js/theme_extra.js"></script>
-    <script src="../js/theme.js"></script>
-      <script src="../search/main.js"></script>
-    <script>
-        jQuery(function () {
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
-        });
+        };
     </script>
 
 </body>
