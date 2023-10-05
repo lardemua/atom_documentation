@@ -117,7 +117,7 @@ This stage is used to review ATOM datasets. The reviewing may identify incorrect
 
 #### Calibration
 
-This is were finally the system is calibrated. ATOM provides extensive visualization functionalities so that it is possible to observe how the calibration is performing.
+This is where finally the system is calibrated. ATOM provides extensive visualization functionalities so that it is possible to observe how the calibration is performing.
 
 More details [here](procedures.md#calibrate).
 

@@ -105,7 +105,6 @@ and for [MMTBot](https://github.com/miguelriemoliveira/mmtbot/blob/main/mmtbot_c
 #       Example: package://your_package/urdf/description.urdf.xacro
 #
 description_file: "package://mmtbot_gazebo/urdf/mmtbot.urdf.xacro"
-#description_file: "package://mmtbot_gazebo/urdf/mmtbot.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
 bag_file: "$ROS_BAGS/mmtbot/test_depth2.bag"
@@ -284,7 +283,7 @@ usage: rosrun <my_robot_calibration> configure -cfg CONFIG_FILE
 ```
 ##### Using tfs instead of the xacro file
 
-Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. To do this use the --use_tfs option when configuring your package:
+Sometimes it may be preferable to use the transformations in the bagfile instead of the ones produced by the xacro description. To do this use the --use_tfs (or -utf) option when configuring your package:
 
 ```bash
 usage: rosrun <my_robot_calibration> configure -utf
@@ -300,7 +299,7 @@ usage: rosrun <my_robot_calibration> configure -utf
 ### Set an initial estimate
 
 Iterative optimization methods such as ATOM are sensitive to the initial parameter configuration. 
-ATOM uses several groups of optimization parameters and uses distinct strategies to initialize each class. 
+ATOM uses several groups of optimization parameters and resorts to distinct strategies to initialize each class. 
 The most important group, sensor poses, may be manually initialized to ensure that the initial estimate is plausible and thus reduce the likelihood of encountering a local minima.
 
 ATOM provides an interactive framework based on rviz which allows the user to set the pose of the sensors while having immediate visual feedback.
@@ -416,7 +415,7 @@ Also, it provides an rviz configuration which subscribes annotated images receiv
 </figure>
 
 !!! Note "Use charuco boards"
-    Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is more more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very useful when the sensors in your system have small overlapping fields of view.
+    Charuco boards are preferable to chessboard patterns, because of two main reasons: the first is that the charuco detection is much more efficient when compared to the chessboard detection; the second is that the charuco pattern is detected even if it is only partially visible in the image, which is very useful when the sensors in your system have small overlapping fields of view.
 
 #### 3D Lidar labeling
 
@@ -427,7 +426,7 @@ Also, it provides an rviz configuration which subscribes annotated images receiv
   <figcaption align=center>Setting the seed point in 3D Lidar data for semi-automatic labeling (MMTBot).</figcaption>
 </figure>
 
-After setting this seed position, the system continues to track the patterns pose over the next frames, even if it moves,
+After setting this seed position, the system continues to track the pose of the pattern pose over the next frames, even if it moves,
 as you can see below:
 
 <figure markdown align=center>
