@@ -296,6 +296,19 @@ usage: rosrun <my_robot_calibration> configure -utf
 
          rosrun atom_calibration update_configure_script -n <my_robot_calibration>
 
+##### Test if pattern detection works
+
+It is sometimes important to be sure that the pattern definition that is written in an the calibration config.yaml is correct. In particular, we want to make sure that the RGB cameras accurately detect the pattern. To do this we can run:
+
+    rosrun atom_calibration test_rgb_labeler -cfg <config.yml> -sn <sensor_name>
+
+Which launches a node that configures the pattern detection after the parameters of the configuration file, and then carries out real time detection of the pattern. If all goes well, you should see an image like this:
+
+<figure markdown align=center>
+  ![](img/test_rgb_labeler.png){width="50%"}
+  <figcaption align=center>Testing the RGB camera labeler.</figcaption>
+</figure>
+
 ### Set an initial estimate
 
 Iterative optimization methods such as ATOM are sensitive to the initial parameter configuration. 
