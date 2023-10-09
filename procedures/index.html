@@ -63,6 +63,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#using-tfs-instead-of-the-xacro-file">Using tfs instead of the xacro file</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#test-if-pattern-detection-works">Test if pattern detection works</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#set-an-initial-estimate">Set an initial estimate</a>
@@ -410,6 +412,16 @@ multiple configurations with multiple config.yml files. There are also other opt
 <pre><code> rosrun atom_calibration update_configure_script -n &lt;my_robot_calibration&gt;
 </code></pre>
 </div>
+<h5 id="test-if-pattern-detection-works">Test if pattern detection works</h5>
+<p>It is sometimes important to be sure that the pattern definition that is written in an the calibration config.yaml is correct. In particular, we want to make sure that the RGB cameras accurately detect the pattern. To do this we can run:</p>
+<pre><code>rosrun atom_calibration test_rgb_labeler -cfg &lt;config.yml&gt; -sn &lt;sensor_name&gt;
+</code></pre>
+<p>Which launches a node that configures the pattern detection after the parameters of the configuration file, and then carries out real time detection of the pattern. If all goes well, you should see an image like this:</p>
+<figure align="center">
+<p><img alt="" src="../img/test_rgb_labeler.png" width="50%" />
+  </p>
+<figcaption align="center">Testing the RGB camera labeler.</figcaption>
+</figure>
 <h3 id="set-an-initial-estimate">Set an initial estimate</h3>
 <p>Iterative optimization methods such as ATOM are sensitive to the initial parameter configuration. 
 ATOM uses several groups of optimization parameters and resorts to distinct strategies to initialize each class. 
