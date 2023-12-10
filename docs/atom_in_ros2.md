@@ -41,15 +41,12 @@ docker build --tag=ros:noetic <path_to_atom_repo>/dockerfiles/noetic
 
 ### Start docker container
 
-```jsx
-shared_dir="$1"
-
-xhost +
-docker container run --rm --privileged -it --network=host --ipc=host \
-	--volume=/dev:/dev --volume=${shared_dir}:/home/ros1/ \
-	--volume=/tmp/.X11-unix:/tmp/.X11-unix ${shared_credentials} \
-	--env="QT_X11_NO_MITSHM=1" --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -u 1000 \
-	--name noetic -w /home/ros1 ros:noetic
+```bash
+xhost + && docker container run --rm --privileged -it --network=host --ipc=host \
+--volume=/dev:/dev --volume=$HOME/noetic_shared_dir:/home/ros1/ \
+--volume=/tmp/.X11-unix:/tmp/.X11-unix \
+--env="QT_X11_NO_MITSHM=1" --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -u 1000 \
+--name noetic -w /home/ros1 ros:noetic
 ```
 
 ## Build Atom and dependencies
@@ -80,4 +77,4 @@ From that moment you are good to start with [calibration procedure](https://lard
 
 ### Credits
 
-Thanks to [Coalescent Mobile Roboticsdimaxano](https://cm-robotics.com/) for the contribution.
+Thanks to [Coalescent Mobile Robotics](https://github.com/cmrobotics) for the contribution.
