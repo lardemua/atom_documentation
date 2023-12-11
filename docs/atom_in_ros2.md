@@ -7,7 +7,7 @@
     + [Build Docker Image](#build-docker-image)
     + [Start docker container](#start-docker-container)
   * [Build Atom and dependencies](#build-atom-and-dependencies)
-    + [Credits](#credits)
+  + [Credits](#credits)
 
 Atom was originally written for ROS1 and doesn't support ROS2 out-of-the-box. But you can use it within a container. You can easily pass your ROS2 bag to Atom, it’ll be seamlessly [converted](https://github.com/lardemua/atom/pull/718) to ROS1 bag. (It can process both ROS1 and ROS2 bags [seamlessly](https://github.com/lardemua/atom/pull/718))
 
@@ -75,6 +75,6 @@ source devel/setup.bash
 
 From that moment you are good to start with [calibration procedure](https://lardemua.github.io/atom_documentation/procedures/).
 
-### Credits
+## Credits
 
 Thanks to [Coalescent Mobile Robotics](https://github.com/cmrobotics) for the contribution.
