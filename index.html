@@ -71,7 +71,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#what-is-an-atom-dataset">What is an ATOM dataset?</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#ros1-and-ros2">ROS1 and ROS2</a>
+    <li class="toctree-l2"><a class="reference internal" href="#atom-in-ros2">ATOM in ROS2</a>
     </li>
     </ul>
                 </li>
@@ -146,10 +146,10 @@
 <li><a href="#what-is-a-label">What is a label?</a></li>
 <li><a href="#what-is-a-collection">What is a collection?</a></li>
 <li><a href="#what-is-an-atom-dataset">What is an ATOM dataset?</a></li>
-<li><a href="#ros1-and-ros2">ROS1 and ROS2</a></li>
+<li><a href="#atom-in-ros2">ATOM in ROS2</a></li>
 </ul>
 <h3 id="what-is-atom">What is ATOM?</h3>
-<p><a href="https://github.com/lardemua/atom">ATOM</a> is a calibration framework using the <strong>A</strong>tomic <strong>T</strong>ransformations <strong>O</strong>ptimization <strong>M</strong>ethod. </p>
+<p><a href="https://github.com/lardemua/atom">ATOM</a> is a calibration framework using the <strong>A</strong>tomic <strong>T</strong>ransformations <strong>O</strong>ptimization <strong>M</strong>ethod.</p>
 <p align="center">
 <a href="https://github.com/lardemua/atom">https://github.com/lardemua/atom</a>
 </p>
@@ -160,7 +160,7 @@
 <p>If this work is helpful for you please cite <a href="acknowledgment/#citing-atom">our publications</a>.</p>
 <h3 id="calibration-pipeline">Calibration Pipeline</h3>
 <p>In order to calibrate a robotic system one needs to carry out several tasks, such as acquiring data, labeling data, executing the calibration, interpreting the result of the calibration, etc.
-ATOM provides several scripts to address all the stages of a calibration procedure. 
+ATOM provides several scripts to address all the stages of a calibration procedure.
 These scripts are seamlessly integrated into <a href="https://www.ros.org/">ROS</a>, and make use of <a href="http://wiki.ros.org/rviz">RViz</a> to provide extensive visualization functionalites.
 We have divided the calibration procedure into several stages, shown in the scheme below.</p>
 <figure align="center">
@@ -168,14 +168,14 @@ We have divided the calibration procedure into several stages, shown in the sche
   </p>
 <figcaption align="center">ATOM calibration pipeline.</figcaption>
 </figure>
-<p>The <span style="color:gray">greyed out boxes </span> are steps considered to be out of the scope of ATOM, i.e., these are tasks one should do in order to properly configure and run a robotic system in ROS, even if ATOM is not going to be used. Dashed line boxes represent steps which are optional, i.e., they may improve the calibration but are not essential to the procedure. </p>
+<p>The <span style="color:gray">greyed out boxes </span> are steps considered to be out of the scope of ATOM, i.e., these are tasks one should do in order to properly configure and run a robotic system in ROS, even if ATOM is not going to be used. Dashed line boxes represent steps which are optional, i.e., they may improve the calibration but are not essential to the procedure.</p>
 <p>Below we describe each of these stages, giving examples for the <a href="examples/#mmtbot">MMTBot</a>.</p>
 <h4 id="robotic-system-configuration">Robotic System Configuration</h4>
 <p>Robotic System Configuration concerns the design and implementation of your robotic system in ROS. It generally involves the writing of an <a href="http://wiki.ros.org/urdf">UDRF</a> or a <a href="http://wiki.ros.org/xacro">xacro</a> file that describes the links and joints of your robotic system, among other things.
 If you are not familiar with this there are ROS tutorials to <a href="http://wiki.ros.org/urdf/Tutorials/Building%20a%20Visual%20Robot%20Model%20with%20URDF%20from%20Scratch">build your robot URDF</a> and also to <a href="http://wiki.ros.org/urdf/Tutorials/Using%20Xacro%20to%20Clean%20Up%20a%20URDF%20File">create your robot xacro</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>To calibrate your robot with ATOM, we recommend using xacro files instead of urdfs. </p>
+<p>To calibrate your robot with ATOM, we recommend using xacro files instead of urdfs.</p>
 </div>
 <p>This stage may also include de configuration of a simulation of your system in <a href="https://gazebosim.org/home">Gazebo</a>.</p>
 <p>Typically one creates a couple of ros packages for our robot, as described below.</p>
@@ -200,7 +200,7 @@ An example from the <a href="https://github.com/miguelriemoliveira/mmtbot/blob/m
 <li>/lidar/points</li>
 </ul>
 <h4 id="initial-positioning-of-sensors">Initial Positioning of Sensors</h4>
-<p>The goal of this stage is to allow the user to define interactively the poses of each sensor, so that the optimization starts close to the optimal solution and thus avoids local minima. 
+<p>The goal of this stage is to allow the user to define interactively the poses of each sensor, so that the optimization starts close to the optimal solution and thus avoids local minima.
 This stage may be skipped if the transformations from the URDF are believed to be "sufficiently" accurate.</p>
 <p>More details <a href="procedures/#set-an-initial-estimate">here</a>.</p>
 <h4 id="data-collection-and-labeling">Data Collection and Labeling</h4>
@@ -213,7 +213,7 @@ This stage may be skipped if the transformations from the URDF are believed to b
 <p>This is where finally the system is calibrated. ATOM provides extensive visualization functionalities so that it is possible to observe how the calibration is performing.</p>
 <p>More details <a href="procedures/#calibrate">here</a>.</p>
 <h4 id="calibration-evaluation">Calibration Evaluation</h4>
-<p>ATOM provides several scripts designed to measure the accuracy of the calibration. 
+<p>ATOM provides several scripts designed to measure the accuracy of the calibration.
 These tools are pairwise evaluations, which means it is possible to compare the accuracy of ATOM with other state of the art pairwise approaches.</p>
 <p>More details <a href="evaluations/">here</a>.</p>
 <h4 id="running-the-calibrated-system">Running the calibrated system</h4>
@@ -253,18 +253,18 @@ In addition to this, 3D Lidar labels also contain a list of 3D points of the phy
 <p>A collection is referred to as an <strong>incomplete collection</strong> when it is not possible to detect the pattern in at least one of the sensors of the robotic system.</p>
 </div>
 <h3 id="what-is-an-atom-dataset">What is an ATOM dataset?</h3>
-<p>An ATOM dataset is a folder which contains data used for the calibration of a robotic system. Every ATOM dataset contains a <strong>dataset.json</strong> which provides details about the dataset, such as the defined configuration, the number of sensors, etc. </p>
-<p>Several scripts in the calibration pipeline require an ATOM dataset, but it is worth mentioning that the files are also human readable. </p>
-<p>Below you can see the structure of an ATOM dataset. </p>
+<p>An ATOM dataset is a folder which contains data used for the calibration of a robotic system. Every ATOM dataset contains a <strong>dataset.json</strong> which provides details about the dataset, such as the defined configuration, the number of sensors, etc.</p>
+<p>Several scripts in the calibration pipeline require an ATOM dataset, but it is worth mentioning that the files are also human readable.</p>
+<p>Below you can see the structure of an ATOM dataset.</p>
 <figure align="center">
 <p><img alt="Image title" src="img/ATOMDataset_tree.png" width="60%" />
   </p>
 <figcaption align="center">Structure of an ATOM dataset json file.</figcaption>
 </figure>
-<p>A <strong>dataset.json</strong> file contains a <strong>_metadata</strong> field, where details about the date, user and others are stored. It also contains a <strong>calibration_config</strong>, which is a copy of the state of the configuration file at the time of creation of the dataset. The <strong>sensors</strong> field describes each of the sensors in the system, in particular those selected to be calibrated. </p>
+<p>A <strong>dataset.json</strong> file contains a <strong>_metadata</strong> field, where details about the date, user and others are stored. It also contains a <strong>calibration_config</strong>, which is a copy of the state of the configuration file at the time of creation of the dataset. The <strong>sensors</strong> field describes each of the sensors in the system, in particular those selected to be calibrated.</p>
 <p>Finally, the <strong>collections</strong> field contains several collections, i.e. snapshots of data. Each collection contains a subfield <strong>data</strong>, that stores a dictionary obtained through the <a href="http://wiki.ros.org/rospy_message_converter">conversion of the ROS message to a python dictionary</a>, the subfield <strong>labels</strong> contains information about annotations (automatic or manual) of each sensor data, and the subfield <strong>transforms</strong> contains all the transformations published at (or near) the time of the collection.</p>
 <p>In addition to the <strong>dataset.json</strong> file, ATOM datasets also contain dedicated files for larger data blobs, such as point clouds or images, which are saved separately in the same folder.</p>
-<p>Because the transformations are stored for each collection, it is possible to recover the complete state of the robotic system at the time of each collection. 
+<p>Because the transformations are stored for each collection, it is possible to recover the complete state of the robotic system at the time of each collection.
 ATOM then provides visualization functionalities to display all collections at once. Below we can see the different poses of the manipulator and the calibration pattern for each collection of an MMTBot dataset.</p>
 <figure align="center">
 <p><img alt="Image title" src="img/mmtbot_multiple_collections4.png" width="90%" />
@@ -272,9 +272,10 @@ ATOM then provides visualization functionalities to display all collections at o
 <figcaption align="center">Several collections in an MMTBot dataset.</figcaption>
 </figure>
 <p>Here is an <a href="https://jsoneditoronline.org/#left=cloud.d9efaa274cb44579ad73553dea513ed8">ATOM dataset example from LARCC</a>.</p>
-<h3 id="ros1-and-ros2">ROS1 and ROS2</h3>
-<p>At the moment, ATOM is only supported in ROS1 (Noetic), Ubuntu 20.04 LTS.</p>
-<p>We have plans to work on a ROS2 version in the near future.</p>
+<h3 id="atom-in-ros2">ATOM in ROS2</h3>
+<p>At the moment, ATOM is developed in ROS1 (Noetic), Ubuntu 20.04 LTS.</p>
+<p>However, it is possible to calibrate systems developed in ROS2.
+Check <a href="atom_in_ros2/">these instructions</a>.</p>
               
             </div>
           </div><footer>
@@ -322,5 +323,5 @@ ATOM then provides visualization functionalities to display all collections at o
 
 <!--
 MkDocs version : 1.4.3
-Build Date UTC : 2023-10-09 21:49:34.715385+00:00
+Build Date UTC : 2023-12-29 16:08:35.380143+00:00
 -->
