@@ -21,7 +21,7 @@
   - [Calibrate](#calibrate)
     - [Calibrating intrinsic parameters](#calibrating-intrinsic-parameters)
     - [Two stage calibration for robotic systems with an anchored sensor](#two-stage-calibration-for-robotic-systems-with-an-anchored-sensor)
-  
+
 To calibrate your robot you must define your robotic system, (e.g. <my_robot\>). You should also have a **system
 description** in the form of an [urdf](http://wiki.ros.org/urdf) or a [xacro](http://wiki.ros.org/xacro) file(s). This is normally stored in a ros package named **<my_robot\>_description**.
 In addition to this, **ATOM** requires a bagfile with a recording of the data from the sensors you wish to calibrate.
@@ -31,15 +31,15 @@ Transformations in the bagfile (i.e. topics /tf and /tf_static) will be ignored,
 ones being published by the [robot_state_publisher](http://wiki.ros.org/robot_state_publisher). Thus, if your robotic system contains moving parts, the bagfile should also record the [sensor_msgs/JointState](http://docs.ros.org/en/lunar/api/sensor_msgs/html/msg/JointState.html) message.
 
 !!! Note
-    It is also possible to use the transformations in the bagfile instead of using the xacro description and the robot state publisher to produce them. 
+    It is also possible to use the transformations in the bagfile instead of using the xacro description and the robot state publisher to produce them.
     See section on [using tfs instead of a xacro file](#using-tfs-instead-of-the-xacro-file).
 
 
-To reduce the bag size, it may contain compressed images instead of raw images, since **ATOM** can decompress them while playing back the bagfile. 
+To reduce the bag size, it may contain compressed images instead of raw images, since **ATOM** can decompress them while playing back the bagfile.
 Here is an example of a [launch file](https://github.com/lardemua/atlascar2/blob/master/atlascar2_bringup/launch/record_sensor_data.launch)
 which records compressed images.
 
-We consider this to be part of the normal configuration of your robotic system in ROS, so ATOM assumes this is already done. 
+We consider this to be part of the normal configuration of your robotic system in ROS, so ATOM assumes this is already done.
 In any case if you need inspiration you can take a look at the [calibration examples](examples.md) and how we configured our systems.
 
 
@@ -166,7 +166,7 @@ calibration_pattern:
 
   # Defines if the pattern link is the same in all collections (i.e. fixed=true),
   # or each collection will have its own estimate of the link transformation.
-  # Note: if you plan to have the pattern fixed, while the moving the rigidly attached sensors, 
+  # Note: if you plan to have the pattern fixed, while the moving the rigidly attached sensors,
   # this is equivalent to having the sensors fixed and the pattern moving, so you should use fixed=false.
   fixed: false
 
@@ -214,11 +214,11 @@ max_duration_between_msgs: 1000
 After filling the config.yml file, you should run the package configuration:
 
 ```bash
-rosrun <my_robot_calibration> configure 
+rosrun <my_robot_calibration> configure
 ```
 
 This will go through a series of verifications to check if the configuration is valid, if the bagfile exists and contains the necessary transformations, among many others.
-Once the verifications signal a correct calibration configuration, a set of files is automatically created inside your 
+Once the verifications signal a correct calibration configuration, a set of files is automatically created inside your
 **<my_robot\>_calibration** ros package, as shown below:
 
 ```bash
@@ -247,8 +247,8 @@ Once the verifications signal a correct calibration configuration, a set of file
 
 The **launch** directory contains automatically created launch files used to launch each of the calibration stages.
 The **rviz** folder contains several rviz configuration files used to setup the visualization of each stage.
-The **urdf** folder contains a symbolic link to the xacro file of <my_robot\> and, after calibration, will contain a calibrated urdf. 
-Finally, the **calibration** folder contains the configuration file (config.yml). 
+The **urdf** folder contains a symbolic link to the xacro file of <my_robot\> and, after calibration, will contain a calibrated urdf.
+Finally, the **calibration** folder contains the configuration file (config.yml).
 
 This folder also contains an automatically produced schematic of the configuration of the calibration named [summary.pdf](img/summary_example.pdf).
 It is used to inspect the configuration of the calibration and assess if the configuration is doing what we intended.
@@ -262,7 +262,7 @@ Atomic transformations to be estimated are marked in blue, sensor coordinate sys
 
 ##### Recording compressed images
 
-In case the topics from RGB camera(s) are published using the [ROS image transport](http://wiki.ros.org/image_transport), it is possible to record the compressed image topic instead of the raw image topic as in [this example](index.md#data-logging). During the configuration of your calibration package, ATOM will detect that these are compressed topics and automatically generate a decompressing mechanism in the launch files. 
+In case the topics from RGB camera(s) are published using the [ROS image transport](http://wiki.ros.org/image_transport), it is possible to record the compressed image topic instead of the raw image topic as in [this example](index.md#data-logging). During the configuration of your calibration package, ATOM will detect that these are compressed topics and automatically generate a decompressing mechanism in the launch files.
 
 The advantage is that you get much smaller bag files since they contain compressed images.
 This may be critical for large systems such as [LARCC](examples.md#larcc), where the data output may reach over 1GB per minute.
@@ -290,7 +290,7 @@ usage: rosrun <my_robot_calibration> configure -utf
 ```
 
 !!! Note
-    A previous version of the configure script used a bash based script (currently it is python based), which may not have all the options listed. If the <my_robot_calibration> package was created some time ago, you may still have the bash based script. 
+    A previous version of the configure script used a bash based script (currently it is python based), which may not have all the options listed. If the <my_robot_calibration> package was created some time ago, you may still have the bash based script.
 
     In that case you can update the configure script by running:
 
@@ -311,8 +311,8 @@ Which launches a node that configures the pattern detection after the parameters
 
 ### Set an initial estimate
 
-Iterative optimization methods such as ATOM are sensitive to the initial parameter configuration. 
-ATOM uses several groups of optimization parameters and resorts to distinct strategies to initialize each class. 
+Iterative optimization methods such as ATOM are sensitive to the initial parameter configuration.
+ATOM uses several groups of optimization parameters and resorts to distinct strategies to initialize each class.
 The most important group, sensor poses, may be manually initialized to ensure that the initial estimate is plausible and thus reduce the likelihood of encountering a local minima.
 
 ATOM provides an interactive framework based on rviz which allows the user to set the pose of the sensors while having immediate visual feedback.
@@ -323,7 +323,7 @@ During this procedure one may use several visual clues to better position the se
 To set an initial estimate run:
 
 ```bash
-roslaunch <my_robot_calibration> set_initial_estimate.launch 
+roslaunch <my_robot_calibration> set_initial_estimate.launch
 ```
 
 Here are a couple of examples of setting the initial estimate:
@@ -354,9 +354,9 @@ This functionality is only available in the set initial estimate stage.
   <figcaption align=center>Visualizing frustum of RGB sensors in the MMTBot.</figcaption>
 </figure>
 
-### Collect data 
+### Collect data
 
-To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as [collections](index.md#what-is-a-collection), and a set of collections as an [ATOM dataset](index.md#what-is-an-atom-dataset). 
+To run a system calibration, one requires data from the sensors collected at different time instants. We refer to these snapshots of data as [collections](index.md#what-is-a-collection), and a set of collections as an [ATOM dataset](index.md#what-is-an-atom-dataset).
 
 To collect data, use:
 
@@ -364,51 +364,51 @@ To collect data, use:
 roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder>
 ```
 
-The script launches a fully configured rviz window. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere that appears in the scene. 
+The script launches a fully configured rviz window. The user observes the data playback and **decides when a collection should be saved** by clicking a green sphere that appears in the scene.
 
 !!! Info "How many collections do I need?"
-    The number of collections required to accurately calibrate a system varies according to the number, modality and positioning of the sensors. 
+    The number of collections required to accurately calibrate a system varies according to the number, modality and positioning of the sensors.
     Empirically we found that a figure around 20 or 30 collections is usually sufficient for estimating an accurate calibration.
     That's about the same number of images you need when calibrating a stereo system with OpenCV. Of course this highly depends on your system and the amount
     of overlap there is between the sensors.
 
 !!! Info "What is a good bagfile for recording an ATOM dataset?"
-    Each collection in an ATOM dataset will contain data from all the sensors in the system. All this data is assumed to be captured at the reference time stamp of that collection. 
-    In other words, ATOM assumes that the data from the sensors in a collection is synchronized. 
+    Each collection in an ATOM dataset will contain data from all the sensors in the system. All this data is assumed to be captured at the reference time stamp of that collection.
+    In other words, ATOM assumes that the data from the sensors in a collection is synchronized.
 
-    There are some robotic systems where it is straightforward to implement synchronization mechanisms, e.g., image acquisition hardware triggers in stereo camera systems.  
+    There are some robotic systems where it is straightforward to implement synchronization mechanisms, e.g., image acquisition hardware triggers in stereo camera systems.
     However, these solutions are very specialized and cannot be relied upon for the general case of multi-sensor, multi-modal systems. For example, it is not so easy to synchronize the acquisition of images from a camera with range data from a LiDAR.
 
     The solution adopted in ATOM is to transfer the responsibility of selection of these moments when a collection should be recorded to the user. More often than not, sensor data is not synchronized. However, if the sensors are observing a static scene, it is possible to safely assume that the sensor data is "virtually synchronized" because, even if the data is collected at different instants in time, it will observe the same static scenario.
 
-    To ensure this, what we do during the recording of the bagfile for calibration is to plan in advance the moments where we will record collections, and ensure that at those moments the scene has been static for a duration longer than the estimated largest possible sensor data time differential. 
-    
-    In practice, in our bagfiles, we move the pattern from position A to position B (moving the pattern at normal speed), but then hold the pattern static in position B for some time, e.g 3 to 5 seconds, in anticipation that the collection will be recorded once these seconds elapse, a time in which is is safe to assume that the scene has remained static for a _long enough_ duration. 
-    
-    Here is an [example of a calibration bagfile](https://youtu.be/cVhibWXSGsg) where the described motion of the calibration pattern is visible. Having the user holding the pattern static will always results is small displacements of the calibration pattern. Thus, for more complex systems, or when a high accuracy is required, we use a [tripod to hold the pattern still](https://youtu.be/CB22PyhY4g4). 
-    
+    To ensure this, what we do during the recording of the bagfile for calibration is to plan in advance the moments where we will record collections, and ensure that at those moments the scene has been static for a duration longer than the estimated largest possible sensor data time differential.
+
+    In practice, in our bagfiles, we move the pattern from position A to position B (moving the pattern at normal speed), but then hold the pattern static in position B for some time, e.g 3 to 5 seconds, in anticipation that the collection will be recorded once these seconds elapse, a time in which is is safe to assume that the scene has remained static for a _long enough_ duration.
+
+    Here is an [example of a calibration bagfile](https://youtu.be/cVhibWXSGsg) where the described motion of the calibration pattern is visible. Having the user holding the pattern static will always results is small displacements of the calibration pattern. Thus, for more complex systems, or when a high accuracy is required, we use a [tripod to hold the pattern still](https://youtu.be/CB22PyhY4g4).
+
 !!! Info "Should the pattern be held in a special pose?"
 
     Short answer: **Yes**, if LiDAR or depth sensors are used the pattern should be held somewhat diagonally.
 
-    Long answer: In order to calibrate LiDAR or depth sensor modalities ATOM uses a cost function which uses the lateral physical boundaries of the pattern as landmarks for guiding the calibration. If the pattern is held in a straight up vertical pose, the lateral alignment will be equally valued regardless of the height at which the pattern is held. This results in redundancy in the estimation of the pattern pose, which pollutes the calibration procedure and often ends up in non-accurate calibrations. ATOM tackles this with a simple solution: [we avoid holding the calibration pattern in a straight up pose](https://www.youtube.com/watch?v=eII_ptyMq5E&list=PLQN09mzV5mbKtqGH1ofy-7GZvbNi-iw8U&index=6), and hold it in one (or more) diagonal pose(s) when recording calibration bagfiles.  
+    Long answer: In order to calibrate LiDAR or depth sensor modalities ATOM uses a cost function which uses the lateral physical boundaries of the pattern as landmarks for guiding the calibration. If the pattern is held in a straight up vertical pose, the lateral alignment will be equally valued regardless of the height at which the pattern is held. This results in redundancy in the estimation of the pattern pose, which pollutes the calibration procedure and often ends up in non-accurate calibrations. ATOM tackles this with a simple solution: [we avoid holding the calibration pattern in a straight up pose](https://www.youtube.com/watch?v=eII_ptyMq5E&list=PLQN09mzV5mbKtqGH1ofy-7GZvbNi-iw8U&index=6), and hold it in one (or more) diagonal pose(s) when recording calibration bagfiles.
 
 
 It is also possible to add additional parameters to configure several aspects of the script. See below all the options.
 
 !!! Tip "Additional parameters for collect_data.launch"
 
-    | Argument  | Function | 
+    | Argument  | Function |
     |:---:|:---:|
     |  overwrite | overwrites previous dataset without asking for confirmation   |
-    | bag_rate | Defines the playback rate of the bagfile | 
-    | bag_start | Start time for playback | 
-    | bag_file | Name of bagfile to playback | 
+    | bag_rate | Defines the playback rate of the bagfile |
+    | bag_start | Start time for playback |
+    | bag_file | Name of bagfile to playback |
     | ssl | A string to be evaluated that indicates if a sensor should be labelled. |
 
     One example using all the parameters above:
 
-        roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder> overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]' 
+        roslaunch <my_robot_calibration> collect_data.launch output_folder:=$ATOM_DATASETS/<your_dataset_folder> overwrite:=true bag_rate:=0.5 bag_start:=10 ssl:='lambda name: name in ["s1", "s2"]'
 
 When you launch the data collection script, it automatically starts data labeling processes adequate for each sensor in your robotic system.
 As such, the data is being continuously labeled as the bagfile is played.
@@ -432,7 +432,7 @@ Also, it provides an rviz configuration which subscribes annotated images receiv
 
 #### 3D Lidar labeling
 
-3D Lidar labeling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.  
+3D Lidar labeling is a semi-automatic procedure. The idea is that the user moves an rviz marker close to where the pattern is present in the lidar point cloud.
 
 <figure markdown align=center>
   ![](img/MMTBot3DLidarLabeling.gif){width="100%" }
@@ -449,7 +449,7 @@ as you can see below:
 
 !!! Warning "Tracking limitations"
 
-    The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage. 
+    The tracking procedure may fail if the pattern is too close to another object, as for example the ground plane. This can be solved by making sure the pattern is sufficiently far from all other objects, or during the dataset playback stage.
 
 #### Depth camera labeling
 
@@ -479,7 +479,7 @@ The labeling of the 2D Lidars is very similar to the labeling of 3D Lidars. The 
     The 2D Lidar semi-automatic labeling was last used in 2019, so it may be deprecated. If you are interested on having this functionality [create an issue](https://github.com/lardemua/atom/issues) with a request.
 
 
-### Dataset playback 
+### Dataset playback
 
 The dataset playback is used to review and eventually correct the automatic labels produced during the [collection of data](#collect-data).
 Ideally, the bulk of the labels produced automatically during the collect data stage should be correct, but a few incorrect annotations will disrupt the calibration. As such, a review of the annotations is recommended. You may skip it if you feel that the automatic labeling went very well.
@@ -563,18 +563,18 @@ optional arguments:
   <figcaption align=center>Output of script to inspect an ATOM dataset.</figcaption>
 </figure>
 
-### Calibrate 
+### Calibrate
 
 Finally, a system calibration is called through:
 
 ```bash
-roslaunch <my_robot_calibration> calibrate.launch 
+roslaunch <my_robot_calibration> calibrate.launch
 ```
 
 Then, in a second terminal, run the calibrate script:
 
 ```bash
-rosrun atom_calibration calibrate -json $ATOM_DATASETS/<my_robot_dataset>/dataset_corrected.json -v -rv -si 
+rosrun atom_calibration calibrate -json $ATOM_DATASETS/<my_robot_dataset>/dataset_corrected.json -v -rv -si
 ```
 
 There are several options to use in the calibrate script, one common usage is:
@@ -642,8 +642,6 @@ optional arguments:
                         Good for debugging.
   -ipg, --initial_pose_ghost
                         Draw a ghost mesh with the systems initial pose. Good for debugging.
-  -oj OUTPUT_JSON, --output_json OUTPUT_JSON
-                        Full path to output json file.
 ```
 
 If you use the --verbose option, the script will periodically print a table containing information about the errors per sensor and per collection, e.g.:
@@ -663,9 +661,9 @@ Here's an example of a system being calibrated.
 
 #### Calibrating intrinsic parameters
 
-ATOM also supports intrinsic camera calibration (for now just RGB modality), but requires a first guess for these parameters. 
+ATOM also supports intrinsic camera calibration (for now just RGB modality), but requires a first guess for these parameters.
 
-We compute a first guess using the [ROS monocular camera calibration](http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration) for rgb cameras, and the [depth camera intrinsic calibration](http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration) for depth cameras. After these calibrations are carried out, the sensor drivers publish calibrated [camera_info messages](http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/CameraInfo.html) which are saved to the bag files that is used for calibration, and then used a as first guess for ATOM's intrinsic parameter estimation. Intrinsic calibration runs simultaneous with the extrinsic calibration. 
+We compute a first guess using the [ROS monocular camera calibration](http://wiki.ros.org/camera_calibration/Tutorials/MonocularCalibration) for rgb cameras, and the [depth camera intrinsic calibration](http://wiki.ros.org/openni_launch/Tutorials/IntrinsicCalibration) for depth cameras. After these calibrations are carried out, the sensor drivers publish calibrated [camera_info messages](http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/CameraInfo.html) which are saved to the bag files that is used for calibration, and then used a as first guess for ATOM's intrinsic parameter estimation. Intrinsic calibration runs simultaneous with the extrinsic calibration.
 
 #### Two stage calibration for robotic systems with an anchored sensor
 
